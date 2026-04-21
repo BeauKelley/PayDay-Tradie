@@ -1,6 +1,72 @@
-const USERS_KEY = "paydaytradie-users-v3";
+﻿const USERS_KEY = "paydaytradie-users-v3";
 const SESSION_KEY = "paydaytradie-session-v3";
-const PLAN_ORDER = ["Starter", "Crew", "Business"];
+const PLAN_ORDER = ["Starter", "Crew", "Business", "Custom"];
+const TRIAL_LENGTH_DAYS = 30;
+const TRIAL_EFFECTIVE_PLAN = "Business";
+const CUSTOM_PLAN_BASE_PRICE = 15;
+const CUSTOM_PLAN_BASE_FEATURES = [
+  "clientsPage",
+  "jobsPage",
+  "quotesPage",
+  "invoicesPage",
+  "settingsBasic",
+  "jobNotes",
+  "overdueInvoiceView",
+  "sharedTemplates",
+];
+const CUSTOM_PLAN_ADDONS = {
+  expenses: {
+    id: "expenses",
+    label: "Expenses + receipt capture",
+    price: 4,
+    description: "Track fuel, materials, receipts, and GST without chasing paperwork later.",
+    features: ["expensesPage", "receiptCapture"],
+  },
+  payroll: {
+    id: "payroll",
+    label: "Run weekly wages and labour summaries",
+    price: 7,
+    description: "Run weekly wages, labour totals, and payroll summaries without extra admin.",
+    features: ["payrollPage", "payrollExports"],
+  },
+  reports: {
+    id: "reports",
+    label: "See which jobs make money",
+    price: 6,
+    description: "See profit by job, cash flow, GST pressure, and where the money is really going.",
+    features: ["businessReporting", "compareActiveJobs", "jobProfitability", "dashboardBusinessInsights", "dashboardCrewInsights"],
+  },
+  team: {
+    id: "team",
+    label: "Team management",
+    price: 5,
+    description: "Multi-user team access, staff assignment to jobs, team job board, and worker visibility.",
+    features: ["teamJobBoard", "staffPermissions"],
+  },
+  invoicing: {
+    id: "invoicing",
+    label: "Approve invoices before sending",
+    price: 4,
+    description: "Add approval steps, send reminders faster, and keep invoice control tighter.",
+    features: ["invoiceApprovalControls", "overdueReminders", "adminOversight"],
+  },
+};
+const FEATURE_CUSTOM_ADDON = {
+  expensesPage: "expenses",
+  receiptCapture: "expenses",
+  payrollPage: "payroll",
+  payrollExports: "payroll",
+  businessReporting: "reports",
+  compareActiveJobs: "reports",
+  jobProfitability: "reports",
+  dashboardBusinessInsights: "reports",
+  dashboardCrewInsights: "reports",
+  teamJobBoard: "team",
+  staffPermissions: "team",
+  invoiceApprovalControls: "invoicing",
+  overdueReminders: "invoicing",
+  adminOversight: "invoicing",
+};
 const PLAN_DEFINITIONS = {
   Starter: {
     rank: 0,
@@ -42,8 +108,14 @@ const PLAN_DEFINITIONS = {
       "dashboardBusinessInsights",
     ],
   },
+  Custom: {
+    rank: 3,
+    maxUsers: 1,
+    features: CUSTOM_PLAN_BASE_FEATURES,
+  },
 };
 const WORKSPACE_PAGE_FEATURES = {
+  "workspace-expenses": "expensesPage",
   "workspace-payroll": "payrollPage",
   "workspace-reports": "businessReporting",
 };
@@ -63,73 +135,190 @@ const FEATURE_UPGRADE_PLAN = {
 const PLAN_MARKETING = {
   Starter: {
     price: "$19/month",
-    audience: "Solo tradie essentials",
-    summary: "Quotes, invoices, receipts, GST totals, client details, job notes, and overdue invoice tracking.",
+    audience: "Best for solo tradies quoting, invoicing, tracking receipts, and keeping GST sorted themselves.",
+    summary: "Keep the core admin sorted yourself without bloated bookkeeping software.",
+    suits: ["Sole trader", "One-person business"],
     features: [
-      "1 user",
-      "Unlimited quotes and invoices",
-      "Receipt capture with GST totals",
-      "Client list and job notes",
-      "Overdue invoice tracking",
+      "Quote and invoice without accountant-style setup",
+      "Upload receipts and keep GST visible",
+      "Reuse client details across jobs and invoices",
+      "See unpaid money before it gets forgotten",
     ],
   },
   Crew: {
-    price: "$39/month",
-    audience: "Run jobs with a small crew",
-    summary: "Assigned jobs, a real team board, job profitability, overdue reminders, payroll, and payroll-ready exports.",
+    price: "$29/month",
+    audience: "Best for small teams that need assigned jobs, job profit tracking, and staff visibility.",
+    summary: "Keep a small crew organised, keep labour visible, and spot problem jobs earlier.",
+    suits: ["2 to 5 workers", "Small crew with apprentices"],
     features: [
-      "Up to 5 workers",
-      "Assigned jobs and team job board",
-      "Job profitability by job",
-      "Overdue reminders",
-      "Payroll-ready exports",
+      "Assign jobs and see who is doing what",
+      "See which jobs are making money",
+      "Run weekly wages and labour summaries",
+      "Send overdue reminders before cash gets tight",
     ],
   },
   Business: {
-    price: "$69/month",
-    audience: "Run staff and jobs with more control",
-    summary: "Business-wide reporting, active job comparison, invoice approvals, and shared business settings.",
+    price: "$49/month",
+    audience: "Best for growing trade businesses needing reporting, approvals, payroll, and stronger control.",
+    summary: "Get clearer reporting, stronger approvals, and better control once the business is bigger than one person.",
+    suits: ["Office admin involved", "Multiple active jobs"],
     features: [
-      "Up to 15 staff",
-      "Business-wide reporting across jobs, invoices, expenses, and payroll",
-      "Compare all active jobs in one view",
-      "Invoice approval controls",
-      "Shared settings and invoice defaults",
+      "See which jobs make money across the business",
+      "Approve invoices before sending",
+      "Keep payroll, jobs, and cash flow connected",
+      "Give office admin stronger visibility and control",
+    ],
+  },
+  Custom: {
+    price: "$15/month base + add-ons",
+    audience: "Choose only the extras you actually need",
+    summary: "Start with the essential app, then turn on extra modules like expenses, payroll, reports, team tools, or advanced invoice controls.",
+    features: [
+      "Base plan includes dashboard, jobs, clients, quotes, invoices, and settings",
+      "Add expenses + receipts for +$4",
+      "Add payroll for +$7",
+      "Add reports + analytics for +$6",
+      "Add team management for +$5",
+      "Add advanced invoice controls for +$4",
     ],
   },
 };
+const LANDING_PRICING_MONTHLY = {
+  Starter: 19,
+  Crew: 29,
+  Business: 49,
+};
+const LANDING_YEARLY_DISCOUNT = 0.15;
+let landingPricingMode = "monthly";
+
+function getPlanPrice(plan = normalisePlanName(currentUser?.plan, "Starter")) {
+  const resolvedPlan = normalisePlanName(plan, "Starter");
+  if (resolvedPlan === "Custom") {
+    return formatMonthlyPrice(getCustomPlanMonthlyTotal(currentUser));
+  }
+  return PLAN_MARKETING[resolvedPlan]?.price || "$0/month";
+}
 const LOCKED_FEATURE_CONTENT = {
-  payrollPage: {
-    title: "Payroll",
+  expensesPage: {
+    title: "Expenses + receipt capture",
     intro: "",
-    detail: "Unlock payroll to manage wages, labour, and staff payments.",
+    detail: "Add expenses to track fuel, materials, and receipts in one place so GST and job spend stay visible.",
+    eyebrow: "Expenses locked",
+    pageId: "workspace-expenses",
+    buttonLabel: "Upgrade plan",
+  },
+  payrollPage: {
+    title: "Run weekly wages and labour summaries",
+    intro: "",
+    detail: "Crew unlocks payroll so wages, labour totals, and staff visibility stay in the same workflow as jobs.",
     eyebrow: "Payroll locked",
     pageId: "workspace-payroll",
     buttonLabel: "Upgrade plan",
   },
   businessReporting: {
-    title: "Reports are available on Business plan",
+    title: "See which jobs make money",
     intro: "",
-    detail: "See profit across jobs, unpaid money, expenses, payroll, and business performance in one place.",
+    detail: "Reports are available on Business because they combine invoices, expenses, payroll, and job margins into one clear view.",
     eyebrow: "Reports locked",
     pageId: "workspace-reports",
     buttonLabel: "Upgrade plan",
   },
   staffPermissions: {
-    title: "This feature is not included in your current plan",
-    intro: "Upgrade to unlock this feature.",
-    detail: "Staff permissions and admin access levels are available on the Business plan.",
+    title: "Team management",
+    intro: "",
+    detail: "Business gives office staff and field staff clearer access, job visibility, and stronger control over who does what.",
     eyebrow: "Team access locked",
     buttonLabel: "Upgrade plan",
   },
   invoiceApprovalControls: {
-    title: "This feature is not included in your current plan",
-    intro: "Upgrade to unlock this feature.",
-    detail: "Invoice approval controls before sending are available on the Business plan.",
+    title: "Approve invoices before sending",
+    intro: "",
+    detail: "Business adds approval checks and stronger invoice control so the wrong invoice does not go out in a rush.",
     eyebrow: "Invoice approvals locked",
     buttonLabel: "Upgrade plan",
   },
 };
+
+const PLAN_COMPARISON_ROWS = [
+  {
+    label: "Quotes",
+    Starter: "Unlimited",
+    Crew: "Unlimited",
+    Business: "Unlimited",
+  },
+  {
+    label: "Invoices",
+    Starter: "Unlimited",
+    Crew: "Unlimited + reminders",
+    Business: "Approvals + reminders",
+  },
+  {
+    label: "Team jobs",
+    Starter: "Solo workflow",
+    Crew: "Assign jobs to crew",
+    Business: "Multiple jobs + admin view",
+  },
+  {
+    label: "Payroll",
+    Starter: "Not included",
+    Crew: "Weekly wages summaries",
+    Business: "Payroll + business oversight",
+  },
+  {
+    label: "Reports",
+    Starter: "GST and unpaid basics",
+    Crew: "Job profit visibility",
+    Business: "Full margin and cash reports",
+  },
+];
+
+const ONBOARDING_STEPS = ["business", "tradeType", "teamSize", "address", "branding", "priority", "setup", "previousSystem"];
+const ONBOARDING_CONTENT = {
+  business: {
+    title: "Set up your business basics",
+    copy: "Get the workspace feeling like yours before you land on the dashboard.",
+  },
+  tradeType: {
+    title: "What kind of trade work do you do?",
+    copy: "We’ll tune the dashboard language and examples to your trade.",
+  },
+  teamSize: {
+    title: "How many people work in your business?",
+    copy: "This shapes plan guidance and how much team visibility the app should bring forward.",
+  },
+  address: {
+    title: "What is your business address?",
+    copy: "Use search first, then switch to manual entry if you want to type it yourself.",
+  },
+  branding: {
+    title: "Add your logo",
+    copy: "This shows up on quotes and invoices, but you can skip it for now.",
+  },
+  priority: {
+    title: "What do you want sorted first?",
+    copy: "We’ll bring that part of the business to the front of the dashboard first.",
+  },
+  setup: {
+    title: "Set your defaults",
+    copy: "GST, tax hold, payment terms, and quote expiry will be saved now so the app stops asking later.",
+  },
+  previousSystem: {
+    title: "Final reminders and switch-over",
+    copy: "Choose the reminder defaults you want on from day one and tell us if you are moving from another system.",
+  },
+};
+
+const ONBOARDING_ADDRESS_BOOK = [
+  "12 Jobsite Road, Brisbane QLD 4000",
+  "18 Greenway Street, Brookvale NSW 2100",
+  "108 Sydney Road, Manly NSW 2095",
+  "27 Trade Coast Drive, Newcastle NSW 2300",
+  "85 Riverside Parade, Geelong VIC 3220",
+  "14 Solar Avenue, Wollongong NSW 2500",
+  "9 Workshop Lane, Gold Coast QLD 4217",
+  "33 Harbour View Street, Cronulla NSW 2230",
+  "61 Norfolk Street, Fremantle WA 6160",
+];
 
 const els = {
   navToggle: document.getElementById("navToggle"),
@@ -145,10 +334,41 @@ const els = {
   authForm: document.getElementById("authForm"),
   authTitle: document.getElementById("authTitle"),
   authCopy: document.getElementById("authCopy"),
+  authTrialBadge: document.getElementById("authTrialBadge"),
+  authTrialDetail: document.getElementById("authTrialDetail"),
   authModeLabel: document.getElementById("authModeLabel"),
   authSubmitButton: document.getElementById("authSubmitButton"),
   toggleAuthMode: document.getElementById("toggleAuthMode"),
   closeAuthButton: document.getElementById("closeAuthButton"),
+  onboardingOverlay: document.getElementById("onboardingOverlay"),
+  onboardingTitle: document.getElementById("onboardingTitle"),
+  onboardingCopy: document.getElementById("onboardingCopy"),
+  onboardingStepLabel: document.getElementById("onboardingStepLabel"),
+  onboardingPlanHint: document.getElementById("onboardingPlanHint"),
+  onboardingBackButton: document.getElementById("onboardingBackButton"),
+  onboardingNextButton: document.getElementById("onboardingNextButton"),
+  onboardingBusinessName: document.getElementById("onboardingBusinessName"),
+  onboardingAbn: document.getElementById("onboardingAbn"),
+  onboardingAddressSearch: document.getElementById("onboardingAddressSearch"),
+  onboardingAddressResults: document.getElementById("onboardingAddressResults"),
+  onboardingManualAddressButton: document.getElementById("onboardingManualAddressButton"),
+  onboardingCopyAddressButton: document.getElementById("onboardingCopyAddressButton"),
+  onboardingManualAddress: document.getElementById("onboardingManualAddress"),
+  onboardingAddressModeLabel: document.getElementById("onboardingAddressModeLabel"),
+  onboardingAddressHelper: document.getElementById("onboardingAddressHelper"),
+  onboardingAddressShell: document.getElementById("onboardingAddressShell"),
+  onboardingAddressSearchPanel: document.getElementById("onboardingAddressSearchPanel"),
+  onboardingBusinessAddress: document.getElementById("onboardingBusinessAddress"),
+  onboardingBody: document.getElementById("onboardingBody"),
+  onboardingLogoInput: document.getElementById("onboardingLogoInput"),
+  onboardingLogoPreview: document.getElementById("onboardingLogoPreview"),
+  onboardingUploadLogoButton: document.getElementById("onboardingUploadLogoButton"),
+  onboardingSkipLogoButton: document.getElementById("onboardingSkipLogoButton"),
+  onboardingLogoHelper: document.getElementById("onboardingLogoHelper"),
+  onboardingTaxVault: document.getElementById("onboardingTaxVault"),
+  onboardingInvoiceReminders: document.getElementById("onboardingInvoiceReminders"),
+  onboardingOverdueReminders: document.getElementById("onboardingOverdueReminders"),
+  onboardingJobAlerts: document.getElementById("onboardingJobAlerts"),
   pricingModalOverlay: document.getElementById("pricingModalOverlay"),
   closePricingModalButton: document.getElementById("closePricingModalButton"),
   pricingModalCards: document.getElementById("pricingModalCards"),
@@ -163,10 +383,14 @@ const els = {
   upgradeModalFeatureList: document.getElementById("upgradeModalFeatureList"),
   confirmUpgradeButton: document.getElementById("confirmUpgradeButton"),
   nameField: document.getElementById("nameField"),
+  workspaceBrandLogo: document.getElementById("workspaceBrandLogo"),
+  workspaceBrandName: document.getElementById("workspaceBrandName"),
+  workspaceBrandSubtitle: document.getElementById("workspaceBrandSubtitle"),
   workspaceTitle: document.getElementById("workspaceTitle"),
   workspaceSubtitle: document.getElementById("workspaceSubtitle"),
   workspacePlanBadge: document.getElementById("workspacePlanBadge"),
   workspacePlanCopy: document.getElementById("workspacePlanCopy"),
+  workspaceTrialDaysBadge: document.getElementById("workspaceTrialDaysBadge"),
   dashboardHeroCard1Label: document.getElementById("dashboardHeroCard1Label"),
   dashboardHeroCard1Copy: document.getElementById("dashboardHeroCard1Copy"),
   dashboardHeroCard2Label: document.getElementById("dashboardHeroCard2Label"),
@@ -180,6 +404,7 @@ const els = {
   dashboardUrgentMarginCopy: document.getElementById("dashboardUrgentMarginCopy"),
   dashboardUrgentTax: document.getElementById("dashboardUrgentTax"),
   dashboardUrgentTaxCopy: document.getElementById("dashboardUrgentTaxCopy"),
+  dashboardConfidenceLine: document.getElementById("dashboardConfidenceLine"),
   moneyAvailable: document.getElementById("moneyAvailable"),
   taxSaved: document.getElementById("taxSaved"),
   invoiceTotal: document.getElementById("invoiceTotal"),
@@ -424,6 +649,9 @@ const els = {
   invoiceDraftMeta: document.getElementById("invoiceDraftMeta"),
   expenseForm: document.getElementById("expenseForm"),
   expenseStartOptions: document.querySelectorAll("[data-expense-start]"),
+  expenseHeaderUploadButton: document.getElementById("expenseHeaderUploadButton"),
+  expenseReceiptSection: document.getElementById("expenseReceiptSection"),
+  expenseUploadTile: document.getElementById("expenseUploadTile"),
   expenseCategorySelect: document.getElementById("expenseCategorySelect"),
   expenseJobSelect: document.getElementById("expenseJobSelect"),
   expensePaymentSelect: document.getElementById("expensePaymentSelect"),
@@ -478,6 +706,17 @@ const els = {
   settingsPlanName: document.getElementById("settingsPlanName"),
   settingsPlanCopy: document.getElementById("settingsPlanCopy"),
   settingsPlanLimit: document.getElementById("settingsPlanLimit"),
+  billingPlanName: document.getElementById("billingPlanName"),
+  billingPlanCopy: document.getElementById("billingPlanCopy"),
+  billingPlanAmount: document.getElementById("billingPlanAmount"),
+  billingRenewalDate: document.getElementById("billingRenewalDate"),
+  billingRecommendationNote: document.getElementById("billingRecommendationNote"),
+  billingPlanCards: document.getElementById("billingPlanCards"),
+  billingUpgradeButton: document.getElementById("billingUpgradeButton"),
+  billingComparePlansButton: document.getElementById("billingComparePlansButton"),
+  pricingMonthlyButton: document.getElementById("pricingMonthlyButton"),
+  pricingYearlyButton: document.getElementById("pricingYearlyButton"),
+  pricingBillingCopy: document.getElementById("pricingBillingCopy"),
   quickCreateWrap: document.getElementById("quickCreateWrap"),
   quickCreateToggle: document.getElementById("quickCreateToggle"),
   quickCreateMenu: document.getElementById("quickCreateMenu"),
@@ -498,6 +737,29 @@ const els = {
 };
 
 let authMode = "signup";
+let onboardingStepIndex = 0;
+let onboardingAnswers = {
+  businessName: "",
+  abn: "",
+  tradeType: "",
+  teamSize: "",
+  addressSearch: "",
+  addressManual: false,
+  addressSource: "",
+  businessAddress: "",
+  businessLogo: "",
+  priority: "",
+  gstRegistered: "Yes",
+  taxVaultRate: 20,
+  defaultPaymentTerms: "14 days",
+  defaultQuoteExpiryDays: "14",
+  paymentMethod: "Bank transfer",
+  invoiceReminders: true,
+  overdueReminders: true,
+  jobAlerts: true,
+  previousSystem: "None",
+};
+let onboardingAddressSearchTimer = null;
 let activeJobFilter = "All";
 let jobSearchQuery = "";
 let archiveSearchQuery = "";
@@ -534,6 +796,11 @@ let pendingSettingsLogo = null;
 let clientSearchQuery = "";
 let clientSortMode = "newest";
 let editingClientId = null;
+let editingJobId = null;
+let editingQuoteId = null;
+let editingInvoiceId = null;
+let editingExpenseId = null;
+let editingPayrollEmployeeId = null;
 let jobClientModalOpen = false;
 let quickCreateContext = null;
 let currentUser = null;
@@ -541,10 +808,15 @@ let workspacePageSlots = null;
 let pendingSelectedPlan = "Starter";
 let pendingUpgradeFeature = "";
 let pendingUpgradePlan = "Starter";
+let pendingUpgradeAddon = "";
+let pendingCustomAddOns = [];
+let pricingModalMode = "all";
+let pricingModalRecommendedPlan = "Starter";
 
 els.year.textContent = new Date().getFullYear();
 initStore();
 bindEvents();
+renderLandingPricing();
 restoreSession();
 
 function bindEvents() {
@@ -571,8 +843,34 @@ function bindEvents() {
     if (event.target === els.upgradeModalOverlay) closeUpgradeModal();
   });
   els.confirmUpgradeButton?.addEventListener("click", handleConfirmUpgradePlan);
+  els.billingUpgradeButton?.addEventListener("click", () => openPricingModal("billing"));
+  els.billingComparePlansButton?.addEventListener("click", () => openPricingModal("billing"));
+  els.pricingMonthlyButton?.addEventListener("click", () => {
+    landingPricingMode = "monthly";
+    renderLandingPricing();
+  });
+  els.pricingYearlyButton?.addEventListener("click", () => {
+    landingPricingMode = "yearly";
+    renderLandingPricing();
+  });
   els.signOutButton.addEventListener("click", signOut);
   els.authForm.addEventListener("submit", handleAuthSubmit);
+  els.onboardingBackButton?.addEventListener("click", handleOnboardingBack);
+  els.onboardingNextButton?.addEventListener("click", handleOnboardingNext);
+  document.querySelectorAll("[data-onboarding-choice]").forEach((button) => {
+    button.addEventListener("click", handleOnboardingChoiceClick);
+  });
+  document.querySelectorAll("[data-onboarding-input]").forEach((input) => {
+    input.addEventListener("input", handleOnboardingInputChange);
+  });
+  document.querySelectorAll("[data-onboarding-toggle]").forEach((input) => {
+    input.addEventListener("change", handleOnboardingToggleChange);
+  });
+  els.onboardingManualAddressButton?.addEventListener("click", handleOnboardingManualAddress);
+  els.onboardingCopyAddressButton?.addEventListener("click", handleOnboardingCopyAddress);
+  els.onboardingUploadLogoButton?.addEventListener("click", () => els.onboardingLogoInput?.click());
+  els.onboardingSkipLogoButton?.addEventListener("click", handleOnboardingSkipLogo);
+  els.onboardingLogoInput?.addEventListener("change", handleOnboardingLogoUpload);
   els.clientForm.addEventListener("submit", handleClientSubmit);
   els.clientSearchInput.addEventListener("input", () => {
     clientSearchQuery = els.clientSearchInput.value.trim().toLowerCase();
@@ -655,7 +953,7 @@ function bindEvents() {
   els.quoteLabourQuickSuggestions?.addEventListener("click", handleSmartFillClick);
   els.quoteMaterialQuickSuggestions?.addEventListener("click", handleSmartFillClick);
   els.quoteClientSelect.addEventListener("change", syncSelectedQuoteClientDetails);
-  els.quoteResetButton.addEventListener("click", resetQuoteForm);
+  els.quoteResetButton.addEventListener("click", handleQuoteResetRequest);
   els.quoteSearchInput.addEventListener("input", () => {
     quoteSearchQuery = els.quoteSearchInput.value.trim().toLowerCase();
     renderQuotes();
@@ -728,7 +1026,7 @@ function bindEvents() {
   els.invoiceQuoteResults?.addEventListener("click", handleInvoiceQuoteCardClick);
   els.invoiceQuoteRecentList?.addEventListener("click", handleInvoiceQuoteCardClick);
   els.invoiceDuplicateSelect?.addEventListener("change", handleInvoiceDuplicateSourceChange);
-  els.invoiceResetButton.addEventListener("click", resetInvoiceForm);
+  els.invoiceResetButton.addEventListener("click", handleInvoiceResetRequest);
   els.invoiceSearchInput.addEventListener("input", () => {
     invoiceSearchQuery = els.invoiceSearchInput.value.trim().toLowerCase();
     renderInvoices();
@@ -782,6 +1080,7 @@ function bindEvents() {
   els.expenseStartOptions.forEach((button) => {
     button.addEventListener("click", () => handleExpenseStartModeChange(button.dataset.expenseStart || "receipt"));
   });
+  els.expenseHeaderUploadButton?.addEventListener("click", openExpenseReceiptPicker);
   els.expenseReceiptInput.addEventListener("change", handleExpenseReceiptUpload);
   els.expenseAmountInput.addEventListener("input", recalculateExpenseGst);
   els.expenseSearchInput.addEventListener("input", () => {
@@ -861,6 +1160,8 @@ function bindEvents() {
   els.quotesList.addEventListener("click", handleQuoteAction);
   els.jobsList.addEventListener("click", handleJobAction);
   els.invoicesList.addEventListener("click", handleInvoiceAction);
+  els.expensesList.addEventListener("click", handleExpenseAction);
+  els.payrollList.addEventListener("click", handlePayrollEmployeeAction);
   els.payrollHistoryList.addEventListener("click", handlePayrollHistoryAction);
   els.closeQuotePreviewButton.addEventListener("click", () => {
     els.quotePreviewOverlay.classList.add("hidden");
@@ -910,6 +1211,9 @@ function bindEvents() {
   window.addEventListener("hashchange", () => {
     syncWorkspaceNavState(window.location.hash);
     closeQuickCreateMenu();
+    if (shouldRunOnboarding(currentUser)) {
+      openOnboarding();
+    }
   });
 
   els.quickCreateToggle?.addEventListener("click", () => {
@@ -932,6 +1236,10 @@ function bindEvents() {
   document.querySelectorAll("[data-plan]").forEach((button) => {
     button.addEventListener("click", () => {
       pendingSelectedPlan = normalisePlanName(button.dataset.plan, "Starter");
+      if (pendingSelectedPlan === "Custom") {
+        openPricingModal("custom-builder");
+        return;
+      }
       openAuth("signup", pendingSelectedPlan);
     });
   });
@@ -940,6 +1248,7 @@ function bindEvents() {
     const upgradeButton = event.target.closest("[data-request-upgrade]");
     if (upgradeButton) {
       pendingUpgradeFeature = upgradeButton.dataset.lockedFeature || "";
+      pendingUpgradeAddon = upgradeButton.dataset.requestAddon || "";
       openPricingModal(pendingUpgradeFeature);
       return;
     }
@@ -950,6 +1259,17 @@ function bindEvents() {
       openUpgradeModal(targetPlan, pendingUpgradeFeature);
       return;
     }
+  });
+
+  document.addEventListener("change", (event) => {
+    const addonToggle = event.target.closest("[data-custom-addon]");
+    if (!addonToggle) return;
+    const addonId = addonToggle.dataset.customAddon || "";
+    if (!CUSTOM_PLAN_ADDONS[addonId]) return;
+    pendingCustomAddOns = addonToggle.checked
+      ? Array.from(new Set([...pendingCustomAddOns, addonId]))
+      : pendingCustomAddOns.filter((item) => item !== addonId);
+    renderPricingModalCards();
   });
 
   if (els.demoForm) {
@@ -977,14 +1297,160 @@ function normalisePlanName(plan, fallback = "Business") {
   return fallback;
 }
 
-function getPlanDefinition(plan = normalisePlanName(currentUser?.plan)) {
+function normaliseCustomAddOns(addOns = []) {
+  const incoming = Array.isArray(addOns) ? addOns : String(addOns || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return Array.from(new Set(incoming.filter((item) => CUSTOM_PLAN_ADDONS[item])));
+}
+
+function getTrialInfo(user = currentUser) {
+  if (!user) {
+    return {
+      startedAt: "",
+      endsAt: "",
+      active: false,
+      remainingDays: 0,
+    };
+  }
+  const trialStartedAt = user?.trialStartedAt || user?.createdAt || new Date().toISOString();
+  const trialStart = new Date(trialStartedAt);
+  const safeStart = Number.isNaN(trialStart.getTime()) ? new Date() : trialStart;
+  const trialEndsAt = user?.trialEndsAt || new Date(safeStart.getTime() + TRIAL_LENGTH_DAYS * 86400000).toISOString();
+  const end = new Date(trialEndsAt);
+  const safeEnd = Number.isNaN(end.getTime()) ? new Date(safeStart.getTime() + TRIAL_LENGTH_DAYS * 86400000) : end;
+  const remainingDays = Math.max(0, Math.ceil((safeEnd.getTime() - Date.now()) / 86400000));
+  return {
+    startedAt: safeStart.toISOString(),
+    endsAt: safeEnd.toISOString(),
+    active: remainingDays > 0,
+    remainingDays,
+  };
+}
+
+function getEffectivePlanName(user = currentUser) {
+  const selectedPlan = normalisePlanName(user?.plan, "Starter");
+  return getTrialInfo(user).active ? TRIAL_EFFECTIVE_PLAN : selectedPlan;
+}
+
+function needsPostTrialPlanChoice(user = currentUser) {
+  if (!user) return false;
+  const trial = getTrialInfo(user);
+  return !trial.active && !user.trialPlanConfirmedAt;
+}
+
+function formatMonthlyPrice(amount) {
+  return `$${Number(amount || 0)}/month`;
+}
+
+function formatPricingAmount(amount, { decimals = 0 } = {}) {
+  return `$${Number(amount || 0).toFixed(decimals)}`;
+}
+
+function getLandingYearlyTotal(monthlyAmount) {
+  return Number(monthlyAmount || 0) * 12 * (1 - LANDING_YEARLY_DISCOUNT);
+}
+
+function renderLandingPricing() {
+  const monthlySelected = landingPricingMode === "monthly";
+  els.pricingMonthlyButton?.classList.toggle("is-active", monthlySelected);
+  els.pricingMonthlyButton?.setAttribute("aria-pressed", monthlySelected ? "true" : "false");
+  els.pricingYearlyButton?.classList.toggle("is-active", !monthlySelected);
+  els.pricingYearlyButton?.setAttribute("aria-pressed", !monthlySelected ? "true" : "false");
+  if (els.pricingBillingCopy) {
+    els.pricingBillingCopy.textContent = "Pay yearly and save 15%";
+  }
+
+  Object.entries(LANDING_PRICING_MONTHLY).forEach(([planName, monthlyAmount]) => {
+    const priceNode = document.querySelector(`[data-plan-price="${planName}"]`);
+    const noteNode = document.querySelector(`[data-plan-billing-note="${planName}"]`);
+    if (!priceNode || !noteNode) return;
+    if (monthlySelected) {
+      priceNode.innerHTML = `${formatPricingAmount(monthlyAmount)}<span>/month</span>`;
+      noteNode.textContent = `Yearly: ${formatPricingAmount(getLandingYearlyTotal(monthlyAmount), { decimals: 2 })}/year (save 15%)`;
+      return;
+    }
+    priceNode.innerHTML = `${formatPricingAmount(getLandingYearlyTotal(monthlyAmount), { decimals: 2 })}<span>/year</span>`;
+    noteNode.textContent = `Monthly: ${formatPricingAmount(monthlyAmount)}/month`;
+  });
+}
+
+function getCustomPlanMonthlyTotal(user = currentUser, addOns = user?.customAddOns) {
+  return normaliseCustomAddOns(addOns).reduce((sum, addonId) => sum + (CUSTOM_PLAN_ADDONS[addonId]?.price || 0), CUSTOM_PLAN_BASE_PRICE);
+}
+
+function getCustomPlanFeatures(user = currentUser, addOns = user?.customAddOns) {
+  const featureSet = new Set(CUSTOM_PLAN_BASE_FEATURES);
+  normaliseCustomAddOns(addOns).forEach((addonId) => {
+    (CUSTOM_PLAN_ADDONS[addonId]?.features || []).forEach((feature) => featureSet.add(feature));
+  });
+  return featureSet;
+}
+
+function getCustomPlanRecommendation(total = getCustomPlanMonthlyTotal()) {
+  if (total >= 44) {
+    return "Business includes broader access for a similar monthly cost.";
+  }
+  if (total >= 25) {
+    return "Crew may offer better value for your business.";
+  }
+  return "";
+}
+
+function getFeatureValueMessage(feature) {
+  const messages = {
+    payrollPage: "Upgrade to Crew when the work is no longer just you and you need weekly wages and labour kept in view.",
+    payrollExports: "Upgrade to Crew when the work is no longer just you and you need weekly wages and labour kept in view.",
+    teamJobBoard: "Upgrade to Crew to assign jobs, keep apprentices visible, and see which jobs are making money.",
+    jobProfitability: "Upgrade to Crew to assign jobs, keep apprentices visible, and see which jobs are making money.",
+    overdueReminders: "Upgrade to Crew to stay ahead of unpaid money before cash flow gets tight.",
+    businessReporting: "Upgrade to Business to see which jobs make money across invoices, expenses, payroll, and margins.",
+    compareActiveJobs: "Upgrade to Business to see which jobs make money across invoices, expenses, payroll, and margins.",
+    invoiceApprovalControls: "Upgrade to Business to approve invoices before sending and keep office control tighter.",
+    staffPermissions: "Upgrade to Business for stronger office oversight, approvals, and shared team access.",
+    sharedTemplates: "Upgrade to Business for stronger office oversight, approvals, and shared team access.",
+    adminOversight: "Upgrade to Business for stronger office oversight, approvals, and shared team access.",
+  };
+  return messages[feature] || "";
+}
+
+function getFeatureUpsell(feature, user = currentUser) {
+  const addonId = FEATURE_CUSTOM_ADDON[feature];
+  if (normalisePlanName(user?.plan, "Starter") === "Custom" && addonId && CUSTOM_PLAN_ADDONS[addonId]) {
+    return {
+      type: "addon",
+      addonId,
+      plan: "Custom",
+      price: CUSTOM_PLAN_ADDONS[addonId].price,
+      label: `${CUSTOM_PLAN_ADDONS[addonId].label} | ${formatMonthlyPrice(CUSTOM_PLAN_ADDONS[addonId].price)}`,
+      copy: `Add this to your plan for ${formatMonthlyPrice(CUSTOM_PLAN_ADDONS[addonId].price)}.`,
+    };
+  }
+  const upgradePlan = getUpgradePlan(feature);
+  return {
+    type: "plan",
+    plan: upgradePlan,
+    price: getPlanPrice(upgradePlan),
+    label: `Upgrade to ${upgradePlan} | ${getPlanPrice(upgradePlan)}`,
+    copy: `${getFeatureValueMessage(feature)} ${getPlanPrice(upgradePlan)} billed monthly.`.trim(),
+  };
+}
+
+function getPlanDefinition(plan = getEffectivePlanName(currentUser)) {
   return PLAN_DEFINITIONS[normalisePlanName(plan)] || PLAN_DEFINITIONS.Business;
 }
 
-function getPlanFeatures(plan = normalisePlanName(currentUser?.plan)) {
-  const targetPlan = normalisePlanName(plan);
+function getPlanFeatures(plan = getEffectivePlanName(currentUser), user = currentUser) {
+  const targetPlan = normalisePlanName(plan || getEffectivePlanName(user));
+  if (targetPlan === "Custom") {
+    return getCustomPlanFeatures(user, user?.customAddOns);
+  }
   const targetRank = getPlanDefinition(targetPlan).rank;
   return PLAN_ORDER.reduce((featureSet, planName) => {
+    if (planName === "Custom") {
+      return featureSet;
+    }
     if (getPlanDefinition(planName).rank <= targetRank) {
       getPlanDefinition(planName).features.forEach((feature) => featureSet.add(feature));
     }
@@ -994,17 +1460,21 @@ function getPlanFeatures(plan = normalisePlanName(currentUser?.plan)) {
 
 function hasFeature(feature, user = currentUser) {
   if (!feature) return true;
-  return getPlanFeatures(normalisePlanName(user?.plan)).has(feature);
+  if (needsPostTrialPlanChoice(user)) return false;
+  return getPlanFeatures(getEffectivePlanName(user), user).has(feature);
 }
 
-function getPlanUserLimit(plan = normalisePlanName(currentUser?.plan)) {
-  return Number(getPlanDefinition(plan).maxUsers || 1);
+function getPlanUserLimit(plan = getEffectivePlanName(currentUser), user = currentUser) {
+  const resolvedPlan = normalisePlanName(plan || getEffectivePlanName(user), "Starter");
+  if (resolvedPlan === "Custom") {
+    return normaliseCustomAddOns(user?.customAddOns).includes("team") ? 5 : 1;
+  }
+  return Number(getPlanDefinition(resolvedPlan).maxUsers || 1);
 }
 
 function enforcePlanDataLimits(user) {
   if (!user) return user;
-  const plan = normalisePlanName(user.plan, "Starter");
-  const userLimit = getPlanUserLimit(plan);
+  const userLimit = getPlanUserLimit(getEffectivePlanName(user), user);
   const teamUsers = Array.isArray(user.teamUsers) ? user.teamUsers.slice(0, userLimit) : [];
   const payrollEmployees = hasFeature("payrollPage", user)
     ? (Array.isArray(user.payrollEmployees) ? user.payrollEmployees.slice(0, userLimit) : [])
@@ -1017,12 +1487,12 @@ function enforcePlanDataLimits(user) {
 }
 
 function canAddMoreTeamUsers(user = currentUser) {
-  return (user?.teamUsers?.length || 0) < getPlanUserLimit(normalisePlanName(user?.plan, "Starter"));
+  return (user?.teamUsers?.length || 0) < getPlanUserLimit(getEffectivePlanName(user), user);
 }
 
 function canAddMorePayrollStaff(user = currentUser) {
   return hasFeature("payrollPage", user)
-    && (user?.payrollEmployees?.length || 0) < getPlanUserLimit(normalisePlanName(user?.plan, "Starter"));
+    && (user?.payrollEmployees?.length || 0) < getPlanUserLimit(getEffectivePlanName(user), user);
 }
 
 function getUpgradePlan(feature) {
@@ -1031,11 +1501,234 @@ function getUpgradePlan(feature) {
 
 function getPlanMarketingCopy(plan = normalisePlanName(currentUser?.plan, "Starter")) {
   const copyByPlan = {
-    Starter: "Best for solo tradies keeping quotes, invoices, receipts, and GST in one place.",
-    Crew: "Best for small crews that need job visibility, profitability, and payroll-ready workflow.",
-    Business: "Best for trade businesses that need control across staff, approvals, reporting, and active jobs.",
+    Starter: "Best for solo tradies quoting, invoicing, tracking receipts, and keeping GST sorted themselves.",
+    Crew: "Best for small teams that need assigned jobs, job profit tracking, and staff visibility.",
+    Business: "Best for growing trade businesses needing reporting, approvals, payroll, and stronger control.",
+    Custom: "Base access plus only the advanced extras you actually want to pay for.",
   };
   return copyByPlan[normalisePlanName(plan, "Starter")] || copyByPlan.Starter;
+}
+
+function getEmptyOnboarding() {
+  return {
+    businessName: "",
+    abn: "",
+    tradeType: "",
+    teamSize: "",
+    addressSearch: "",
+    addressManual: false,
+    addressSource: "",
+    businessAddress: "",
+    businessLogo: "",
+    priority: "",
+    gstRegistered: "Yes",
+    taxVaultRate: 20,
+    defaultPaymentTerms: "14 days",
+    defaultQuoteExpiryDays: "14",
+    paymentMethod: "Bank transfer",
+    invoiceReminders: true,
+    overdueReminders: true,
+    jobAlerts: true,
+    previousSystem: "None",
+    suggestedPlan: "",
+  };
+}
+
+function hasRequiredSetupFields(user = currentUser) {
+  if (!user) return false;
+  const businessName = String(user.businessName || "").trim();
+  const tradeType = String(user.tradeType || "").trim();
+  const gstMode = String(user.gstMode || "").trim();
+  const defaultPaymentTerms = String(user.defaultPaymentTerms || "").trim();
+  const businessAddress = String(user.businessAddress || "").trim();
+  return Boolean(businessName && tradeType && gstMode && defaultPaymentTerms && businessAddress);
+}
+
+function shouldRunOnboarding(user = currentUser) {
+  if (!user) return false;
+  return !user.onboardingCompleted || !hasRequiredSetupFields(user);
+}
+
+function getSuggestedPlanFromTeamSize(teamSize = "") {
+  if (teamSize === "2-5 people") return "Crew";
+  if (teamSize === "6-15 people" || teamSize === "15+ people") return "Business";
+  return "";
+}
+
+function isGstEnabled(mode = currentUser?.gstMode || "") {
+  return mode !== "No GST";
+}
+
+function getGstModeFromOnboarding(answer = "") {
+  if (answer === "No") return "No GST";
+  return "GST registered";
+}
+
+function getSuggestedPlanFromOnboarding({ teamSize = "" } = {}) {
+  if (teamSize === "15+ people") return "Business";
+  if (teamSize === "6-15 people") return "Business";
+  if (teamSize === "2-5 people") return "Crew";
+  return "";
+}
+
+function resolveOnboardingTaxVaultRate(savedRate, currentRate) {
+  if (savedRate !== undefined && savedRate !== null && String(savedRate).trim() !== "") {
+    return Number(savedRate);
+  }
+  if (typeof currentRate === "number") {
+    return Math.round(currentRate * 100);
+  }
+  return 20;
+}
+
+function getOnboardingPriorityCopy(priority = "") {
+  const copy = {
+    Quotes: "Quote first and roll approved work forward without retyping.",
+    Invoices: "Keep unpaid money visible as soon as you start billing.",
+    Expenses: "Keep receipts, materials, and GST visible from day one.",
+    "Job tracking": "Keep jobs, site notes, and what needs doing next easy to scan.",
+    Payroll: "Keep wages and labour in the same place as jobs and cash flow.",
+  };
+  return copy[priority] || "Start where the pressure feels highest and let the app fill in the rest.";
+}
+
+function getBusinessProfile(user = currentUser) {
+  const onboarding = user?.onboarding || {};
+  const businessName = String(user?.businessName || onboarding.businessName || "").trim();
+  const tradeType = String(user?.tradeType || onboarding.tradeType || "").trim();
+  const businessLogo = user?.businessLogo || onboarding.businessLogo || "assets/logo-wordmark.png";
+  return {
+    businessName: businessName || "PayDay Tradie",
+    tradeType,
+    businessLogo,
+    hasUploadedLogo: Boolean(businessLogo && businessLogo !== "assets/logo-wordmark.png" && businessLogo !== "assets/pdt-logo.png"),
+    businessEmail: String(user?.businessEmail || user?.email || "").trim(),
+    businessPhone: String(user?.businessPhone || "").trim(),
+    businessAddress: String(user?.businessAddress || onboarding.businessAddress || "").trim(),
+    abn: String(user?.abn || onboarding.abn || "").trim(),
+    paymentTerms: String(user?.defaultPaymentTerms || onboarding.defaultPaymentTerms || "14 days").trim(),
+    quoteExpiryDays: Number(user?.defaultQuoteExpiryDays || onboarding.defaultQuoteExpiryDays || 14),
+    paymentMethod: String(user?.paymentMethod || onboarding.paymentMethod || "Bank transfer").trim(),
+  };
+}
+
+function getTradeLabel(user = currentUser) {
+  return getBusinessProfile(user).tradeType || "trade";
+}
+
+function getTradeTemplates(tradeType = getTradeLabel()) {
+  const trade = String(tradeType || "").toLowerCase();
+  if (trade.includes("landscap")) {
+    return {
+      scope: "Site preparation, planting, soil improvement, edging, and final clean-up.",
+      labour: "Landscape labour, site preparation, planting, clean-up",
+      materials: "Plants, soil, mulch, edging, disposal allowance",
+      invoiceItems: ["Landscape labour", "Plants and materials", "Soil, mulch, and disposal"],
+      jobDescription: "Landscape preparation, installation, and site tidy.",
+    };
+  }
+  if (trade.includes("plumb")) {
+    return {
+      scope: "Plumbing inspection, supplied fittings, installation, testing, and clean-up.",
+      labour: "Licensed plumbing labour, installation, pressure testing",
+      materials: "Pipework, fittings, valves, sealants, disposal allowance",
+      invoiceItems: ["Licensed plumbing labour", "Pipework and fittings", "Testing and commissioning"],
+      jobDescription: "Plumbing installation, testing, and site clean-up.",
+    };
+  }
+  if (trade.includes("electric")) {
+    return {
+      scope: "Electrical rough-in, fit-off, testing, certification, and site clean-up.",
+      labour: "Licensed electrical labour, fit-off, testing",
+      materials: "Cable, fittings, switches, safety materials",
+      invoiceItems: ["Licensed electrical labour", "Electrical materials", "Testing and certification"],
+      jobDescription: "Electrical installation, testing, and certification.",
+    };
+  }
+  if (trade.includes("carpent") || trade.includes("build")) {
+    return {
+      scope: "Measure-up, framing or fit-off, fixings, finishing, and site clean-up.",
+      labour: "Carpentry labour, measure-up, installation, finishing",
+      materials: "Timber, fixings, hardware, disposal allowance",
+      invoiceItems: ["Carpentry labour", "Timber and hardware", "Fixings and consumables"],
+      jobDescription: "Carpentry installation, finishing, and site clean-up.",
+    };
+  }
+  if (trade.includes("paint")) {
+    return {
+      scope: "Surface preparation, masking, painting, touch-ups, and clean-up.",
+      labour: "Painting labour, preparation, application, touch-ups",
+      materials: "Paint, masking materials, fillers, sundries",
+      invoiceItems: ["Painting labour", "Paint and materials", "Preparation and masking"],
+      jobDescription: "Surface preparation, painting, and final touch-ups.",
+    };
+  }
+  return {
+    scope: `${tradeType || "Trade"} work, materials, labour, and site clean-up.`,
+    labour: `${tradeType || "Trade"} labour and site work`,
+    materials: "Materials, consumables, and disposal allowance",
+    invoiceItems: [`${tradeType || "Trade"} labour`, "Materials and consumables", "Site clean-up"],
+    jobDescription: `${tradeType || "Trade"} work and site clean-up.`,
+  };
+}
+
+function isGeneratedTradeTemplateValue(value = "", field = "scope") {
+  const normalised = String(value || "").trim();
+  if (!normalised) return true;
+  const templateTrades = ["Landscaping", "Plumbing", "Electrical", "Carpentry", "Painting", "Trade", "trade", "Other"];
+  return templateTrades.some((trade) => getTradeTemplates(trade)[field] === normalised);
+}
+
+function updateWorkspaceBrand() {
+  const profile = getBusinessProfile();
+  if (els.workspaceBrandLogo) {
+    els.workspaceBrandLogo.src = profile.hasUploadedLogo ? profile.businessLogo : "assets/pdt-logo.png";
+    els.workspaceBrandLogo.alt = profile.hasUploadedLogo
+      ? `${profile.businessName} logo`
+      : "PayDay Tradie app logo";
+    els.workspaceBrandLogo.classList.toggle("has-business-logo", profile.hasUploadedLogo);
+  }
+  if (els.workspaceBrandName) {
+    els.workspaceBrandName.textContent = profile.businessName;
+  }
+  if (els.workspaceBrandSubtitle) {
+    els.workspaceBrandSubtitle.textContent = profile.tradeType
+      ? `${profile.tradeType} workspace`
+      : "Tradie control panel";
+  }
+}
+
+function confirmResetDraft(label) {
+  return window.confirm(`Clear this ${label} draft and start fresh?`);
+}
+
+function confirmDeleteRecord(label) {
+  return window.confirm(`Delete ${label}? This can't be undone.`);
+}
+
+function confirmArchiveRecord(label) {
+  return window.confirm(`Archive ${label}? You can still find it in history later.`);
+}
+
+function ensureRecordEmail({ email = "", clientId = "", clientName = "", label = "record" } = {}) {
+  const trimmedEmail = String(email || "").trim();
+  if (trimmedEmail) return trimmedEmail;
+
+  const promptLabel = clientName || label;
+  const enteredEmail = window.prompt(`Add an email for ${promptLabel} so we can send it now.`, "");
+  const cleanedEmail = String(enteredEmail || "").trim();
+  if (!cleanedEmail) {
+    showToast(`Add an email before sending this ${label}.`);
+    return "";
+  }
+
+  if (clientId) {
+    const client = currentUser.clients.find((item) => item.id === clientId);
+    if (client) {
+      client.email = cleanedEmail;
+    }
+  }
+  return cleanedEmail;
 }
 
 function isFirstUseWorkspace(user = currentUser) {
@@ -1066,15 +1759,18 @@ function emptyStateCopy(pageKey) {
 }
 
 function buildUpgradePromptHtml({ eyebrow = "Upgrade", title, copy, feature, buttonLabel = "" }) {
-  const upgradePlan = getUpgradePlan(feature);
+  const upsell = getFeatureUpsell(feature);
+  const ctaLabel = !buttonLabel || buttonLabel === "Upgrade plan"
+    ? upsell.label
+    : buttonLabel;
   return `
     <div class="plan-lock-copy">
       <span class="status-badge status-draft">${escapeHtml(eyebrow)}</span>
       <h3>${escapeHtml(title)}</h3>
-      <p>${escapeHtml(copy)}</p>
+      <p>${escapeHtml([copy, upsell.copy].filter(Boolean).join(" "))}</p>
     </div>
     <div class="plan-lock-actions">
-      <button class="button button-primary" type="button" data-request-upgrade="${escapeHtml(upgradePlan)}" data-locked-feature="${escapeHtml(feature)}">${escapeHtml(buttonLabel || `Upgrade to ${upgradePlan}`)}</button>
+      <button class="button button-primary" type="button" data-request-upgrade="${escapeHtml(upsell.plan)}" data-request-addon="${escapeHtml(upsell.addonId || "")}" data-locked-feature="${escapeHtml(feature)}">${escapeHtml(ctaLabel)}</button>
     </div>
   `;
 }
@@ -1092,39 +1788,244 @@ function restoreSession() {
 
 function openPricingModal(featureKey = "") {
   const currentPlan = normalisePlanName(currentUser?.plan, "Starter");
-  const recommendedPlan = featureKey ? getUpgradePlan(featureKey) : currentPlan;
+  const recommendedPlan = featureKey === "trial-ended"
+    ? currentPlan
+    : currentPlan === "Custom" && pendingUpgradeAddon
+    ? "Custom"
+    : featureKey
+      ? getUpgradePlan(featureKey)
+      : currentPlan;
+  pricingModalMode = featureKey === "custom-builder" ? "custom" : "all";
+  pricingModalRecommendedPlan = recommendedPlan;
+  pendingCustomAddOns = normaliseCustomAddOns(currentUser?.customAddOns);
 
   if (els.pricingModalTitle) {
-    els.pricingModalTitle.textContent = "Choose the plan that fits how you run the business";
+    els.pricingModalTitle.textContent = pricingModalMode === "custom"
+      ? "Build your custom plan"
+      : featureKey === "trial-ended"
+        ? "Your Business trial has ended"
+      : "Choose the plan that fits how you run the business";
   }
   if (els.pricingModalCopy) {
-    els.pricingModalCopy.textContent = featureKey
-      ? `Your current plan is ${currentPlan}. ${recommendedPlan} is the next step for this feature.`
-      : "See Starter, Crew, and Business side by side without leaving the app.";
-  }
-  if (els.pricingModalCards) {
-    els.pricingModalCards.innerHTML = PLAN_ORDER.map((planName) => {
-      const plan = PLAN_MARKETING[planName];
-      const isCurrentPlan = planName === currentPlan;
-      const isRecommended = planName === recommendedPlan && planName !== currentPlan;
-      return `
-        <article class="price-card pricing-modal-plan ${isCurrentPlan ? "is-current-plan" : ""} ${isRecommended ? "is-recommended-plan" : ""}">
-          <div class="price-card-topline">
-            <p class="plan-name">${escapeHtml(planName)}</p>
-            ${isCurrentPlan ? '<span class="pricing-popular-badge">Current plan</span>' : isRecommended ? '<span class="pricing-popular-badge">Recommended</span>' : ""}
-          </div>
-          <h3>${escapeHtml(plan.price.replace("/month", ""))}<span>/month</span></h3>
-          <p class="plan-copy">${escapeHtml(plan.audience)}</p>
-          <ul>
-            ${plan.features.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-          </ul>
-          <button class="button ${isCurrentPlan ? "button-secondary" : "button-primary"}" type="button" data-open-upgrade="${escapeHtml(planName)}" ${isCurrentPlan ? "disabled" : ""}>${isCurrentPlan ? "Current plan" : `Upgrade to ${escapeHtml(planName)}`}</button>
-        </article>
-      `;
-    }).join("");
+    els.pricingModalCopy.textContent = pricingModalMode === "custom"
+      ? "Start with the essentials, then add only the advanced tools you need."
+      : featureKey === "trial-ended"
+        ? "Choose your plan to continue. You had full Business access during trial, and now you can pick Starter, Crew, Business, or Custom."
+      : featureKey
+      ? `${getFeatureValueMessage(featureKey)} ${getPlanPrice(recommendedPlan)} billed monthly.`
+      : "Compare the fixed plans quickly, or build a Custom plan from a $15 base.";
   }
 
+  renderPricingModalCards(recommendedPlan);
+
   els.pricingModalOverlay?.classList.remove("hidden");
+}
+
+function getFixedPlanHighlights(planName) {
+  switch (planName) {
+    case "Starter":
+      return [
+        "Solo quoting and invoicing",
+        "Receipts and GST kept visible",
+        "Clients reused everywhere",
+      ];
+    case "Crew":
+      return [
+        "Assign jobs to your crew",
+        "See job profit fast",
+        "Run weekly wages summaries",
+      ];
+    case "Business":
+      return [
+        "See which jobs make money",
+        "Approve invoices before sending",
+        "Keep office and site work aligned",
+      ];
+    default:
+      return PLAN_MARKETING[planName]?.features?.slice(0, 3) || [];
+  }
+}
+
+function getCustomAddonShortDescription(addonId) {
+  switch (addonId) {
+    case "expenses":
+      return "Track fuel, materials, receipts, and GST.";
+    case "payroll":
+      return "Run weekly wages and labour summaries.";
+    case "reports":
+      return "See which jobs make money.";
+    case "team":
+      return "Add staff access and job assignment.";
+    case "invoicing":
+      return "Approve invoices before sending.";
+    default:
+      return CUSTOM_PLAN_ADDONS[addonId]?.description || "";
+  }
+}
+
+function buildPlanComparisonTable() {
+  return `
+    <section class="plan-compare-card" aria-label="Plan comparison">
+      <div class="plan-compare-head">
+        <div>
+          <p class="plan-name">Quick comparison</p>
+          <h3>See the main differences fast</h3>
+        </div>
+        <p>Quotes, invoices, team jobs, payroll, and reports at a glance.</p>
+      </div>
+      <div class="plan-compare-grid">
+        <div class="plan-compare-row is-head">
+          <strong>Included</strong>
+          <strong>Starter</strong>
+          <strong>Crew</strong>
+          <strong>Business</strong>
+        </div>
+        ${PLAN_COMPARISON_ROWS.map((row) => `
+          <div class="plan-compare-row">
+            <span class="plan-compare-label">${escapeHtml(row.label)}</span>
+            <span>${escapeHtml(row.Starter)}</span>
+            <span>${escapeHtml(row.Crew)}</span>
+            <span>${escapeHtml(row.Business)}</span>
+          </div>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function buildFixedPlanCard(planName, currentPlan, recommendedPlan) {
+  const plan = PLAN_MARKETING[planName];
+  const isCurrentPlan = planName === currentPlan;
+  const isRecommended = planName === recommendedPlan && !isCurrentPlan;
+  const buttonLabel = isCurrentPlan
+    ? "Current plan"
+    : getTrialInfo(currentUser).active
+      ? `Choose ${planName} after trial`
+      : needsPostTrialPlanChoice(currentUser)
+        ? `Choose ${planName}`
+      : `Upgrade to ${planName}`;
+
+  return `
+    <article class="billing-fixed-card ${isCurrentPlan ? "is-current-plan" : ""} ${isRecommended ? "is-recommended-plan" : ""}">
+      <div class="billing-fixed-head">
+        <div>
+          <p class="plan-name">${escapeHtml(planName)}</p>
+          <h3>${escapeHtml(plan.price.replace("/month", ""))}<span>/month</span></h3>
+        </div>
+        ${isCurrentPlan ? '<span class="pricing-popular-badge">Current plan</span>' : isRecommended ? '<span class="pricing-popular-badge">Recommended</span>' : ""}
+      </div>
+      <p class="plan-copy">${escapeHtml(plan.audience)}</p>
+      <div class="plan-suits">
+        <strong>Who this suits</strong>
+        <p>${escapeHtml((plan.suits || []).join(" • "))}</p>
+      </div>
+      <ul class="billing-fixed-highlights">
+        ${getFixedPlanHighlights(planName).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+      </ul>
+      <details class="billing-fixed-details">
+        <summary>See included features</summary>
+        <ul>
+          ${plan.features.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+        </ul>
+      </details>
+      <button class="button ${isCurrentPlan ? "button-secondary" : "button-primary"}" type="button" data-open-upgrade="${escapeHtml(planName)}" ${isCurrentPlan ? "disabled" : ""}>${escapeHtml(buttonLabel)}</button>
+    </article>
+  `;
+}
+
+function buildCustomPlanCard(currentPlan, recommendedPlan) {
+  const selectedAddOns = normaliseCustomAddOns(pendingCustomAddOns);
+  const total = getCustomPlanMonthlyTotal({ customAddOns: selectedAddOns }, selectedAddOns);
+  const addOnTotal = Math.max(0, total - CUSTOM_PLAN_BASE_PRICE);
+  const recommendation = getCustomPlanRecommendation(total);
+  const isCurrentPlan = currentPlan === "Custom";
+  const isRecommended = recommendedPlan === "Custom" && !isCurrentPlan;
+  return `
+    <section class="custom-plan-builder ${isCurrentPlan ? "is-current-plan" : ""} ${isRecommended ? "is-recommended-plan" : ""}">
+      <div class="custom-plan-main">
+        <div class="custom-plan-heading">
+          <div>
+            <p class="plan-name">Custom plan</p>
+            <h3>$15 base <span>/month</span></h3>
+            <p class="plan-copy">Start with the essentials, then add only the advanced tools you actually need.</p>
+          </div>
+          ${isCurrentPlan ? '<span class="pricing-popular-badge">Current plan</span>' : isRecommended ? '<span class="pricing-popular-badge">Flexible</span>' : ""}
+        </div>
+
+        <div class="custom-plan-base-note custom-plan-base-grid">
+          <strong>Base includes</strong>
+          <p>Includes dashboard, jobs, clients, quotes, invoices, and settings.</p>
+        </div>
+
+        <div class="custom-addon-grid">
+          ${Object.values(CUSTOM_PLAN_ADDONS).map((addon) => `
+            <label class="custom-addon-module ${selectedAddOns.includes(addon.id) ? "is-selected" : ""}">
+              <input type="checkbox" data-custom-addon="${escapeHtml(addon.id)}" ${selectedAddOns.includes(addon.id) ? "checked" : ""}>
+              <div class="custom-addon-topline">
+                <strong>${escapeHtml(addon.label)}</strong>
+                <span>${escapeHtml(`+${addon.price}/month`)}</span>
+              </div>
+              <p>${escapeHtml(getCustomAddonShortDescription(addon.id))}</p>
+            </label>
+          `).join("")}
+        </div>
+      </div>
+
+      <aside class="custom-total-card">
+        <p class="plan-name">Your custom total</p>
+        <div class="custom-total-breakdown">
+          <div class="custom-total-row">
+            <span>Base</span>
+            <strong>${escapeHtml(formatMonthlyPrice(CUSTOM_PLAN_BASE_PRICE))}</strong>
+          </div>
+          <div class="custom-total-row">
+            <span>Selected add-ons</span>
+            <strong>${escapeHtml(formatMonthlyPrice(addOnTotal))}</strong>
+          </div>
+        </div>
+        <div class="custom-total-price">
+          <span>Total</span>
+          <strong>${escapeHtml(formatMonthlyPrice(total))}</strong>
+        </div>
+        <div class="custom-total-selected">
+          <span>Selected</span>
+          <ul>
+            ${selectedAddOns.length
+              ? selectedAddOns.map((addonId) => `<li>${escapeHtml(CUSTOM_PLAN_ADDONS[addonId].label)}</li>`).join("")
+              : "<li>No add-ons selected yet</li>"}
+          </ul>
+        </div>
+        <p class="custom-plan-recommendation ${recommendation ? "" : "hidden"}">${escapeHtml(recommendation || "")}</p>
+        <button class="button ${isCurrentPlan ? "button-secondary" : "button-primary"}" type="button" data-open-upgrade="Custom" ${isCurrentPlan ? "disabled" : ""}>${isCurrentPlan ? "Current plan" : getTrialInfo(currentUser).active ? "Choose Custom after trial" : needsPostTrialPlanChoice(currentUser) ? "Choose Custom" : "Choose Custom Plan"}</button>
+      </aside>
+    </section>
+  `;
+}
+
+function renderPricingModalCards(recommendedPlan = "") {
+  if (!els.pricingModalCards) return;
+  const currentPlan = needsPostTrialPlanChoice(currentUser) ? "" : normalisePlanName(currentUser?.plan, "Starter");
+  const resolvedRecommendation = recommendedPlan || pricingModalRecommendedPlan;
+  if (pricingModalMode === "custom") {
+    els.pricingModalCards.innerHTML = buildCustomPlanCard(currentPlan, resolvedRecommendation);
+    return;
+  }
+  els.pricingModalCards.innerHTML = `
+    <section class="pricing-modal-fixed-plans">
+      <div class="pricing-modal-section-head">
+        <div>
+          <p class="plan-name">Fixed plans</p>
+          <h3>Choose the simplest fit</h3>
+        </div>
+        <p class="plan-copy">You currently have full Business access. At trial end, choose the level that fits your business.</p>
+      </div>
+      <div class="fixed-plan-strip">
+        ${["Starter", "Crew", "Business"].map((planName) => buildFixedPlanCard(planName, currentPlan, resolvedRecommendation)).join("")}
+      </div>
+    </section>
+    ${buildCustomPlanCard(currentPlan, resolvedRecommendation)}
+    ${buildPlanComparisonTable()}
+  `;
 }
 
 function closePricingModal() {
@@ -1136,24 +2037,32 @@ function openUpgradeModal(planName, featureKey = "") {
   const feature = featureKey || pendingUpgradeFeature;
   const copy = getLockedFeatureCopy(feature);
   const marketing = PLAN_MARKETING[targetPlan];
+  const targetPrice = targetPlan === "Custom"
+    ? formatMonthlyPrice(getCustomPlanMonthlyTotal({ customAddOns: pendingCustomAddOns }, pendingCustomAddOns))
+    : marketing.price;
 
   pendingUpgradePlan = targetPlan;
   pendingUpgradeFeature = feature;
 
   if (els.upgradeModalTitle) {
-    els.upgradeModalTitle.textContent = `Upgrade to ${targetPlan}`;
+    els.upgradeModalTitle.textContent = `Upgrade to ${targetPlan} | ${targetPrice}`;
   }
   if (els.upgradeModalCopy) {
     els.upgradeModalCopy.textContent = copy?.copy || marketing.summary;
   }
   if (els.upgradeModalPrice) {
-    els.upgradeModalPrice.textContent = marketing.price;
+    els.upgradeModalPrice.textContent = targetPrice;
   }
   if (els.upgradeModalFeatureList) {
-    els.upgradeModalFeatureList.innerHTML = marketing.features.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+    els.upgradeModalFeatureList.innerHTML = targetPlan === "Custom"
+      ? [
+        "Includes the $15 base plan with core jobs, clients, quotes, invoices, and settings",
+        ...normaliseCustomAddOns(pendingCustomAddOns).map((addonId) => `${CUSTOM_PLAN_ADDONS[addonId].label} | ${formatMonthlyPrice(CUSTOM_PLAN_ADDONS[addonId].price)}`),
+      ].map((item) => `<li>${escapeHtml(item)}</li>`).join("")
+      : marketing.features.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
   }
   if (els.confirmUpgradeButton) {
-    els.confirmUpgradeButton.textContent = `Upgrade to ${targetPlan}`;
+    els.confirmUpgradeButton.textContent = `Upgrade to ${targetPlan} | ${targetPrice}`;
   }
 
   closePricingModal();
@@ -1173,12 +2082,21 @@ function handleConfirmUpgradePlan() {
   }
 
   currentUser.plan = normalisePlanName(pendingUpgradePlan, currentUser.plan || "Starter");
+  currentUser.customAddOns = currentUser.plan === "Custom"
+    ? normaliseCustomAddOns(pendingCustomAddOns)
+    : [];
+  const trial = getTrialInfo(currentUser);
+  if (!trial.active) {
+    currentUser.trialPlanConfirmedAt = new Date().toISOString();
+  }
   persistCurrentUser();
   closeUpgradeModal();
   renderPlanSummary();
   renderWorkspace();
   syncWorkspaceNavState(window.location.hash || "#workspace-dashboard");
-  showToast(`Plan updated to ${currentUser.plan}.`);
+  showToast(trial.active
+    ? `${currentUser.plan} selected for after trial. Full Business access stays on for ${trial.remainingDays} more day${trial.remainingDays === 1 ? "" : "s"}.`
+    : `Plan updated to ${currentUser.plan}.`);
 }
 
 function openAuth(mode, selectedPlan = pendingSelectedPlan) {
@@ -1189,9 +2107,18 @@ function openAuth(mode, selectedPlan = pendingSelectedPlan) {
   closeMobileNav();
   els.authModeLabel.textContent = isSignup ? "Create account" : "Sign in";
   els.authTitle.textContent = isSignup ? "Set up your PayDay Tradie login" : "Welcome back to PayDay Tradie";
+  if (els.authTrialBadge) {
+    els.authTrialBadge.hidden = !isSignup;
+  }
   els.authCopy.textContent = isSignup
-    ? `Create your account on the ${pendingSelectedPlan} plan, then open a clean workspace built for a real first start.`
+    ? `You'll start with full ${TRIAL_EFFECTIVE_PLAN} access for ${TRIAL_LENGTH_DAYS} days.`
     : "Sign in with the account you created in this browser to open your workspace.";
+  if (els.authTrialDetail) {
+    els.authTrialDetail.hidden = !isSignup;
+    els.authTrialDetail.textContent = isSignup
+      ? "Full access to payroll, reports, approvals, and team tools during trial. After trial ends, choose Starter, Crew, Business, or Custom."
+      : "";
+  }
   els.authSubmitButton.textContent = isSignup ? "Create account" : "Sign in";
   els.toggleAuthMode.textContent = isSignup ? "Already have an account? Sign in" : "Need an account? Create one";
   els.nameField.classList.toggle("hidden", !isSignup);
@@ -1221,6 +2148,9 @@ function handleAuthSubmit(event) {
     }
 
       users[email] = buildSeedUser(name, email, password, pendingSelectedPlan);
+      if (pendingSelectedPlan === "Custom") {
+        users[email].customAddOns = normaliseCustomAddOns(pendingCustomAddOns);
+      }
       saveUsers(users);
       currentUser = normaliseUser(users[email]);
       users[email] = currentUser;
@@ -1257,7 +2187,11 @@ function buildSeedUser(name, email, password, plan = "Starter") {
     name,
     email,
     password,
+    createdAt: new Date().toISOString(),
     plan: normalisePlanName(plan, "Starter"),
+    trialStartedAt: new Date().toISOString(),
+    trialEndsAt: new Date(Date.now() + TRIAL_LENGTH_DAYS * 86400000).toISOString(),
+    trialPlanConfirmedAt: null,
     businessName: `${name}'s Trade Co`,
     abn: "12 345 678 901",
     businessEmail: email,
@@ -1865,7 +2799,14 @@ function buildSeedUser(name, email, password, plan = "Starter") {
     name,
     email,
     password,
+    createdAt: new Date().toISOString(),
     plan: normalisePlanName(plan, "Starter"),
+    trialStartedAt: new Date().toISOString(),
+    trialEndsAt: new Date(Date.now() + TRIAL_LENGTH_DAYS * 86400000).toISOString(),
+    trialPlanConfirmedAt: null,
+    onboardingCompleted: false,
+    onboarding: getEmptyOnboarding(),
+    customAddOns: [],
     businessName: "",
     abn: "",
     businessEmail: email,
@@ -1931,11 +2872,23 @@ function normaliseUser(user) {
     }
     : user;
   const seedUser = buildSeedUser(sourceUser.name || "Tradie", sourceUser.email, sourceUser.password || "", plan);
+  const hasOnboardingState = Object.prototype.hasOwnProperty.call(sourceUser, "onboardingCompleted")
+    || Object.prototype.hasOwnProperty.call(sourceUser, "onboarding");
   const normalisedUser = {
       name: sourceUser.name || "Tradie",
       email: sourceUser.email,
       password: sourceUser.password || "",
+      createdAt: sourceUser.createdAt || seedUser.createdAt || new Date().toISOString(),
       plan,
+      trialStartedAt: sourceUser.trialStartedAt || seedUser.trialStartedAt,
+      trialEndsAt: sourceUser.trialEndsAt || seedUser.trialEndsAt,
+      trialPlanConfirmedAt: sourceUser.trialPlanConfirmedAt || null,
+      onboardingCompleted: hasOnboardingState ? sourceUser.onboardingCompleted !== false : true,
+      onboarding: {
+        ...getEmptyOnboarding(),
+        ...(sourceUser.onboarding || {}),
+      },
+      customAddOns: normaliseCustomAddOns(sourceUser.customAddOns),
       businessName: sourceUser.businessName || "",
       abn: sourceUser.abn || "",
       businessEmail: sourceUser.businessEmail || sourceUser.email,
@@ -2211,41 +3164,521 @@ function openWorkspace() {
   els.landingApp.classList.add("hidden");
   els.siteFooter.classList.add("hidden");
   els.workspaceApp.classList.remove("hidden");
-  els.workspaceTitle.textContent = `G'day, ${currentUser.name}`;
-  els.workspaceSubtitle.textContent = `${currentUser.email} is signed in on the ${currentUser.plan} plan. Keep the right tools in view without the clutter you do not need yet.`;
+  const trial = getTrialInfo(currentUser);
+  const effectivePlan = getEffectivePlanName(currentUser);
+  const planChoiceNeeded = needsPostTrialPlanChoice(currentUser);
+  const profile = getBusinessProfile();
+  updateWorkspaceBrand();
+  els.workspaceTitle.textContent = profile.businessName !== "PayDay Tradie"
+    ? `G'day, ${profile.businessName}`
+    : `G'day, ${currentUser.name}`;
+  els.workspaceSubtitle.textContent = trial.active
+    ? `${profile.businessEmail || currentUser.email} is in a full ${effectivePlan} trial. Check cash, invoices, jobs, payroll, and reports before choosing the plan that fits later.`
+    : planChoiceNeeded
+      ? `${profile.businessEmail || currentUser.email} has finished the Business trial. Choose your plan to keep going with the right access for the business.`
+      : `${profile.businessName} is signed in on the ${currentUser.plan} plan. Keep the right tools in view without the clutter you do not need yet.`;
   renderPlanSummary();
   renderWorkspace();
   applyPlanAccess();
   syncWorkspaceNavState(window.location.hash || "#workspace-dashboard");
   closeQuickCreateMenu();
+  if (shouldRunOnboarding(currentUser)) {
+    openOnboarding();
+    return;
+  }
   window.scrollTo({ top: 0, behavior: "smooth" });
+  if (needsPostTrialPlanChoice()) {
+    window.setTimeout(() => {
+      openPricingModal("trial-ended");
+    }, 120);
+  }
+}
+
+function openOnboarding() {
+  if (!currentUser || !els.onboardingOverlay) return;
+  closeQuickCreateMenu();
+  els.quickCreateWrap?.classList.add("hidden");
+  const saved = currentUser.onboarding || getEmptyOnboarding();
+  onboardingAnswers = {
+    ...getEmptyOnboarding(),
+    ...saved,
+    businessName: saved.businessName || currentUser.businessName || `${currentUser.name}'s Trade Co`,
+    abn: saved.abn || currentUser.abn || "",
+    tradeType: saved.tradeType || currentUser.tradeType || "",
+    businessAddress: saved.businessAddress || currentUser.businessAddress || "",
+    businessLogo: saved.businessLogo || currentUser.businessLogo || "assets/logo-wordmark.png",
+    gstRegistered: saved.gstRegistered || (currentUser.gstMode === "No GST" ? "No" : "Yes"),
+    taxVaultRate: resolveOnboardingTaxVaultRate(saved.taxVaultRate, currentUser.taxVaultRate),
+    defaultPaymentTerms: saved.defaultPaymentTerms || currentUser.defaultPaymentTerms || "14 days",
+    defaultQuoteExpiryDays: String(saved.defaultQuoteExpiryDays || currentUser.defaultQuoteExpiryDays || 14),
+    paymentMethod: saved.paymentMethod || currentUser.paymentMethod || "Bank transfer",
+    invoiceReminders: saved.invoiceReminders ?? currentUser.notificationSettings?.invoiceReminders ?? true,
+    overdueReminders: saved.overdueReminders ?? currentUser.notificationSettings?.overdueReminders ?? true,
+    jobAlerts: saved.jobAlerts ?? currentUser.notificationSettings?.jobAlerts ?? true,
+    previousSystem: saved.previousSystem || "None",
+  };
+  onboardingStepIndex = 0;
+  syncOnboardingInputs();
+  renderOnboarding();
+  if (els.onboardingBody) els.onboardingBody.scrollTop = 0;
+  els.onboardingOverlay.classList.remove("hidden");
+}
+
+function closeOnboarding() {
+  els.onboardingOverlay?.classList.add("hidden");
+  els.quickCreateWrap?.classList.toggle("hidden", !currentUser || shouldRunOnboarding(currentUser));
+}
+
+function getOnboardingChoiceStep(choiceKey = "") {
+  const groupMap = {
+    tradeType: "tradeType",
+    teamSize: "teamSize",
+    priority: "priority",
+    gstRegistered: "setup",
+    defaultPaymentTerms: "setup",
+    defaultQuoteExpiryDays: "setup",
+    paymentMethod: "setup",
+    previousSystem: "previousSystem",
+  };
+  return groupMap[choiceKey] || "";
+}
+
+function isOnboardingStepComplete(stepKey = "") {
+  switch (stepKey) {
+    case "business":
+      return Boolean(String(onboardingAnswers.businessName || "").trim());
+    case "tradeType":
+    case "teamSize":
+    case "priority":
+      return Boolean(onboardingAnswers[stepKey]);
+    case "address":
+      return Boolean(String(onboardingAnswers.businessAddress || "").trim());
+    case "branding":
+      return true;
+    case "setup":
+      return Boolean(
+        onboardingAnswers.gstRegistered
+        && onboardingAnswers.defaultPaymentTerms
+        && onboardingAnswers.defaultQuoteExpiryDays
+        && onboardingAnswers.paymentMethod
+        && String(onboardingAnswers.taxVaultRate).trim() !== ""
+      );
+    case "previousSystem":
+      return Boolean(onboardingAnswers.previousSystem);
+    default:
+      return false;
+  }
+}
+
+function syncOnboardingInputs() {
+  if (els.onboardingBusinessName) els.onboardingBusinessName.value = onboardingAnswers.businessName || "";
+  if (els.onboardingAbn) els.onboardingAbn.value = onboardingAnswers.abn || "";
+  if (els.onboardingAddressSearch) els.onboardingAddressSearch.value = onboardingAnswers.addressSearch || "";
+  if (els.onboardingBusinessAddress) els.onboardingBusinessAddress.value = onboardingAnswers.businessAddress || "";
+  if (els.onboardingTaxVault) els.onboardingTaxVault.value = String(onboardingAnswers.taxVaultRate ?? 20);
+  if (els.onboardingTaxVault) els.onboardingTaxVault.disabled = onboardingAnswers.gstRegistered === "No";
+  if (els.onboardingInvoiceReminders) els.onboardingInvoiceReminders.checked = Boolean(onboardingAnswers.invoiceReminders);
+  if (els.onboardingOverdueReminders) els.onboardingOverdueReminders.checked = Boolean(onboardingAnswers.overdueReminders);
+  if (els.onboardingJobAlerts) els.onboardingJobAlerts.checked = Boolean(onboardingAnswers.jobAlerts);
+  if (els.onboardingLogoPreview) els.onboardingLogoPreview.src = onboardingAnswers.businessLogo || "assets/logo-wordmark.png";
+  if (els.onboardingLogoHelper) {
+    els.onboardingLogoHelper.textContent = onboardingAnswers.businessLogo && onboardingAnswers.businessLogo !== "assets/logo-wordmark.png"
+      ? "Logo ready for quotes and invoices."
+      : "You can add or replace it later in Settings.";
+  }
+}
+
+function getOnboardingAddressMatches(query = "") {
+  const normalised = String(query || "").trim().toLowerCase();
+  if (!normalised) return [];
+  return ONBOARDING_ADDRESS_BOOK
+    .filter((address) => address.toLowerCase().includes(normalised))
+    .slice(0, 5);
+}
+
+function updateOnboardingNavState() {
+  const stepKey = ONBOARDING_STEPS[onboardingStepIndex];
+  if (!els.onboardingNextButton) return;
+  els.onboardingNextButton.disabled = !isOnboardingStepComplete(stepKey);
+  els.onboardingNextButton.textContent = onboardingStepIndex === ONBOARDING_STEPS.length - 1 ? "Open workspace" : "Continue";
+}
+
+function updateOnboardingAddressUi() {
+  const stepKey = ONBOARDING_STEPS[onboardingStepIndex];
+  if (stepKey !== "address") return;
+  const hasSearch = Boolean(String(onboardingAnswers.addressSearch || "").trim());
+  const hasBusinessAddress = Boolean(String(onboardingAnswers.businessAddress || "").trim());
+  const isManual = Boolean(onboardingAnswers.addressManual);
+  const source = onboardingAnswers.addressSource || "";
+
+  els.onboardingManualAddress?.classList.toggle("hidden", !isManual && !hasBusinessAddress);
+  els.onboardingAddressShell?.classList.toggle("is-manual", isManual);
+  els.onboardingAddressSearchPanel?.classList.toggle("is-dimmed", isManual);
+  if (els.onboardingCopyAddressButton) {
+    els.onboardingCopyAddressButton.classList.toggle("hidden", !hasSearch);
+  }
+  if (els.onboardingAddressModeLabel) {
+    els.onboardingAddressModeLabel.textContent = source === "copied"
+      ? "Business address copied from physical address"
+      : source === "search"
+        ? "Selected business address"
+        : "Manual address entry";
+  }
+  if (els.onboardingAddressHelper) {
+    els.onboardingAddressHelper.textContent = source === "copied"
+      ? "Physical address copied."
+      : source === "search"
+        ? "Address selected from search results."
+        : isManual
+          ? "Manual entry is active."
+          : "Choose a result above or type your address here.";
+  }
+  if (els.onboardingBusinessAddress) {
+    els.onboardingBusinessAddress.classList.toggle("is-selected-address", hasBusinessAddress);
+  }
+  if (els.onboardingManualAddressButton) {
+    els.onboardingManualAddressButton.classList.toggle("is-active", isManual);
+  }
+  updateOnboardingNavState();
+}
+
+function renderOnboardingAddressResults() {
+  if (!els.onboardingAddressResults) return;
+  const matches = getOnboardingAddressMatches(onboardingAnswers.addressSearch);
+  const hasQuery = Boolean(String(onboardingAnswers.addressSearch || "").trim());
+  els.onboardingAddressResults.classList.toggle("hidden", !hasQuery && matches.length === 0);
+  if (!matches.length) {
+    els.onboardingAddressResults.innerHTML = hasQuery
+      ? `<div class="onboarding-address-empty">No close matches yet. Keep typing or enter the address manually.</div>`
+      : "";
+    return;
+  }
+  els.onboardingAddressResults.innerHTML = matches.map((address) => `
+    <button class="onboarding-address-option ${onboardingAnswers.businessAddress === address && onboardingAnswers.addressSource === "search" ? "is-selected" : ""}" type="button" data-onboarding-address="${escapeHtml(address)}">
+      <strong>${escapeHtml(address)}</strong>
+      <span>${onboardingAnswers.businessAddress === address && onboardingAnswers.addressSource === "search" ? "Selected business address" : "Use this business address"}</span>
+    </button>
+  `).join("");
+  els.onboardingAddressResults.querySelectorAll("[data-onboarding-address]").forEach((button) => {
+    button.addEventListener("click", () => {
+      onboardingAnswers.addressSearch = button.dataset.onboardingAddress || "";
+      onboardingAnswers.businessAddress = button.dataset.onboardingAddress || "";
+      onboardingAnswers.addressManual = false;
+      onboardingAnswers.addressSource = "search";
+      syncOnboardingInputs();
+      renderOnboardingAddressResults();
+      updateOnboardingAddressUi();
+    });
+  });
+}
+
+function handleOnboardingInputChange(event) {
+  const key = event.target.getAttribute("data-onboarding-input");
+  if (!key) return;
+  onboardingAnswers[key] = event.target.value;
+  if (key === "addressSearch") {
+    onboardingAnswers.addressManual = false;
+    if (!String(event.target.value || "").trim() && onboardingAnswers.addressSource === "search") {
+      onboardingAnswers.businessAddress = "";
+      onboardingAnswers.addressSource = "";
+    }
+    window.clearTimeout(onboardingAddressSearchTimer);
+    onboardingAddressSearchTimer = window.setTimeout(() => {
+      renderOnboardingAddressResults();
+      updateOnboardingAddressUi();
+    }, 120);
+    updateOnboardingNavState();
+    return;
+  }
+  if (key === "businessAddress") {
+    onboardingAnswers.addressManual = true;
+    onboardingAnswers.addressSource = String(event.target.value || "").trim() ? "manual" : "";
+    updateOnboardingAddressUi();
+    return;
+  }
+  renderOnboarding();
+}
+
+function handleOnboardingToggleChange(event) {
+  const key = event.target.getAttribute("data-onboarding-toggle");
+  if (!key) return;
+  onboardingAnswers[key] = Boolean(event.target.checked);
+  renderOnboarding();
+}
+
+function handleOnboardingManualAddress() {
+  onboardingAnswers.addressManual = true;
+  onboardingAnswers.addressSource = onboardingAnswers.addressSource || "manual";
+  updateOnboardingAddressUi();
+  els.onboardingBusinessAddress?.focus();
+}
+
+function handleOnboardingCopyAddress() {
+  if (!onboardingAnswers.addressSearch) return;
+  onboardingAnswers.businessAddress = onboardingAnswers.addressSearch;
+  onboardingAnswers.addressManual = false;
+  onboardingAnswers.addressSource = "copied";
+  syncOnboardingInputs();
+  renderOnboardingAddressResults();
+  updateOnboardingAddressUi();
+  showToast("Physical address copied");
+}
+
+function handleOnboardingSkipLogo() {
+  onboardingAnswers.businessLogo = "assets/logo-wordmark.png";
+  syncOnboardingInputs();
+  renderOnboarding();
+}
+
+function handleOnboardingLogoUpload() {
+  const file = els.onboardingLogoInput?.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    onboardingAnswers.businessLogo = String(reader.result || "");
+    syncOnboardingInputs();
+    renderOnboarding();
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderOnboarding() {
+  const stepKey = ONBOARDING_STEPS[onboardingStepIndex];
+  const stepConfig = ONBOARDING_CONTENT[stepKey];
+  if (!stepConfig) return;
+
+  if (els.onboardingTitle) els.onboardingTitle.textContent = stepConfig.title;
+  if (els.onboardingCopy) els.onboardingCopy.textContent = stepConfig.copy;
+  if (els.onboardingStepLabel) els.onboardingStepLabel.textContent = `Step ${onboardingStepIndex + 1} of ${ONBOARDING_STEPS.length}`;
+
+  document.querySelectorAll("[data-onboarding-step]").forEach((panel) => {
+    panel.classList.toggle("hidden", panel.getAttribute("data-onboarding-step") !== stepKey);
+  });
+
+  document.querySelectorAll(".onboarding-progress-dots span").forEach((dot, index) => {
+    dot.classList.toggle("is-active", index === onboardingStepIndex);
+  });
+
+  document.querySelectorAll("[data-onboarding-choice]").forEach((button) => {
+    const choiceKey = button.getAttribute("data-onboarding-choice") || "";
+    const matchesStep = getOnboardingChoiceStep(choiceKey) === stepKey;
+    const isSelected = matchesStep && button.getAttribute("data-value") === onboardingAnswers[choiceKey];
+    button.classList.toggle("is-selected", isSelected);
+    button.setAttribute("aria-pressed", isSelected ? "true" : "false");
+  });
+
+  syncOnboardingInputs();
+  if (stepKey === "address") {
+    renderOnboardingAddressResults();
+    updateOnboardingAddressUi();
+  }
+
+  if (els.onboardingBackButton) {
+    els.onboardingBackButton.hidden = onboardingStepIndex === 0;
+  }
+
+  updateOnboardingNavState();
+
+  if (els.onboardingPlanHint) {
+    const suggestedPlan = getSuggestedPlanFromOnboarding(onboardingAnswers);
+    const showHint = onboardingStepIndex === ONBOARDING_STEPS.length - 1 && Boolean(suggestedPlan);
+    els.onboardingPlanHint.hidden = !showHint;
+    els.onboardingPlanHint.textContent = showHint
+      ? `Based on your business, ${suggestedPlan} may suit you after trial.`
+      : "";
+  }
+}
+
+function handleOnboardingChoiceClick(event) {
+  const button = event.currentTarget;
+  const stepKey = button.getAttribute("data-onboarding-choice");
+  const value = button.getAttribute("data-value") || "";
+  if (!stepKey) return;
+  onboardingAnswers[stepKey] = value;
+  if (stepKey === "gstRegistered" && value === "No") {
+    onboardingAnswers.taxVaultRate = 0;
+  } else if (stepKey === "gstRegistered" && Number(onboardingAnswers.taxVaultRate) === 0) {
+    onboardingAnswers.taxVaultRate = 20;
+  }
+  syncOnboardingInputs();
+  renderOnboarding();
+}
+
+function handleOnboardingBack() {
+  onboardingStepIndex = Math.max(0, onboardingStepIndex - 1);
+  renderOnboarding();
+  if (els.onboardingBody) els.onboardingBody.scrollTop = 0;
+}
+
+function handleOnboardingNext() {
+  const stepKey = ONBOARDING_STEPS[onboardingStepIndex];
+  if (!isOnboardingStepComplete(stepKey)) return;
+  if (onboardingStepIndex < ONBOARDING_STEPS.length - 1) {
+    onboardingStepIndex += 1;
+    renderOnboarding();
+    if (els.onboardingBody) els.onboardingBody.scrollTop = 0;
+    return;
+  }
+  completeOnboarding();
+}
+
+function completeOnboarding() {
+  if (!currentUser) return;
+  const suggestedPlan = getSuggestedPlanFromOnboarding(onboardingAnswers);
+  currentUser.businessName = onboardingAnswers.businessName.trim();
+  currentUser.abn = onboardingAnswers.abn.trim();
+  currentUser.businessAddress = onboardingAnswers.businessAddress.trim();
+  currentUser.tradeType = onboardingAnswers.tradeType || currentUser.tradeType;
+  currentUser.businessLogo = onboardingAnswers.businessLogo || currentUser.businessLogo;
+  currentUser.gstMode = getGstModeFromOnboarding(onboardingAnswers.gstRegistered);
+  currentUser.taxVaultRate = Number(onboardingAnswers.taxVaultRate ?? 20) / 100;
+  currentUser.defaultPaymentTerms = onboardingAnswers.defaultPaymentTerms || currentUser.defaultPaymentTerms;
+  currentUser.defaultQuoteExpiryDays = Number(onboardingAnswers.defaultQuoteExpiryDays || 14);
+  currentUser.paymentMethod = onboardingAnswers.paymentMethod || currentUser.paymentMethod;
+  currentUser.invoicePrefix = "PDT-INV";
+  currentUser.quotePrefix = "PDT-Q";
+  currentUser.defaultWorkspaceView = "Dashboard";
+  currentUser.themePreference = "Light";
+  currentUser.notificationSettings = {
+    ...currentUser.notificationSettings,
+    invoiceReminders: Boolean(onboardingAnswers.invoiceReminders),
+    overdueReminders: Boolean(onboardingAnswers.overdueReminders),
+    jobAlerts: Boolean(onboardingAnswers.jobAlerts),
+  };
+  currentUser.onboardingCompleted = true;
+  currentUser.onboarding = {
+    ...getEmptyOnboarding(),
+    ...onboardingAnswers,
+    suggestedPlan,
+  };
+  persistCurrentUser();
+  closeOnboarding();
+  renderWorkspace();
+  applyPlanAccess();
+  syncWorkspaceNavState(window.location.hash || "#workspace-dashboard");
+  const priorityCopy = getOnboardingPriorityCopy(onboardingAnswers.priority);
+  showToast(suggestedPlan
+    ? `${currentUser.businessName || "Workspace"} is set up. ${priorityCopy} ${suggestedPlan} may suit you after trial.`
+    : `${currentUser.businessName || "Workspace"} is set up. ${priorityCopy}`);
 }
 
 function renderPlanSummary() {
   const plan = normalisePlanName(currentUser?.plan, "Starter");
+  const effectivePlan = getEffectivePlanName(currentUser);
+  const trial = getTrialInfo(currentUser);
+  const planChoiceNeeded = needsPostTrialPlanChoice(currentUser);
   const userLimit = getPlanUserLimit(plan);
+  const price = getPlanPrice(plan);
+  const recommendation = plan === "Custom" ? getCustomPlanRecommendation(getCustomPlanMonthlyTotal(currentUser)) : "";
 
   if (els.workspacePlanBadge) {
-    els.workspacePlanBadge.textContent = `${plan} plan`;
-    els.workspacePlanBadge.className = `status-badge ${plan === "Business" ? "status-active" : plan === "Crew" ? "status-safe" : "status-draft"}`;
+    els.workspacePlanBadge.textContent = trial.active
+      ? `Free Trial • ${effectivePlan} Plan`
+      : planChoiceNeeded
+        ? "Trial ended • Choose plan"
+      : `${plan} plan`;
+    els.workspacePlanBadge.className = `status-badge ${trial.active ? "status-active" : planChoiceNeeded ? "status-unpaid" : plan === "Business" ? "status-active" : plan === "Crew" ? "status-safe" : "status-draft"}`;
+  }
+  if (els.workspaceTrialDaysBadge) {
+    els.workspaceTrialDaysBadge.hidden = !trial.active;
+    if (trial.active) {
+      els.workspaceTrialDaysBadge.textContent = `${trial.remainingDays} day${trial.remainingDays === 1 ? "" : "s"} remaining`;
+    }
   }
 
   if (els.workspacePlanCopy) {
-    els.workspacePlanCopy.textContent = getPlanMarketingCopy(plan);
+    els.workspacePlanCopy.textContent = trial.active
+      ? "You currently have full Business access. At trial end, choose the level that fits your business."
+      : planChoiceNeeded
+        ? "Your Business trial has ended. Choose Starter, Crew, Business, or Custom to continue."
+      : `${getPlanMarketingCopy(plan)} ${price} billed monthly.`;
   }
 
   if (els.settingsPlanName) {
-    els.settingsPlanName.textContent = plan;
+    els.settingsPlanName.textContent = planChoiceNeeded ? "Choose a plan to continue" : `${plan} | ${price}`;
   }
 
   if (els.settingsPlanCopy) {
-    els.settingsPlanCopy.textContent = getPlanMarketingCopy(plan);
+    els.settingsPlanCopy.textContent = planChoiceNeeded
+      ? "Your Business trial has ended. Pick the long-term plan that matches how your business runs."
+      : getPlanMarketingCopy(plan);
   }
 
   if (els.settingsPlanLimit) {
-    els.settingsPlanLimit.textContent = `${userLimit} ${userLimit === 1 ? "user" : "staff"}`;
-    els.settingsPlanLimit.className = `status-badge ${plan === "Business" ? "status-active" : plan === "Crew" ? "status-safe" : "status-draft"}`;
+    els.settingsPlanLimit.textContent = planChoiceNeeded ? "Plan needed" : `${userLimit} ${userLimit === 1 ? "user" : "staff"}`;
+    els.settingsPlanLimit.className = `status-badge ${planChoiceNeeded ? "status-unpaid" : plan === "Business" ? "status-active" : plan === "Crew" ? "status-safe" : "status-draft"}`;
   }
+
+  if (els.billingPlanName) {
+    els.billingPlanName.textContent = planChoiceNeeded ? "Choose your plan" : `${plan} | ${price}`;
+  }
+  if (els.billingPlanCopy) {
+    els.billingPlanCopy.textContent = planChoiceNeeded
+      ? "Your Business trial has ended. Pick Starter, Crew, Business, or Custom to continue with the right access."
+      : plan === "Custom"
+      ? `Base plan plus ${normaliseCustomAddOns(currentUser?.customAddOns).length || 0} selected add-on${normaliseCustomAddOns(currentUser?.customAddOns).length === 1 ? "" : "s"}.`
+      : getPlanMarketingCopy(plan);
+  }
+  if (els.billingPlanAmount) {
+    els.billingPlanAmount.textContent = planChoiceNeeded ? "Choose now" : price;
+    els.billingPlanAmount.className = `status-badge ${planChoiceNeeded ? "status-unpaid" : plan === "Business" ? "status-active" : plan === "Crew" ? "status-safe" : "status-draft"}`;
+  }
+  if (els.billingRenewalDate) {
+    els.billingRenewalDate.textContent = trial.active
+      ? `${trial.remainingDays} day${trial.remainingDays === 1 ? "" : "s"} left in your full ${effectivePlan} trial.`
+      : planChoiceNeeded
+        ? "Your trial access has ended. Choose a plan to continue using paid features."
+      : "Monthly subscription summary in demo mode.";
+  }
+  if (els.billingRecommendationNote) {
+    els.billingRecommendationNote.textContent = trial.active
+      ? `Your trial includes every module. Choose the plan you want the workspace to stay on after trial, or keep comparing before you decide.`
+      : planChoiceNeeded
+        ? "No automatic downgrade has been applied. Choose the plan that best fits your business."
+      : recommendation || "Fixed plans stay the easiest option if you want broader access without managing add-ons.";
+  }
+}
+
+function renderBillingSection() {
+  if (!els.billingPlanCards) return;
+  const currentPlan = needsPostTrialPlanChoice(currentUser) ? "" : normalisePlanName(currentUser?.plan, "Starter");
+  const customTotal = getCustomPlanMonthlyTotal(currentUser);
+  els.billingPlanCards.innerHTML = PLAN_ORDER.map((planName) => {
+    if (planName === "Custom") {
+      const recommendation = getCustomPlanRecommendation(customTotal);
+      return `
+        <article class="price-card ${currentPlan === "Custom" ? "is-current-plan" : ""}">
+          <p class="plan-name">Custom</p>
+          <h3>$${customTotal}<span>/month</span></h3>
+          <p class="plan-copy">Base $15 plus only the advanced modules you switch on.</p>
+          <div class="plan-suits">
+            <strong>Who this suits</strong>
+            <p>Businesses that only need selected advanced extras</p>
+          </div>
+          <ul>
+            <li>Base includes dashboard, jobs, clients, quotes, invoices, and settings</li>
+            ${normaliseCustomAddOns(currentUser?.customAddOns).map((addonId) => `<li>${escapeHtml(CUSTOM_PLAN_ADDONS[addonId].label)} | ${escapeHtml(formatMonthlyPrice(CUSTOM_PLAN_ADDONS[addonId].price))}</li>`).join("") || "<li>No paid add-ons selected yet</li>"}
+          </ul>
+          <p class="plan-copy ${recommendation ? "" : "hidden"}">${escapeHtml(recommendation || "")}</p>
+          <button class="button ${currentPlan === "Custom" ? "button-secondary" : "button-primary"}" type="button" data-open-upgrade="Custom" ${currentPlan === "Custom" ? "disabled" : ""}>${currentPlan === "Custom" ? "Current plan" : needsPostTrialPlanChoice(currentUser) ? "Choose Custom" : "Choose Custom Plan"}</button>
+        </article>
+      `;
+    }
+    const plan = PLAN_MARKETING[planName];
+    return `
+      <article class="price-card ${currentPlan === planName ? "is-current-plan" : ""}">
+        <p class="plan-name">${escapeHtml(planName)}</p>
+        <h3>${escapeHtml(plan.price.replace("/month", ""))}<span>/month</span></h3>
+        <p class="plan-copy">${escapeHtml(plan.audience)}</p>
+        <div class="plan-suits">
+          <strong>Who this suits</strong>
+          <p>${escapeHtml((plan.suits || []).join(" • "))}</p>
+        </div>
+        <ul>${plan.features.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        <button class="button ${currentPlan === planName ? "button-secondary" : "button-primary"}" type="button" data-open-upgrade="${escapeHtml(planName)}" ${currentPlan === planName ? "disabled" : ""}>${currentPlan === planName ? "Current plan" : needsPostTrialPlanChoice(currentUser) ? `Choose ${escapeHtml(planName)}` : `Upgrade to ${escapeHtml(planName)}`}</button>
+      </article>
+    `;
+  }).join("");
 }
 
 function highlightPricingPlan(plan = normalisePlanName(currentUser?.plan, "Starter")) {
@@ -2256,7 +3689,7 @@ function highlightPricingPlan(plan = normalisePlanName(currentUser?.plan, "Start
 }
 
 function applyPlanAccess() {
-  els.workspaceApp.dataset.plan = normalisePlanName(currentUser?.plan, "Starter");
+  els.workspaceApp.dataset.plan = getEffectivePlanName(currentUser);
 
   document.querySelectorAll(".workspace-nav a[data-workspace-link]").forEach((link) => {
     const href = link.getAttribute("href") || "";
@@ -2267,7 +3700,7 @@ function applyPlanAccess() {
     link.dataset.locked = locked ? "true" : "false";
   });
 
-  els.quickCreateWrap?.classList.toggle("hidden", !currentUser);
+  els.quickCreateWrap?.classList.toggle("hidden", !currentUser || shouldRunOnboarding(currentUser));
   if (els.quickCreateExpense) {
     els.quickCreateExpense.hidden = !hasFeature("expensesPage");
   }
@@ -2444,8 +3877,8 @@ function applyPlanLockedStates() {
   }, !canUseInvoiceApprovals);
 
   setLockedPrompt(els.teamJobBoardLockedPrompt, {
-    eyebrow: "Crew feature",
-    title: "Team job board is available on Crew plan",
+    eyebrow: "Team management",
+    title: "Team job board",
     copy: "See assigned jobs, next calls, and margin pressure across your crew in one place.",
     feature: "teamJobBoard",
     buttonLabel: "Upgrade plan",
@@ -2580,12 +4013,13 @@ function saveClientPayload(clientPayload, options = {}) {
   return clientPayload;
 }
 
-function buildJobPayload(data) {
+function buildJobPayload(data, options = {}) {
+  const { existingJob = null } = options;
   const client = currentUser.clients.find((item) => item.id === data.clientId);
   if (!client) return null;
   const selectedStatus = String(data.status || "").trim();
   return {
-    id: crypto.randomUUID(),
+    id: existingJob?.id || crypto.randomUUID(),
     clientId: client.id,
     clientName: client.name,
     clientPhone: String(data.clientPhone || client.phone).trim(),
@@ -2602,14 +4036,20 @@ function buildJobPayload(data) {
     recurring: String(data.recurring),
     internalNotes: String(data.internalNotes || "").trim(),
     status: selectedStatus || getJobStatusFromSchedule(String(data.scheduledAt)),
-    quoteStatus: "Draft",
-    invoiceStatus: "Not invoiced",
-    invoiceSent: false,
-    createdAt: new Date().toISOString(),
+    quoteStatus: existingJob?.quoteStatus || "Draft",
+    invoiceStatus: existingJob?.invoiceStatus || "Not invoiced",
+    invoiceSent: Boolean(existingJob?.invoiceSent),
+    createdAt: existingJob?.createdAt || new Date().toISOString(),
+    archivedAt: existingJob?.archivedAt || null,
   };
 }
 
-function saveJobPayload(jobPayload) {
+function saveJobPayload(jobPayload, options = {}) {
+  const { existingJobId = editingJobId } = options;
+  if (existingJobId) {
+    currentUser.jobs = currentUser.jobs.filter((job) => job.id !== existingJobId);
+    currentUser.archivedJobs = currentUser.archivedJobs.filter((job) => job.id !== existingJobId);
+  }
   currentUser.jobs.unshift(jobPayload);
   persistCurrentUser();
   return jobPayload;
@@ -2630,12 +4070,13 @@ function quoteDraftFromClient(client) {
     materialAmount: 0,
     gst: 0,
     total: 0,
-    notes: "",
+    notes: client.notes || "",
     expiryDate: toDateInputValue(new Date(Date.now() + Number(currentUser.defaultQuoteExpiryDays || 14) * 86400000).toISOString()),
   };
 }
 
-function buildQuotePayload(data) {
+function buildQuotePayload(data, options = {}) {
+  const { existingQuote = null } = options;
   const client = currentUser.clients.find((item) => item.id === data.clientId);
   if (!client) return null;
   const labourAmount = Number(data.labourAmount || 0);
@@ -2644,8 +4085,8 @@ function buildQuotePayload(data) {
   const gst = roundCurrency(totalExGst * 0.1);
   const total = roundCurrency(totalExGst + gst);
   return {
-    id: crypto.randomUUID(),
-    quoteNumber: nextQuoteNumber(),
+    id: existingQuote?.id || crypto.randomUUID(),
+    quoteNumber: existingQuote?.quoteNumber || nextQuoteNumber(),
     clientId: client.id,
     clientName: client.name,
     clientPhone: String(data.clientPhone || client.phone || "").trim(),
@@ -2662,12 +4103,16 @@ function buildQuotePayload(data) {
     total,
     notes: String(data.notes || "").trim(),
     expiryDate: String(data.expiryDate),
-    status: "Draft",
-    createdAt: new Date().toISOString(),
+    status: existingQuote?.status || "Draft",
+    createdAt: existingQuote?.createdAt || new Date().toISOString(),
   };
 }
 
-function saveQuotePayload(payload) {
+function saveQuotePayload(payload, options = {}) {
+  const { existingQuoteId = editingQuoteId } = options;
+  if (existingQuoteId) {
+    currentUser.quotes = currentUser.quotes.filter((quote) => quote.id !== existingQuoteId);
+  }
   currentUser.quotes.unshift(payload);
   if (payload.jobId) {
     syncJobFromQuote(payload, "Draft");
@@ -2676,9 +4121,10 @@ function saveQuotePayload(payload) {
   return payload;
 }
 
-function buildPayrollEmployeePayload(data) {
+function buildPayrollEmployeePayload(data, options = {}) {
+  const { existingEmployee = null } = options;
   return {
-    id: crypto.randomUUID(),
+    id: existingEmployee?.id || crypto.randomUUID(),
     name: String(data.name).trim(),
     mobile: String(data.mobile).trim(),
     email: String(data.email).trim(),
@@ -2696,7 +4142,11 @@ function buildPayrollEmployeePayload(data) {
   };
 }
 
-function savePayrollEmployeePayload(employeePayload) {
+function savePayrollEmployeePayload(employeePayload, options = {}) {
+  const { existingEmployeeId = editingPayrollEmployeeId } = options;
+  if (existingEmployeeId) {
+    currentUser.payrollEmployees = currentUser.payrollEmployees.filter((staff) => staff.id !== existingEmployeeId);
+  }
   currentUser.payrollEmployees.unshift(employeePayload);
   persistCurrentUser();
   return employeePayload;
@@ -2706,6 +4156,7 @@ function handleClientSubmit(event) {
   event.preventDefault();
   flashSaving(els.clientForm, editingClientId ? "Updating client..." : "Saving client...");
   const data = Object.fromEntries(new FormData(els.clientForm));
+  const isEditing = Boolean(editingClientId);
   const clientPayload = buildClientPayload(data, { existingClientId: editingClientId });
 
   saveClientPayload(clientPayload, { existingClientId: editingClientId });
@@ -2714,6 +4165,7 @@ function handleClientSubmit(event) {
   clientSortMode = "newest";
 
   renderWorkspace();
+  showToast(isEditing ? `${clientPayload.name} updated.` : `${clientPayload.name} added.`);
 }
 
 function populateQuickJobClientSelect(selectedClientId = "") {
@@ -2934,18 +4386,23 @@ function handleJobClientSubmit(event) {
 
 function handleJobSubmit(event) {
   event.preventDefault();
-  flashSaving(els.jobForm, "Saving job...");
+  flashSaving(els.jobForm, editingJobId ? "Updating job..." : "Saving job...");
   const data = Object.fromEntries(new FormData(els.jobForm));
-  const jobPayload = buildJobPayload(data);
+  const isEditing = Boolean(editingJobId);
+  const existingJob = editingJobId ? findJobById(editingJobId) : null;
+  const jobPayload = buildJobPayload(data, { existingJob });
   if (!jobPayload) {
     showToast("Choose a client before saving this job.");
     return;
   }
-  saveJobPayload(jobPayload);
+  saveJobPayload(jobPayload, { existingJobId: editingJobId });
   els.jobForm.reset();
+  editingJobId = null;
+  els.jobForm.querySelector('button[type="submit"]').textContent = "Save job";
   setJobFormDefaults();
 
   renderWorkspace();
+  showToast(isEditing ? `${jobPayload.name} updated.` : `${jobPayload.name} created.`);
 }
 
 function handleQuickJobSubmit(event) {
@@ -3024,16 +4481,22 @@ function handleQuoteSourceChange() {
 
 function handleQuoteSubmit(event) {
   event.preventDefault();
-  flashSaving(els.quoteForm, "Saving quote...");
+  flashSaving(els.quoteForm, editingQuoteId ? "Updating quote..." : "Saving quote...");
   const data = Object.fromEntries(new FormData(els.quoteForm));
-  const payload = buildQuotePayload(data);
+  const isEditing = Boolean(editingQuoteId);
+  const existingQuote = editingQuoteId
+    ? currentUser.quotes.find((quote) => quote.id === editingQuoteId) || null
+    : null;
+  const payload = buildQuotePayload(data, { existingQuote });
   if (!payload) {
     showToast("Choose a client before saving this quote.");
     return;
   }
-  saveQuotePayload(payload);
+  saveQuotePayload(payload, { existingQuoteId: editingQuoteId });
+  editingQuoteId = null;
   resetQuoteForm();
   renderWorkspace();
+  showToast(isEditing ? `${payload.quoteNumber} updated.` : `${payload.quoteNumber} saved.`);
 }
 
 function handleQuickQuoteSubmit(event) {
@@ -3077,14 +4540,19 @@ function handleInvoiceSubmit(event) {
     return;
   }
 
+  const existingInvoice = editingInvoiceId
+    ? currentUser.invoices.find((invoice) => invoice.id === editingInvoiceId) || null
+    : null;
   const approvalRequired = hasFeature("invoiceApprovalControls") && data.approvalRequired === "yes";
   const status = submitMode === "send"
     ? (approvalRequired ? "Pending approval" : "Unpaid")
-    : "Draft";
+    : submitMode === "later"
+      ? "Scheduled"
+      : (existingInvoice?.status === "Paid" ? "Paid" : "Draft");
 
   const invoice = {
-    id: crypto.randomUUID(),
-    invoiceNumber: nextInvoiceNumber(),
+    id: existingInvoice?.id || crypto.randomUUID(),
+    invoiceNumber: existingInvoice?.invoiceNumber || nextInvoiceNumber(),
     clientId: client.id,
     client: client.name,
     clientEmail: String(data.clientEmail || client.email || "").trim(),
@@ -3107,13 +4575,21 @@ function handleInvoiceSubmit(event) {
     dueDate: String(data.dueDate),
     paymentMethod: String(data.paymentMethod),
     paymentTerms: String(data.paymentTerms),
+    scheduledSendAt: submitMode === "later" ? new Date().toISOString() : null,
     notes: String(data.notes || "").trim(),
     attachmentsNote: String(data.attachmentsNote || "").trim(),
-    paidAt: status === "Paid" ? new Date().toISOString() : null,
-    createdAt: new Date().toISOString(),
+    paidAt: status === "Paid" ? (existingInvoice?.paidAt || new Date().toISOString()) : null,
+    createdAt: existingInvoice?.createdAt || new Date().toISOString(),
   };
+  if (editingInvoiceId) {
+    currentUser.invoices = currentUser.invoices.filter((item) => item.id !== editingInvoiceId);
+  }
   currentUser.invoices.unshift(invoice);
+  if (invoice.clientEmail && client.email !== invoice.clientEmail) {
+    client.email = invoice.clientEmail;
+  }
   persistCurrentUser();
+  editingInvoiceId = null;
   resetInvoiceForm();
   renderWorkspace();
 
@@ -3126,16 +4602,20 @@ function handleInvoiceSubmit(event) {
     return;
   }
 
-  showToast(submitMode === "later" ? "Invoice saved for later." : "Draft saved.");
+  showToast(submitMode === "later" ? "Invoice saved to send later." : "Draft saved.");
 }
 
 function handleExpenseSubmit(event) {
   event.preventDefault();
-  flashSaving(els.expenseForm, "Saving expense...");
+  flashSaving(els.expenseForm, editingExpenseId ? "Updating expense..." : "Saving expense...");
   const data = Object.fromEntries(new FormData(els.expenseForm));
+  const isEditing = Boolean(editingExpenseId);
   const linkedJob = [...currentUser.jobs, ...currentUser.archivedJobs].find((job) => job.id === data.jobId);
+  const existingExpense = editingExpenseId
+    ? currentUser.expenses.find((expense) => expense.id === editingExpenseId) || null
+    : null;
   const payload = {
-    id: crypto.randomUUID(),
+    id: existingExpense?.id || crypto.randomUUID(),
     supplier: String(data.supplier).trim(),
     category: normaliseExpenseCategory(data.category),
     jobId: String(data.jobId || ""),
@@ -3145,19 +4625,24 @@ function handleExpenseSubmit(event) {
     amount: Number(data.amount),
     gst: Number(data.gst),
     notes: String(data.notes || "").trim(),
-    receiptData: pendingExpenseReceipt?.data || "",
-    receiptName: pendingExpenseReceipt?.name || "",
-    receiptType: pendingExpenseReceipt?.type || "",
+    receiptData: pendingExpenseReceipt?.data || existingExpense?.receiptData || "",
+    receiptName: pendingExpenseReceipt?.name || existingExpense?.receiptName || "",
+    receiptType: pendingExpenseReceipt?.type || existingExpense?.receiptType || "",
     claimStatus: getExpenseClaimStatus(normaliseExpenseCategory(data.category)),
-    createdAt: new Date().toISOString(),
+    createdAt: existingExpense?.createdAt || new Date().toISOString(),
   };
+  if (editingExpenseId) {
+    currentUser.expenses = currentUser.expenses.filter((expense) => expense.id !== editingExpenseId);
+  }
   currentUser.expenses.unshift(payload);
   if (payload.jobId) {
     applyExpenseToLinkedJob(payload);
   }
   persistCurrentUser();
+  editingExpenseId = null;
   resetExpenseForm();
   renderWorkspace();
+  showToast(isEditing ? `${payload.supplier} expense updated.` : `${payload.supplier} expense added.`);
 }
 
 function handleSettingsSubmit(event) {
@@ -3196,6 +4681,24 @@ function handleSettingsSubmit(event) {
     currentUser.businessLogo = pendingSettingsLogo;
     pendingSettingsLogo = null;
   }
+
+  currentUser.onboarding = {
+    ...getEmptyOnboarding(),
+    ...(currentUser.onboarding || {}),
+    businessName: currentUser.businessName,
+    abn: currentUser.abn,
+    tradeType: currentUser.tradeType,
+    businessAddress: currentUser.businessAddress,
+    businessLogo: currentUser.businessLogo,
+    gstRegistered: currentUser.gstMode === "No GST" ? "No" : "Yes",
+    taxVaultRate: Math.round(Number(currentUser.taxVaultRate || 0) * 100),
+    defaultPaymentTerms: currentUser.defaultPaymentTerms,
+    defaultQuoteExpiryDays: String(currentUser.defaultQuoteExpiryDays || 14),
+    paymentMethod: currentUser.paymentMethod,
+    invoiceReminders: Boolean(currentUser.notificationSettings.invoiceReminders),
+    overdueReminders: Boolean(currentUser.notificationSettings.overdueReminders),
+    jobAlerts: Boolean(currentUser.notificationSettings.jobAlerts),
+  };
 
   const teamUserName = String(data.teamUserName || "").trim();
   const teamUserEmail = String(data.teamUserEmail || "").trim();
@@ -3258,6 +4761,13 @@ function handleJobAction(event) {
     els.quoteForm.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  if (button.dataset.action === "edit") {
+    fillJobFormForEdit(job);
+    window.location.hash = "#workspace-jobs";
+    els.jobForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
   if (button.dataset.action === "invoice") {
     const invoice = createInvoiceFromJob(job);
     persistCurrentUser();
@@ -3266,8 +4776,21 @@ function handleJobAction(event) {
   }
 
   if (button.dataset.action === "archive" && !isArchivedJob) {
+    if (!confirmArchiveRecord(job.name)) return;
     currentUser.jobs.splice(activeJobIndex, 1);
     currentUser.archivedJobs.unshift({ ...job, status: "Completed", archivedAt: new Date().toISOString() });
+  }
+
+  if (button.dataset.action === "delete") {
+    if (!confirmDeleteRecord(job.name)) return;
+    if (isArchivedJob) {
+      currentUser.archivedJobs = currentUser.archivedJobs.filter((item) => item.id !== job.id);
+    } else {
+      currentUser.jobs = currentUser.jobs.filter((item) => item.id !== job.id);
+    }
+    currentUser.quotes = currentUser.quotes.map((quote) => quote.jobId === job.id ? { ...quote, jobId: "", jobName: quote.jobName || job.name } : quote);
+    currentUser.invoices = currentUser.invoices.map((invoice) => invoice.jobId === job.id ? { ...invoice, jobId: "", job: invoice.job || job.name } : invoice);
+    showToast(`${job.name} deleted.`);
   }
 
   persistCurrentUser();
@@ -3294,6 +4817,37 @@ function handleInvoiceAction(event) {
     exportInvoicePdf(invoice.id);
   }
 
+  if (button.dataset.invoiceAction === "edit") {
+    editingInvoiceId = invoice.id;
+    fillInvoiceForm({
+      sourceJobId: invoice.jobId || "",
+      clientId: invoice.clientId || "",
+      clientPhone: invoice.clientPhone || "",
+      clientEmail: invoice.clientEmail || "",
+      jobName: invoice.job || "",
+      siteAddress: invoice.siteAddress || "",
+      invoiceType: invoice.invoiceType || "Final invoice",
+      paymentTerms: invoice.paymentTerms || currentUser.defaultPaymentTerms || "14 days",
+      materialsAmount: invoice.materialsAmount || 0,
+      labourAmount: invoice.labourAmount || 0,
+      gst: invoice.gst || 0,
+      amount: invoice.amount || 0,
+      issueDate: invoice.issueDate || toDateInputValue(new Date().toISOString()),
+      dueDate: invoice.dueDate || calculateDueDate(invoice.issueDate, invoice.paymentTerms),
+      status: invoice.status || "Draft",
+      approvalRequired: invoice.approvalRequired,
+      paymentMethod: invoice.paymentMethod || "Bank transfer",
+      notes: invoice.notes || "",
+      attachmentsNote: invoice.attachmentsNote || "",
+      lineItems: invoice.lineItems || [],
+    });
+    const submitButton = els.invoiceForm.querySelector('button[type="submit"][data-invoice-submit="draft"]') || els.invoiceForm.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.textContent = "Update draft";
+    window.location.hash = "#workspace-invoices";
+    els.invoiceForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
   if (button.dataset.invoiceAction === "paid") {
     invoice.status = "Paid";
     invoice.paidAt = new Date().toISOString();
@@ -3307,8 +4861,6 @@ function handleInvoiceAction(event) {
   }
 
   if (button.dataset.invoiceAction === "remind") {
-    invoice.lastReminderAt = new Date().toISOString();
-    invoice.reminderCount = Number(invoice.reminderCount || 0) + 1;
     const subject = encodeURIComponent(`Quick reminder: ${invoice.invoiceNumber} for ${invoice.job}`);
     const body = encodeURIComponent(
       [
@@ -3321,12 +4873,23 @@ function handleInvoiceAction(event) {
         currentUser.name,
       ].join("\n")
     );
-    const reminderAddress = invoice.clientEmail || getClientEmail(invoice.client);
-    if (reminderAddress) {
-      window.location.href = `mailto:${reminderAddress}?subject=${subject}&body=${body}`;
-    } else {
-      showToast("Reminder logged, but this client does not have an email saved yet.");
-    }
+    const reminderAddress = ensureRecordEmail({
+      email: invoice.clientEmail || getClientEmail(invoice.client),
+      clientId: invoice.clientId,
+      clientName: invoice.client,
+      label: "invoice",
+    });
+    if (!reminderAddress) return;
+    invoice.lastReminderAt = new Date().toISOString();
+    invoice.reminderCount = Number(invoice.reminderCount || 0) + 1;
+    invoice.clientEmail = reminderAddress;
+    window.location.href = `mailto:${reminderAddress}?subject=${subject}&body=${body}`;
+  }
+
+  if (button.dataset.invoiceAction === "delete") {
+    if (!confirmDeleteRecord(invoice.invoiceNumber)) return;
+    currentUser.invoices = currentUser.invoices.filter((item) => item.id !== invoice.id);
+    showToast(`${invoice.invoiceNumber} deleted.`);
   }
 
   persistCurrentUser();
@@ -3347,6 +4910,32 @@ function handleQuoteAction(event) {
 
   if (button.dataset.quoteAction === "send") {
     sendQuoteById(quote.id);
+  }
+
+  if (button.dataset.quoteAction === "edit") {
+    editingQuoteId = quote.id;
+    fillQuoteForm({
+      sourceJobId: quote.jobId || "",
+      clientId: quote.clientId || "",
+      clientPhone: quote.clientPhone || "",
+      clientEmail: quote.clientEmail || "",
+      jobName: quote.jobName || "",
+      siteAddress: quote.siteAddress || "",
+      description: quote.description || "",
+      labourItems: quote.labourItems || "",
+      materialItems: quote.materialItems || "",
+      labourAmount: quote.labourAmount || 0,
+      materialAmount: quote.materialAmount || 0,
+      gst: quote.gst || 0,
+      total: quote.total || 0,
+      notes: quote.notes || "",
+      expiryDate: quote.expiryDate || toDateInputValue(new Date().toISOString()),
+    });
+    const submitButton = els.quoteForm.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.textContent = "Update quote";
+    window.location.hash = "#workspace-quotes";
+    els.quoteForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
   }
 
   if (button.dataset.quoteAction === "accept") {
@@ -3371,8 +4960,58 @@ function handleQuoteAction(event) {
     els.invoiceForm.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  if (button.dataset.quoteAction === "delete") {
+    if (!confirmDeleteRecord(quote.quoteNumber)) return;
+    currentUser.quotes = currentUser.quotes.filter((item) => item.id !== quote.id);
+    showToast(`${quote.quoteNumber} deleted.`);
+  }
+
   persistCurrentUser();
   renderWorkspace();
+}
+
+function handleExpenseAction(event) {
+  const button = event.target.closest("button[data-expense-action]");
+  if (!button) return;
+  const expense = currentUser.expenses.find((item) => item.id === button.dataset.expenseId);
+  if (!expense) return;
+
+  if (button.dataset.expenseAction === "edit") {
+    fillExpenseFormForEdit(expense);
+    window.location.hash = "#workspace-expenses";
+    els.expenseForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  if (button.dataset.expenseAction === "delete") {
+    if (!confirmDeleteRecord(`${expense.supplier} expense`)) return;
+    currentUser.expenses = currentUser.expenses.filter((item) => item.id !== expense.id);
+    persistCurrentUser();
+    renderWorkspace();
+    showToast(`${expense.supplier} expense deleted.`);
+  }
+}
+
+function handlePayrollEmployeeAction(event) {
+  const button = event.target.closest("button[data-payroll-employee-action]");
+  if (!button) return;
+  const staff = currentUser.payrollEmployees.find((item) => item.id === button.dataset.payrollEmployeeId);
+  if (!staff) return;
+
+  if (button.dataset.payrollEmployeeAction === "edit") {
+    fillPayrollFormForEdit(staff);
+    window.location.hash = "#workspace-payroll";
+    els.payrollEmployeeForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  if (button.dataset.payrollEmployeeAction === "delete") {
+    if (!confirmDeleteRecord(staff.name)) return;
+    currentUser.payrollEmployees = currentUser.payrollEmployees.filter((item) => item.id !== staff.id);
+    persistCurrentUser();
+    renderWorkspace();
+    showToast(`${staff.name} removed from payroll.`);
+  }
 }
 
 function createInvoiceFromJob(job) {
@@ -3435,7 +5074,7 @@ function openQuoteEmail(job) {
       "If you're happy to proceed, reply and we'll book the work in.",
       "",
       "Cheers,",
-      currentUser.name,
+      getBusinessProfile().businessName,
     ].join("\n")
   );
   window.location.href = `mailto:${job.clientEmail}?subject=${subject}&body=${body}`;
@@ -3444,6 +5083,14 @@ function openQuoteEmail(job) {
 function sendQuoteById(quoteId) {
   const quote = currentUser.quotes.find((item) => item.id === quoteId);
   if (!quote) return;
+  const recipientEmail = ensureRecordEmail({
+    email: quote.clientEmail,
+    clientId: quote.clientId,
+    clientName: quote.clientName,
+    label: "quote",
+  });
+  if (!recipientEmail) return;
+  quote.clientEmail = recipientEmail;
 
   const subject = encodeURIComponent(`${quote.quoteNumber} - Quote for ${quote.jobName}`);
   const body = encodeURIComponent(
@@ -3472,7 +5119,7 @@ function sendQuoteById(quoteId) {
       "If you're happy to proceed, reply to approve and we'll lock the job in.",
       "",
       "Cheers,",
-      currentUser.name,
+      getBusinessProfile().businessName,
     ].filter(Boolean).join("\n")
   );
 
@@ -3482,26 +5129,11 @@ function sendQuoteById(quoteId) {
   }
   persistCurrentUser();
   renderWorkspace();
-  window.location.href = `mailto:${quote.clientEmail}?subject=${subject}&body=${body}`;
-}
-
-function openInvoiceEmail(job) {
-  const subject = encodeURIComponent(`Invoice for ${job.name}`);
-  const body = encodeURIComponent(
-    [
-      `Hi ${job.clientName},`,
-      "",
-      `The job "${job.name}" is complete and the invoice total is ${formatMoney(job.quoteAmount)} including GST.`,
-      "Please reply if you'd like card payment details or a payment plan option.",
-      "",
-      "Cheers,",
-      currentUser.name,
-    ].join("\n")
-  );
-  window.location.href = `mailto:${job.clientEmail}?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
 }
 
 function renderWorkspace() {
+  updateWorkspaceBrand();
   applyPlanAccess();
   syncClientSelect();
   syncSelectedClientDetails();
@@ -3532,7 +5164,7 @@ function renderWorkspace() {
   renderPayrollQuickSummary();
 
   const unpaidInvoices = currentUser.invoices
-    .filter((invoice) => ["Unpaid", "Overdue"].includes(getInvoiceStatus(invoice)))
+    .filter((invoice) => ["Unpaid", "Sent", "Overdue"].includes(getInvoiceDisplayStatus(invoice)))
     .reduce((sum, invoice) => sum + invoice.amount, 0);
   const paidInvoices = currentUser.invoices
     .filter((invoice) => invoice.status === "Paid")
@@ -3543,11 +5175,53 @@ function renderWorkspace() {
   const taxSavedValue = Math.max(0, invoiceGst - expenseGst + paidInvoices * currentUser.taxVaultRate);
   const moneyAvailableValue = Math.max(0, paidInvoices - expenses - paidInvoices * currentUser.taxVaultRate);
   const firstUse = isFirstUseWorkspace();
+  const onboarding = currentUser.onboarding || getEmptyOnboarding();
+  const profile = getBusinessProfile();
+  const priority = onboarding.priority || "";
+  const gstAnswer = onboarding.gstRegistered || "Yes";
+  const previousSystem = onboarding.previousSystem || "None";
+  const overdueMoney = currentUser.invoices
+    .filter((invoice) => getInvoiceDisplayStatus(invoice) === "Overdue")
+    .reduce((sum, invoice) => sum + Number(invoice.amount || 0), 0);
+  const marginRiskCount = currentUser.jobs.filter((job) => getJobEstimatedProfit(job) < 0).length;
+  const cashCard = document.getElementById("dashboardCashCard");
+  const owedCard = document.getElementById("dashboardOwedCard");
+  const marginCard = document.getElementById("dashboardMarginCard");
+  const taxCard = document.getElementById("dashboardTaxCard");
+  const taxTile = document.getElementById("dashboardTaxTile");
+  const unpaidTile = document.getElementById("dashboardUnpaidTile");
+  const spendTile = document.getElementById("dashboardSpendTile");
+
+  [cashCard, owedCard, marginCard, taxCard].forEach((card) => {
+    card?.classList.remove("is-warning", "is-info");
+  });
+  [taxTile, unpaidTile, spendTile].forEach((tile) => {
+    tile?.classList.remove("tone-positive", "tone-warning", "tone-mint", "tone-info");
+  });
 
   if (els.workspaceSubtitle) {
+    const tradeIntro = (profile.tradeType || "tradie").toLowerCase();
+    const migrationHint = previousSystem === "Spreadsheet" || previousSystem === "Paper"
+      ? "No more chasing details across paper and spreadsheets."
+      : previousSystem && previousSystem !== "None"
+        ? `Moving across from ${previousSystem} should feel lighter here.`
+        : "";
+    const firstUseCopy = {
+      Quotes: `This ${tradeIntro} workspace is set up to get quotes moving first. Add a client, then build the first quote without retyping details later. ${migrationHint}`.trim(),
+      Invoices: `This ${tradeIntro} workspace is set up to get invoices out fast. Add a client or job, then bill the work and keep unpaid money visible. ${migrationHint}`.trim(),
+      Expenses: `This ${tradeIntro} workspace is set up to keep receipts and ${gstAnswer === "Yes" ? "BAS money" : "job costs"} visible early. Add a client, then start logging spend and site costs. ${migrationHint}`.trim(),
+      "Job tracking": `This ${tradeIntro} workspace is set up to keep jobs organised first. Add a client, then create the first job and track what is happening on site. ${migrationHint}`.trim(),
+      Payroll: `This ${tradeIntro} workspace is set up to keep labour clear early. Add a worker when you need payroll in the same place as jobs and cash flow. ${migrationHint}`.trim(),
+    };
     els.workspaceSubtitle.textContent = firstUse
-      ? "This is your first workspace view. Start by adding a client, then create a job, quote, or invoice when you are ready."
-      : `${currentUser.email} is signed in on the ${currentUser.plan} plan. Keep the right tools in view without the clutter you do not need yet.`;
+      ? (firstUseCopy[priority] || `${profile.businessName} is ready for its first client, job, quote, or invoice. Your saved defaults will flow through as you build.`)
+      : `${profile.businessName} is signed in on the ${currentUser.plan} plan. Keep the right tools in view without the clutter you do not need yet.`;
+  }
+
+  if (els.workspaceTitle) {
+    els.workspaceTitle.textContent = firstUse
+      ? `Welcome to ${profile.businessName}`
+      : `G'day, ${profile.businessName}`;
   }
 
   if (firstUse) {
@@ -3567,6 +5241,12 @@ function renderWorkspace() {
     els.expenseTotal.textContent = "Track it";
     els.taxSafetyLabel.textContent = "New";
     els.taxSafetyLabel.className = "status-badge status-draft";
+    taxTile?.classList.add("tone-mint");
+    unpaidTile?.classList.add("tone-positive");
+    spendTile?.classList.add("tone-positive");
+    if (els.dashboardConfidenceLine) {
+      els.dashboardConfidenceLine.textContent = "Cash confidence will appear here once invoices and GST start moving.";
+    }
   } else {
     els.dashboardHeroCard1Label.textContent = "Cash available";
     els.moneyAvailable.textContent = formatMoney(moneyAvailableValue);
@@ -3579,7 +5259,64 @@ function renderWorkspace() {
     els.expenseTotal.textContent = formatMoney(expenses);
     els.dashboardHeroCard4Label.textContent = "Tax obligations";
     els.taxSafetyLabel.textContent = taxSavedValue >= unpaidInvoices * 0.1 ? "Safe" : "Tight";
+    if (unpaidInvoices > 0 || overdueMoney > 0) owedCard?.classList.add("is-warning");
+    if (marginRiskCount > 0) marginCard?.classList.add("is-warning");
+    if (taxSavedValue < unpaidInvoices * 0.1) taxCard?.classList.add("is-warning");
+    taxTile?.classList.add(taxSavedValue < unpaidInvoices * 0.1 ? "tone-warning" : "tone-mint");
+    unpaidTile?.classList.add(unpaidInvoices > 0 || overdueMoney > 0 ? "tone-warning" : "tone-positive");
+    spendTile?.classList.add("tone-positive");
+    if (els.dashboardConfidenceLine) {
+      els.dashboardConfidenceLine.textContent = `Cash available after GST reserve: ${formatMoney(moneyAvailableValue)}`;
+    }
     els.taxSafetyLabel.className = taxSavedValue >= unpaidInvoices * 0.1 ? "status-badge status-safe" : "status-badge status-tight";
+  }
+
+  if (priority === "Expenses") {
+    els.dashboardHeroCard1Label.textContent = gstAnswer === "Yes" ? "Receipts and BAS" : "Receipts and costs";
+    els.moneyAvailable.textContent = firstUse ? "Upload first" : formatMoney(expenses);
+    els.dashboardHeroCard1Copy.textContent = firstUse
+      ? gstAnswer === "Yes"
+        ? "Snap the first receipt and keep BAS money visible from day one."
+        : "Snap the first receipt and keep job costs visible from day one."
+      : gstAnswer === "Yes"
+        ? `${formatMoney(expenseGst)} GST claimable across logged spend.`
+        : "Receipts and site costs are logged without GST added.";
+  } else if (priority === "Invoices") {
+    els.dashboardHeroCard1Label.textContent = "Money owed";
+    els.moneyAvailable.textContent = firstUse ? "Send first" : formatMoney(unpaidInvoices);
+    els.dashboardHeroCard1Copy.textContent = firstUse
+      ? gstAnswer === "Yes"
+        ? "Your first invoice will make unpaid money, due dates, and GST visible here."
+        : "Your first invoice will make unpaid money and due dates visible here."
+      : overdueMoney > 0
+        ? `${formatMoney(overdueMoney)} already overdue and worth chasing first.`
+        : "Open invoices ready to collect.";
+    els.dashboardHeroCard2Label.textContent = "Cash available";
+    els.invoiceTotal.textContent = firstUse ? "Build up" : formatMoney(moneyAvailableValue);
+    els.dashboardHeroCard2Copy.textContent = firstUse
+      ? "Cash visibility improves as soon as invoices start going out."
+      : "Usable cash after spend and tax vault.";
+  } else if (priority === "Quotes") {
+    const activeQuotes = currentUser.quotes.filter((quote) => ["Draft", "Sent"].includes(getQuoteStatus(quote)));
+    els.dashboardHeroCard1Label.textContent = "Quotes in play";
+    els.moneyAvailable.textContent = firstUse ? "Build first" : String(activeQuotes.length);
+    els.dashboardHeroCard1Copy.textContent = firstUse
+      ? "Get the first quote out fast and convert approved work without retyping."
+      : `${activeQuotes.length} draft or sent quote${activeQuotes.length === 1 ? "" : "s"} ready to win work.`;
+  } else if (priority === "Job tracking") {
+    const liveJobs = currentUser.jobs.filter((job) => job.status !== "Archived");
+    els.dashboardHeroCard1Label.textContent = "Jobs on the go";
+    els.moneyAvailable.textContent = firstUse ? "Start first" : String(liveJobs.length);
+    els.dashboardHeroCard1Copy.textContent = firstUse
+      ? "Create the first job and keep scope, timing, and notes in one place."
+      : `${liveJobs.length} live job${liveJobs.length === 1 ? "" : "s"} currently in view.`;
+  } else if (priority === "Payroll") {
+    const staffCount = currentUser.payrollEmployees.length || currentUser.teamUsers.length;
+    els.dashboardHeroCard1Label.textContent = "Payroll and labour";
+    els.moneyAvailable.textContent = firstUse ? "Add worker" : String(staffCount);
+    els.dashboardHeroCard1Copy.textContent = firstUse
+      ? "Add the first worker so wages and labour stay tied to the business."
+      : `${staffCount} worker${staffCount === 1 ? "" : "s"} ready for weekly wage tracking.`;
   }
 
   applyPlanDashboardState();
@@ -3592,6 +5329,7 @@ function renderWorkspace() {
   renderPayroll();
   renderArchive();
   renderReports();
+  renderBillingSection();
   renderSettings();
   renderAlerts();
   renderDashboardActivity();
@@ -3724,6 +5462,7 @@ function handlePreviousJobPrefill() {
   els.jobForm.elements.quoteAmount.value = Number(job.quoteAmount || 0).toFixed(2);
   els.jobForm.elements.labourCost.value = Number(job.labourCost || 0).toFixed(2);
   els.jobForm.elements.materialCost.value = Number(job.materialCost || 0).toFixed(2);
+  els.jobForm.elements.scheduledAt.value = toDateTimeLocalValue(new Date(Date.now() + 86400000).toISOString());
   els.jobForm.elements.assignee.value = job.assignee || currentUser.name || "";
   els.jobRecurringSelect.value = job.recurring || "One-off";
   els.jobStatusSelect.value = job.status || "Draft";
@@ -3761,6 +5500,7 @@ function handleSmartFillClick(event) {
 }
 
 function syncJobSuggestions() {
+  const templates = getTradeTemplates();
   if (els.jobNameSuggestions) {
     els.jobNameSuggestions.innerHTML = Array.from(new Set([...currentUser.jobs, ...currentUser.archivedJobs]
       .map((job) => String(job.name || "").trim())
@@ -3770,16 +5510,17 @@ function syncJobSuggestions() {
       .join("");
   }
   if (els.jobDescriptionSuggestions) {
-    els.jobDescriptionSuggestions.innerHTML = Array.from(new Set([...currentUser.jobs, ...currentUser.archivedJobs]
-      .map((job) => String(job.description || "").trim())
-      .filter(Boolean)))
+    els.jobDescriptionSuggestions.innerHTML = Array.from(new Set([
+      templates.jobDescription,
+      ...[...currentUser.jobs, ...currentUser.archivedJobs].map((job) => String(job.description || "").trim()),
+    ].filter(Boolean)))
       .slice(0, 20)
       .map((description) => `<option value="${escapeHtml(description)}"></option>`)
       .join("");
   }
   renderSmartFillButtons(
     els.jobDescriptionQuickSuggestions,
-    [...currentUser.jobs, ...currentUser.archivedJobs].map((job) => job.description),
+    [templates.jobDescription, ...[...currentUser.jobs, ...currentUser.archivedJobs].map((job) => job.description)],
     "jobDescription",
   );
 }
@@ -3921,9 +5662,19 @@ function syncQuoteSuggestions() {
   const descriptionList = document.getElementById("quoteDescriptionSuggestions");
   const labourList = document.getElementById("quoteLabourSuggestions");
   const materialList = document.getElementById("quoteMaterialSuggestions");
-  const descriptionValues = currentUser.quotes.map((quote) => String(quote.description || "").trim()).filter(Boolean);
-  const labourValues = currentUser.quotes.map((quote) => String(quote.labourItems || "").trim()).filter(Boolean);
-  const materialValues = currentUser.quotes.map((quote) => String(quote.materialItems || "").trim()).filter(Boolean);
+  const templates = getTradeTemplates();
+  const descriptionValues = [
+    templates.scope,
+    ...currentUser.quotes.map((quote) => String(quote.description || "").trim()),
+  ].filter(Boolean);
+  const labourValues = [
+    templates.labour,
+    ...currentUser.quotes.map((quote) => String(quote.labourItems || "").trim()),
+  ].filter(Boolean);
+  const materialValues = [
+    templates.materials,
+    ...currentUser.quotes.map((quote) => String(quote.materialItems || "").trim()),
+  ].filter(Boolean);
   if (descriptionList) {
     descriptionList.innerHTML = Array.from(new Set(descriptionValues))
       .slice(0, 20)
@@ -3963,6 +5714,11 @@ function handleQuoteQuickAdd(type) {
   recalculateQuoteTotals();
 }
 
+function handleQuoteResetRequest() {
+  if (!confirmResetDraft("quote")) return;
+  resetQuoteForm({ preserveMode: true, keepClientSelection: activeQuoteStartMode === "client" });
+}
+
 function syncSelectedQuoteClientDetails() {
   const client = currentUser.clients.find((item) => item.id === els.quoteClientSelect.value);
   if (!client) {
@@ -3979,6 +5735,9 @@ function syncSelectedQuoteClientDetails() {
   els.quoteClientPhone.value = client.phone;
   els.quoteClientEmail.value = client.email;
   els.quoteSiteAddressInput.value = client.address;
+  if (!els.quoteNotesInput.value.trim()) {
+    els.quoteNotesInput.value = client.notes || "";
+  }
   renderQuoteClientContext();
   renderQuoteBuilderSummary();
 }
@@ -4048,6 +5807,11 @@ function handleInvoiceStartModeChange(mode) {
   }
 }
 
+function handleInvoiceResetRequest() {
+  if (!confirmResetDraft("invoice")) return;
+  resetInvoiceForm({ preserveMode: true });
+}
+
 function syncSelectedInvoiceClientDetails() {
   clearInvoiceQuoteConfirmation();
   const client = currentUser.clients.find((item) => item.id === els.invoiceClientSelect.value);
@@ -4062,6 +5826,9 @@ function syncSelectedInvoiceClientDetails() {
     els.invoiceSiteAddressInput.value = client.address || "";
   }
   els.invoiceTermsSelect.value = client.paymentTerms || currentUser.defaultPaymentTerms || "14 days";
+  if (!els.invoiceNotesInput.value.trim()) {
+    els.invoiceNotesInput.value = client.notes || "Please include the invoice number as the payment reference.";
+  }
   syncInvoiceDueDateFromTerms();
   syncInvoiceTermPills();
   renderInvoiceClientWarning(client);
@@ -4097,7 +5864,7 @@ function renderInvoiceDraftPreview() {
   els.invoiceDraftGst.textContent = formatMoney(Number(els.invoiceGstInput.value || 0));
   els.invoiceDraftTotal.textContent = formatMoney(Number(els.invoiceAmountInput.value || 0));
   if (els.invoiceDraftMeta) {
-    const gstMode = currentUser?.gstMode === "GST free" ? "GST off" : "GST on";
+    const gstMode = isGstEnabled(currentUser?.gstMode) ? "GST on" : "GST off";
     els.invoiceDraftMeta.textContent = `${els.invoiceTypeSelect?.value || "Final invoice"} / ${gstMode} / ${els.invoiceSiteAddressInput.value || "site address ready to add"}`;
   }
 }
@@ -4239,7 +6006,7 @@ function renderInvoiceClientWarning(client = currentUser.clients.find((item) => 
 
   const unpaidInvoices = currentUser.invoices.filter((invoice) => (
     invoice.clientId === client.id || invoice.client === client.name
-  ) && ["Unpaid", "Overdue"].includes(getInvoiceStatus(invoice)));
+  ) && ["Unpaid", "Sent", "Overdue"].includes(getInvoiceDisplayStatus(invoice)));
 
   if (!unpaidInvoices.length) {
     els.invoiceClientWarning.classList.add("hidden");
@@ -4260,7 +6027,9 @@ function syncInvoiceTermPills() {
 
 function syncInvoiceItemSuggestions() {
   if (!els.invoiceItemSuggestions) return;
+  const templates = getTradeTemplates();
   const suggestions = Array.from(new Set([
+    ...templates.invoiceItems,
     ...currentUser.invoices.flatMap((invoice) => (invoice.lineItems || []).map((item) => item.description)),
     ...currentUser.quotes.flatMap((quote) => [quote.materialItems, quote.labourItems]),
     ...currentUser.expenses.map((expense) => expense.notes),
@@ -4285,16 +6054,35 @@ function syncExpenseStartUi() {
   els.expenseStartOptions.forEach((button) => {
     button.classList.toggle("active", button.dataset.expenseStart === activeExpenseStartMode);
   });
+  if (els.expenseForm) {
+    els.expenseForm.dataset.expenseMode = activeExpenseStartMode;
+  }
+  els.expenseUploadTile?.classList.toggle("is-active", activeExpenseStartMode === "receipt");
+}
+
+function focusExpenseManualEntry() {
+  els.expenseReceiptSection?.setAttribute("open", "");
+  els.expenseSupplierInput?.focus();
+  els.expenseSupplierInput?.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function openExpenseReceiptPicker() {
+  activeExpenseStartMode = "receipt";
+  syncExpenseStartUi();
+  els.expenseReceiptSection?.setAttribute("open", "");
+  els.expenseUploadTile?.scrollIntoView({ behavior: "smooth", block: "center" });
+  els.expenseReceiptInput?.click();
 }
 
 function handleExpenseStartModeChange(mode) {
   activeExpenseStartMode = mode;
   syncExpenseStartUi();
   if (mode === "receipt") {
-    els.expenseReceiptInput?.click();
+    els.expenseReceiptSection?.setAttribute("open", "");
+    els.expenseUploadTile?.scrollIntoView({ behavior: "smooth", block: "center" });
     return;
   }
-  els.expenseSupplierInput?.focus();
+  focusExpenseManualEntry();
 }
 
 function syncExpenseJobSelect() {
@@ -4381,11 +6169,11 @@ function getClientStats(client) {
   return {
     jobCount: clientJobs.length,
     totalInvoiced: clientInvoices.reduce((sum, invoice) => sum + invoice.amount, 0),
-    outstanding: clientInvoices.filter((invoice) => invoice.status === "Unpaid").reduce((sum, invoice) => sum + invoice.amount, 0),
+    outstanding: clientInvoices.filter((invoice) => ["Unpaid", "Sent", "Overdue"].includes(getInvoiceDisplayStatus(invoice))).reduce((sum, invoice) => sum + invoice.amount, 0),
     totalPaid: clientInvoices.filter((invoice) => invoice.status === "Paid").reduce((sum, invoice) => sum + invoice.amount, 0),
     jobs: clientJobs,
     invoices: clientInvoices,
-    quotes: currentUser.jobs.filter((job) => job.clientId === client.id || job.clientEmail === client.email),
+    quotes: currentUser.quotes.filter((quote) => quote.clientId === client.id || quote.clientEmail === client.email),
   };
 }
 
@@ -4416,23 +6204,7 @@ function handleClientAction(event) {
 
   if (button.dataset.clientAction === "quote") {
     activeQuoteStartMode = "client";
-    fillQuoteForm({
-      sourceJobId: "",
-      clientId: client.id,
-      clientPhone: client.phone,
-      clientEmail: client.email,
-      jobName: "",
-      siteAddress: client.address,
-      description: "",
-      labourItems: "Labour allowance",
-      materialItems: "Material allowance",
-      labourAmount: 0,
-      materialAmount: 0,
-      gst: 0,
-      total: 0,
-      notes: "",
-      expiryDate: toDateInputValue(new Date(Date.now() + Number(currentUser.defaultQuoteExpiryDays || 14) * 86400000).toISOString()),
-    });
+    fillQuoteForm(quoteDraftFromClient(client));
     openQuickCreateTarget("#workspace-quotes", els.quoteForm);
   }
 
@@ -4453,6 +6225,93 @@ function handleClientAction(event) {
     els.jobForm.elements.description.value = "";
     openQuickCreateTarget("#workspace-jobs", els.jobForm);
   }
+
+  if (button.dataset.clientAction === "delete") {
+    const hasLinkedRecords = currentUser.jobs.some((job) => job.clientId === client.id)
+      || currentUser.archivedJobs.some((job) => job.clientId === client.id)
+      || currentUser.quotes.some((quote) => quote.clientId === client.id)
+      || currentUser.invoices.some((invoice) => invoice.clientId === client.id);
+    if (hasLinkedRecords) {
+      showToast("This client is linked to jobs, quotes, or invoices, so keep the record and edit it instead.");
+      return;
+    }
+    if (!confirmDeleteRecord(client.name)) return;
+    currentUser.clients = currentUser.clients.filter((item) => item.id !== client.id);
+    persistCurrentUser();
+    renderWorkspace();
+    showToast(`${client.name} deleted.`);
+  }
+}
+
+function fillJobFormForEdit(job) {
+  editingJobId = job.id;
+  activeJobStartMode = "client";
+  activeJobBlankClientMode = "existing";
+  syncJobStartUi();
+  syncClientSelect({ job: job.clientId });
+  els.jobClientSelect.value = job.clientId;
+  syncSelectedClientDetails();
+  els.jobForm.elements.name.value = job.name || "";
+  els.jobForm.elements.clientPhone.value = job.clientPhone || "";
+  els.jobForm.elements.clientEmail.value = job.clientEmail || "";
+  els.jobForm.elements.address.value = job.address || "";
+  els.jobForm.elements.description.value = job.description || "";
+  els.jobForm.elements.materialCost.value = Number(job.materialCost || 0).toFixed(2);
+  els.jobForm.elements.labourCost.value = Number(job.labourCost || 0).toFixed(2);
+  els.jobForm.elements.quoteAmount.value = Number(job.quoteAmount || 0).toFixed(2);
+  els.jobForm.elements.scheduledAt.value = job.scheduledAt || "";
+  els.jobForm.elements.recurring.value = job.recurring || "One-off";
+  els.jobForm.elements.assignee.value = job.assignee || "";
+  els.jobForm.elements.status.value = job.status || "Upcoming";
+  els.jobForm.elements.internalNotes.value = job.internalNotes || "";
+  const submitButton = els.jobForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.textContent = "Update job";
+}
+
+function fillExpenseFormForEdit(expense) {
+  editingExpenseId = expense.id;
+  els.expenseForm.elements.supplier.value = expense.supplier || "";
+  els.expenseForm.elements.amount.value = Number(expense.amount || 0).toFixed(2);
+  els.expenseForm.elements.gst.value = Number(expense.gst || 0).toFixed(2);
+  els.expenseForm.elements.category.value = expense.category || "Materials";
+  els.expenseForm.elements.expenseDate.value = expense.expenseDate || "";
+  els.expenseForm.elements.paymentSource.value = expense.paymentSource || "Business card";
+  els.expenseForm.elements.jobId.value = expense.jobId || "";
+  els.expenseForm.elements.notes.value = expense.notes || "";
+  pendingExpenseReceipt = expense.receiptData
+    ? { data: expense.receiptData, name: expense.receiptName || "Saved receipt", type: expense.receiptType || "" }
+    : null;
+  els.expenseReceiptPreviewWrap.classList.toggle("hidden", !pendingExpenseReceipt);
+  if (pendingExpenseReceipt) {
+    els.expenseReceiptName.textContent = pendingExpenseReceipt.name;
+    els.expenseReceiptPreviewImage.src = pendingExpenseReceipt.type?.startsWith("image/") ? pendingExpenseReceipt.data : "assets/receipt-sample.jpg";
+  } else {
+    els.expenseReceiptName.textContent = "No file selected";
+    els.expenseReceiptPreviewImage.removeAttribute("src");
+  }
+  const submitButton = els.expenseForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.textContent = "Update expense";
+}
+
+function fillPayrollFormForEdit(staff) {
+  editingPayrollEmployeeId = staff.id;
+  els.payrollEmployeeForm.elements.name.value = staff.name || "";
+  els.payrollEmployeeForm.elements.mobile.value = staff.mobile || "";
+  els.payrollEmployeeForm.elements.email.value = staff.email || "";
+  els.payrollEmployeeForm.elements.role.value = staff.role || "";
+  els.payrollEmployeeForm.elements.employmentType.value = staff.employmentType || "Employee";
+  els.payrollEmployeeForm.elements.payType.value = staff.payType || "Hourly";
+  els.payrollEmployeeForm.elements.payRate.value = Number(staff.payRate || 0).toFixed(2);
+  els.payrollEmployeeForm.elements.cycleHours.value = Number(staff.cycleHours || 0);
+  els.payrollEmployeeForm.elements.superDetails.value = staff.superDetails || "";
+  els.payrollEmployeeForm.elements.taxFile.value = staff.taxFile || "";
+  els.payrollEmployeeForm.elements.bankDetails.value = staff.bankDetails || "";
+  els.payrollEmployeeForm.elements.notes.value = staff.notes || "";
+  els.payrollEmployeeForm.elements.lastPayDate.value = staff.lastPayDate || "";
+  els.payrollEmployeeForm.elements.status.value = staff.status || "Active";
+  const submitButton = els.payrollEmployeeForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.textContent = "Update worker";
+  renderPayrollQuickSummary();
 }
 
 function openClientDetail(client) {
@@ -4622,6 +6481,9 @@ function toDateInputValue(value) {
 }
 
 function setJobFormDefaults() {
+  editingJobId = null;
+  const submitButton = els.jobForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.textContent = "Save job";
   if (!els.jobForm.elements.scheduledAt.value) {
     els.jobForm.elements.scheduledAt.value = toDateTimeLocalValue(new Date(Date.now() + 86400000).toISOString());
   }
@@ -4644,7 +6506,7 @@ function renderClients() {
       .slice(0, 2)
       .map((job) => job.name)
       .join(" / ");
-    const unpaidCount = stats.invoices.filter((invoice) => ["Unpaid", "Overdue"].includes(getInvoiceStatus(invoice))).length;
+    const unpaidCount = stats.invoices.filter((invoice) => ["Unpaid", "Sent", "Overdue"].includes(getInvoiceDisplayStatus(invoice))).length;
     return `
       <article class="record-row">
         <div>
@@ -4662,6 +6524,7 @@ function renderClients() {
             <button class="mini-action" type="button" data-client-action="job" data-client-id="${client.id}">New job</button>
             <button class="mini-action" type="button" data-client-action="view" data-client-id="${client.id}">View details</button>
             <button class="mini-action" type="button" data-client-action="edit" data-client-id="${client.id}">Edit client</button>
+            <button class="mini-action" type="button" data-client-action="delete" data-client-id="${client.id}">Delete</button>
           </div>
         </div>
         <div class="record-right">
@@ -4786,6 +6649,9 @@ function fillQuoteForm(data) {
 
 function resetQuoteForm(options = {}) {
   const { preserveMode = false, keepClientSelection = true } = options;
+  editingQuoteId = null;
+  const submitButton = els.quoteForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.textContent = "Save quote";
   els.quoteForm.reset();
   if (!preserveMode) {
     activeQuoteStartMode = "client";
@@ -4799,29 +6665,36 @@ function resetQuoteForm(options = {}) {
     els.quoteClientSelect.selectedIndex = -1;
   }
   syncSelectedQuoteClientDetails();
+  const templates = getTradeTemplates();
   els.quoteJobNameInput.value = "";
-  els.quoteDescriptionInput.value = "";
-  els.quoteLabourItemsInput.value = "Labour allowance";
-  els.quoteMaterialItemsInput.value = "Material allowance";
-  els.quoteLabourAmountInput.value = "2400.00";
-  els.quoteMaterialAmountInput.value = "1800.00";
-  els.quoteNotesInput.value = "Standard exclusions apply unless listed here.";
+  els.quoteDescriptionInput.value = templates.scope;
+  els.quoteLabourItemsInput.value = templates.labour;
+  els.quoteMaterialItemsInput.value = templates.materials;
+  els.quoteLabourAmountInput.value = "0.00";
+  els.quoteMaterialAmountInput.value = "0.00";
+  const selectedClient = currentUser.clients.find((item) => item.id === els.quoteClientSelect.value);
+  els.quoteNotesInput.value = selectedClient?.notes || "";
   setQuoteFormDefaults();
   recalculateQuoteTotals();
 }
 
 function setQuoteFormDefaults() {
+  const templates = getTradeTemplates();
   if (!els.quoteExpiryInput.value) {
     els.quoteExpiryInput.value = toDateInputValue(new Date(Date.now() + Number(currentUser.defaultQuoteExpiryDays || 14) * 86400000).toISOString());
   }
-  if (!els.quoteLabourItemsInput.value.trim()) {
-    els.quoteLabourItemsInput.value = "Labour allowance";
+  if (isGeneratedTradeTemplateValue(els.quoteDescriptionInput.value, "scope")) {
+    els.quoteDescriptionInput.value = templates.scope;
   }
-  if (!els.quoteMaterialItemsInput.value.trim()) {
-    els.quoteMaterialItemsInput.value = "Material allowance";
+  if (isGeneratedTradeTemplateValue(els.quoteLabourItemsInput.value, "labour") || els.quoteLabourItemsInput.value.trim() === "Labour allowance") {
+    els.quoteLabourItemsInput.value = templates.labour;
+  }
+  if (isGeneratedTradeTemplateValue(els.quoteMaterialItemsInput.value, "materials") || els.quoteMaterialItemsInput.value.trim() === "Material allowance") {
+    els.quoteMaterialItemsInput.value = templates.materials;
   }
   if (!els.quoteNotesInput.value.trim()) {
-    els.quoteNotesInput.value = "Standard exclusions apply unless listed here.";
+    const selectedClient = currentUser.clients.find((item) => item.id === els.quoteClientSelect.value);
+    els.quoteNotesInput.value = selectedClient?.notes || "Standard exclusions apply unless listed here.";
   }
   recalculateQuoteTotals();
 }
@@ -4830,7 +6703,7 @@ function recalculateQuoteTotals() {
   const labourAmount = Number(els.quoteLabourAmountInput.value || 0);
   const materialAmount = Number(els.quoteMaterialAmountInput.value || 0);
   const subtotal = labourAmount + materialAmount;
-  const gst = roundCurrency(subtotal * 0.1);
+  const gst = isGstEnabled(currentUser?.gstMode) ? roundCurrency(subtotal * 0.1) : 0;
   els.quoteGstInput.value = gst.toFixed(2);
   els.quoteTotalInput.value = roundCurrency(subtotal + gst).toFixed(2);
   renderQuoteBuilderSummary();
@@ -4912,11 +6785,24 @@ function openQuotePreview(quoteId) {
 
   selectedQuoteId = quoteId;
   const status = getQuoteStatus(quote);
+  const profile = getBusinessProfile();
+  const logoMarkup = profile.hasUploadedLogo || profile.businessLogo
+    ? `<img src="${escapeHtml(profile.businessLogo)}" alt="${escapeHtml(profile.businessName)} logo" class="invoice-brand-logo">`
+    : `<div class="invoice-brand-name">${escapeHtml(profile.businessName)}</div>`;
   els.quotePreviewContent.innerHTML = `
     <div class="quote-preview-shell">
+      <div class="invoice-document-brand">
+        <div class="invoice-brand-lockup">
+          ${logoMarkup}
+          <div>
+            <strong>${escapeHtml(profile.businessName)}</strong>
+            <p class="quote-preview-copy">ABN ${escapeHtml(profile.abn || "ABN to confirm")}<br>${escapeHtml(profile.businessAddress || "Business address to confirm")}<br>${escapeHtml(profile.businessEmail || "Business email to confirm")}${profile.businessPhone ? `<br>${escapeHtml(profile.businessPhone)}` : ""}</p>
+          </div>
+        </div>
+        <span class="status-badge ${quoteStatusClass(status)}">${escapeHtml(status)}</span>
+      </div>
       <div class="quote-preview-top">
         <div>
-          <span class="status-badge ${quoteStatusClass(status)}">${escapeHtml(status)}</span>
           <h3 id="quotePreviewTitle">${escapeHtml(quote.quoteNumber)} / ${escapeHtml(quote.jobName)}</h3>
           <p class="quote-preview-copy">${escapeHtml(quote.description)}</p>
         </div>
@@ -4956,6 +6842,7 @@ function openQuotePreview(quoteId) {
       </div>
 
       <p class="quote-preview-copy"><strong>Notes:</strong> ${escapeHtml(quote.notes || "No exclusions added.")}</p>
+      <p class="quote-preview-copy invoice-document-footer">${escapeHtml(profile.businessName)} / ${escapeHtml(profile.paymentTerms)} terms / ${escapeHtml(profile.paymentMethod)}</p>
     </div>
   `;
   els.quotePreviewOverlay.classList.remove("hidden");
@@ -4964,7 +6851,7 @@ function openQuotePreview(quoteId) {
 function getVisibleInvoices() {
   return currentUser.invoices
     .filter((invoice) => {
-      const status = getInvoiceStatus(invoice);
+      const status = getInvoiceDisplayStatus(invoice);
       const searchable = [
         invoice.invoiceNumber,
         invoice.client,
@@ -4973,7 +6860,10 @@ function getVisibleInvoices() {
         invoice.notes,
         status,
       ].join(" ").toLowerCase();
-      const matchesFilter = activeInvoiceFilter === "All" || status === activeInvoiceFilter;
+      const matchesFilter = activeInvoiceFilter === "All"
+        || status === activeInvoiceFilter
+        || (activeInvoiceFilter === "Unpaid" && status === "Sent")
+        || (activeInvoiceFilter === "Draft" && status === "Scheduled");
       const matchesSearch = !invoiceSearchQuery || searchable.includes(invoiceSearchQuery);
       return matchesFilter && matchesSearch;
     })
@@ -4981,7 +6871,7 @@ function getVisibleInvoices() {
 }
 
 function getInvoiceStatus(invoice) {
-  if (["Paid", "Draft", "Pending approval", "Approved"].includes(invoice.status)) {
+  if (["Paid", "Draft", "Scheduled", "Pending approval", "Approved", "Sent"].includes(invoice.status)) {
     return invoice.status;
   }
   const dueTime = new Date(`${invoice.dueDate}T23:59:59`).getTime();
@@ -4994,6 +6884,8 @@ function getInvoiceStatus(invoice) {
 function invoiceStatusClass(status) {
   if (status === "Paid") return "status-paid";
   if (status === "Draft") return "status-draft";
+  if (status === "Scheduled") return "status-sent";
+  if (status === "Sent") return "status-sent";
   if (status === "Pending approval") return "status-draft";
   if (status === "Approved") return "status-active";
   if (status === "Overdue") return "status-overdue";
@@ -5002,7 +6894,7 @@ function invoiceStatusClass(status) {
 
 function refreshOverdueInvoices() {
   currentUser.invoices.forEach((invoice) => {
-    if (!["Paid", "Draft", "Pending approval", "Approved"].includes(invoice.status)) {
+    if (!["Paid", "Draft", "Scheduled", "Pending approval", "Approved", "Sent"].includes(invoice.status)) {
       invoice.status = getInvoiceStatus(invoice);
     }
   });
@@ -5172,6 +7064,9 @@ function fillInvoiceForm(data) {
 
 function resetInvoiceForm(options = {}) {
   const { preserveMode = false } = options;
+  editingInvoiceId = null;
+  const submitButton = els.invoiceForm.querySelector('button[type="submit"][data-invoice-submit="draft"]') || els.invoiceForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.textContent = "Save draft";
   els.invoiceForm.reset();
   syncInvoiceSourceSelect("");
   invoiceQuoteSearchQuery = "";
@@ -5192,30 +7087,39 @@ function resetInvoiceForm(options = {}) {
     activeInvoiceStartMode = "quote";
   }
   syncInvoiceStartUi();
+  const templates = getTradeTemplates();
   els.invoiceSiteAddressInput.value = "";
   els.invoiceJobNameInput.value = "";
-  els.invoiceLineDescription1.value = "Materials supplied";
+  els.invoiceLineDescription1.value = templates.invoiceItems[1] || templates.materials;
   els.invoiceLineQty1.value = "1";
-  els.invoiceLineRate1.value = "850.00";
-  els.invoiceLineDescription2.value = "Labour completed";
+  els.invoiceLineRate1.value = "0.00";
+  els.invoiceLineDescription2.value = templates.invoiceItems[0] || templates.labour;
   els.invoiceLineQty2.value = "1";
-  els.invoiceLineRate2.value = "1150.00";
+  els.invoiceLineRate2.value = "0.00";
   els.invoiceTypeSelect.value = "Final invoice";
   els.invoiceStatusSelect.value = "Draft";
   if (els.invoiceApprovalRequiredSelect) {
     els.invoiceApprovalRequiredSelect.value = "no";
   }
-  els.invoicePaymentMethodSelect.value = "Bank transfer";
-  els.invoiceNotesInput.value = "Please include the invoice number as the payment reference.";
+  els.invoicePaymentMethodSelect.value = currentUser.paymentMethod || "Bank transfer";
+  const selectedClient = currentUser.clients.find((item) => item.id === els.invoiceClientSelect.value);
+  els.invoiceNotesInput.value = selectedClient?.notes || "Please include the invoice number as the payment reference.";
   els.invoiceAttachmentInput.value = "Photos, receipts, and signed site notes available on request.";
   setInvoiceFormDefaults();
   recalculateInvoiceTotals();
-  renderInvoiceClientWarning(null);
+  renderInvoiceClientWarning(selectedClient || null);
 }
 
 function setInvoiceFormDefaults() {
+  const templates = getTradeTemplates();
   if (!els.invoiceIssueDateInput.value) {
     els.invoiceIssueDateInput.value = toDateInputValue(new Date().toISOString());
+  }
+  if (!els.invoiceLineDescription1.value.trim()) {
+    els.invoiceLineDescription1.value = templates.invoiceItems[1] || templates.materials;
+  }
+  if (!els.invoiceLineDescription2.value.trim()) {
+    els.invoiceLineDescription2.value = templates.invoiceItems[0] || templates.labour;
   }
   if (!els.invoiceTermsSelect.value) {
     els.invoiceTermsSelect.value = currentUser?.defaultPaymentTerms || "14 days";
@@ -5236,7 +7140,7 @@ function recalculateInvoiceTotals() {
   const materialsAmount = roundCurrency(Number(els.invoiceLineQty1.value || 0) * Number(els.invoiceLineRate1.value || 0));
   const labourAmount = roundCurrency(Number(els.invoiceLineQty2.value || 0) * Number(els.invoiceLineRate2.value || 0));
   const subtotal = materialsAmount + labourAmount;
-  const gstEnabled = currentUser?.gstMode !== "GST free";
+  const gstEnabled = isGstEnabled(currentUser?.gstMode);
   const gst = gstEnabled ? roundCurrency(subtotal * 0.1) : 0;
   els.invoiceLineTotal1.value = formatMoney(materialsAmount);
   els.invoiceLineTotal2.value = formatMoney(labourAmount);
@@ -5279,9 +7183,11 @@ function syncInvoiceDueDateFromTerms() {
 
 function syncInvoiceGstNote() {
   if (!els.invoiceGstNote) return;
-  els.invoiceGstNote.textContent = currentUser?.gstMode === "GST free"
+  els.invoiceGstNote.textContent = !isGstEnabled(currentUser?.gstMode)
     ? "GST is off from your saved settings. Totals are staying GST-free."
-    : "GST is on from your saved settings. Totals update automatically.";
+    : currentUser?.gstMode === "Not sure"
+      ? "GST is marked as not sure. Totals are staying GST-on until you confirm in settings."
+      : "GST is on from your saved settings. Totals update automatically.";
 }
 
 function getInvoiceLineItems() {
@@ -5299,6 +7205,128 @@ function getInvoiceLineItems() {
       total: roundCurrency(Number(els.invoiceLineQty2.value || 0) * Number(els.invoiceLineRate2.value || 0)),
     },
   ].filter((item) => item.description || item.total > 0);
+}
+
+function getInvoiceClientRecord(invoice) {
+  return currentUser.clients.find((item) => item.id === invoice.clientId || item.name === invoice.client) || null;
+}
+
+function getInvoiceDisplayStatus(invoice) {
+  const dueTime = new Date(`${invoice.dueDate}T23:59:59`).getTime();
+  if (invoice.status === "Sent" && !Number.isNaN(dueTime) && dueTime < Date.now()) {
+    return "Overdue";
+  }
+  return getInvoiceStatus(invoice);
+}
+
+function getInvoiceEmailPayload(invoice) {
+  const profile = getBusinessProfile();
+  return {
+    senderName: profile.businessName,
+    subject: `${invoice.invoiceNumber} | Invoice for ${invoice.job}`,
+    body: [
+      `Hi ${invoice.client},`,
+      "",
+      `Attached is your invoice from ${profile.businessName} for ${invoice.job}.`,
+      "",
+      "Please let me know if you need anything clarified.",
+      "",
+      "Thanks,",
+      profile.businessName,
+    ].join("\n"),
+    attachmentName: `${invoice.invoiceNumber}.pdf`,
+  };
+}
+
+function getInvoiceDocumentHtml(invoice) {
+  const client = getInvoiceClientRecord(invoice);
+  const profile = getBusinessProfile();
+  const businessName = profile.businessName;
+  const businessEmail = profile.businessEmail;
+  const businessPhone = profile.businessPhone;
+  const businessAddress = profile.businessAddress;
+  const lineItems = (invoice.lineItems || []).length ? invoice.lineItems : [
+    { description: "Materials supplied", qty: 1, rate: Number(invoice.materialsAmount || 0), total: Number(invoice.materialsAmount || 0) },
+    { description: "Labour completed", qty: 1, rate: Number(invoice.labourAmount || 0), total: Number(invoice.labourAmount || 0) },
+  ];
+  const subtotal = lineItems.reduce((sum, item) => sum + Number(item.total || (Number(item.qty || 0) * Number(item.rate || 0))), 0);
+  const displayStatus = getInvoiceDisplayStatus(invoice);
+  const emailPayload = getInvoiceEmailPayload(invoice);
+  const sentCopy = invoice.sentAt
+    ? `<p class="quote-preview-copy"><strong>Sent:</strong> ${escapeHtml(formatDate(invoice.sentAt))}${invoice.sentTo ? ` / ${escapeHtml(invoice.sentTo)}` : ""}</p>`
+    : "";
+  const logoMarkup = profile.businessLogo
+    ? `<img src="${escapeHtml(profile.businessLogo)}" alt="${escapeHtml(businessName)} logo" class="invoice-brand-logo">`
+    : `<div class="invoice-brand-name">${escapeHtml(businessName)}</div>`;
+
+  return `
+    <div class="quote-preview-shell invoice-document-shell" id="invoicePrintArea">
+      <div class="invoice-document-brand">
+        <div class="invoice-brand-lockup">
+          ${logoMarkup}
+          <div>
+            <strong>${escapeHtml(businessName)}</strong>
+            <p class="quote-preview-copy">ABN ${escapeHtml(profile.abn || "ABN to confirm")}<br>${escapeHtml(businessAddress || "Business address to confirm")}<br>${escapeHtml(businessEmail || "Business email to confirm")}${businessPhone ? `<br>${escapeHtml(businessPhone)}` : ""}</p>
+          </div>
+        </div>
+        <span class="status-badge ${invoiceStatusClass(displayStatus)}">${escapeHtml(getInvoiceBadgeLabel(displayStatus))}</span>
+      </div>
+
+      <div class="quote-preview-top invoice-document-top">
+        <div>
+          <h3 id="invoicePreviewTitle">${escapeHtml(invoice.invoiceNumber)}</h3>
+          <p class="quote-preview-copy">${escapeHtml(invoice.job || "Invoice")}</p>
+        </div>
+        <div class="quote-preview-meta">
+          <div>Invoice date ${formatDate(invoice.issueDate)}</div>
+          <div>Due date ${formatDate(invoice.dueDate)}</div>
+          <div>${escapeHtml(invoice.paymentTerms || currentUser.defaultPaymentTerms || "14 days")}</div>
+        </div>
+      </div>
+
+      <div class="quote-breakdown-grid">
+        <div class="quote-total-box">
+          <span>Client</span>
+          <strong>${escapeHtml(invoice.client)}</strong>
+          <p class="quote-preview-copy">${escapeHtml(client?.address || invoice.siteAddress || "Address to confirm")}<br>${escapeHtml(invoice.clientEmail || client?.email || "Email to confirm")}</p>
+        </div>
+        <div class="quote-total-box">
+          <span>Payment</span>
+          <strong>${escapeHtml(invoice.paymentMethod || currentUser.paymentMethod || "Bank transfer")}</strong>
+          <p class="quote-preview-copy">Terms ${escapeHtml(invoice.paymentTerms || currentUser.defaultPaymentTerms || "14 days")}<br>Amount due ${formatMoney(Number(invoice.amount || 0))}</p>
+        </div>
+      </div>
+
+      <div class="invoice-line-table">
+        <div class="invoice-line-head">
+          <span>Description</span>
+          <span>Qty</span>
+          <span>Rate</span>
+          <span>Total</span>
+        </div>
+        ${lineItems.map((item) => `
+          <div class="invoice-line-row">
+            <span>${escapeHtml(item.description || "")}</span>
+            <span>${escapeHtml(String(item.qty || 0))}</span>
+            <span>${formatMoney(Number(item.rate || 0))}</span>
+            <strong>${formatMoney(Number(item.total || (Number(item.qty || 0) * Number(item.rate || 0))))}</strong>
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="invoice-total-stack">
+        <div><span>Subtotal</span><strong>${formatMoney(subtotal)}</strong></div>
+        <div><span>GST</span><strong>${formatMoney(Number(invoice.gst || 0))}</strong></div>
+        <div class="is-total"><span>Total</span><strong>${formatMoney(Number(invoice.amount || 0))}</strong></div>
+      </div>
+
+      <p class="quote-preview-copy"><strong>Email subject:</strong> ${escapeHtml(emailPayload.subject)}</p>
+      <p class="quote-preview-copy"><strong>Email body:</strong><br>${escapeHtml(emailPayload.body).replaceAll("\n", "<br>")}</p>
+      ${invoice.notes ? `<p class="quote-preview-copy"><strong>Notes:</strong> ${escapeHtml(invoice.notes)}</p>` : ""}
+      ${sentCopy}
+      <p class="quote-preview-copy invoice-document-footer">Thank you for your business.</p>
+    </div>
+  `;
 }
 
 function calculateDueDate(issueDate, paymentTerms) {
@@ -5333,58 +7361,7 @@ function openInvoicePreview(invoiceId) {
   if (!invoice) return;
 
   selectedInvoiceId = invoiceId;
-  const status = getInvoiceStatus(invoice);
-  const balanceCopy = status === "Paid"
-    ? "Paid in full"
-    : `Amount owing ${formatMoney(invoice.amount)} due ${formatDate(invoice.dueDate)}`;
-
-  els.invoicePreviewContent.innerHTML = `
-    <div class="quote-preview-shell" id="invoicePrintArea">
-      <div class="quote-preview-top">
-        <div>
-          <span class="status-badge ${invoiceStatusClass(status)}">${escapeHtml(status)}</span>
-          <h3 id="invoicePreviewTitle">${escapeHtml(invoice.invoiceNumber)} / ${escapeHtml(invoice.job)}</h3>
-          <p class="quote-preview-copy">${escapeHtml(invoice.notes)}</p>
-        </div>
-        <div class="quote-preview-meta">
-          <div><strong>${formatMoney(invoice.amount)}</strong></div>
-          <div>Issued ${formatDate(invoice.issueDate)}</div>
-          <div>Due ${formatDate(invoice.dueDate)}</div>
-          <div>${escapeHtml(invoice.paymentMethod)}</div>
-        </div>
-      </div>
-
-      <div class="quote-breakdown-grid">
-        <div class="quote-total-box">
-          <span>Bill to</span>
-          <strong>${escapeHtml(invoice.client)}</strong>
-          <p class="quote-preview-copy">${escapeHtml(invoice.clientPhone || "No phone")}<br>${escapeHtml(invoice.clientEmail)}<br>Terms: ${escapeHtml(invoice.paymentTerms)}</p>
-        </div>
-        <div class="quote-total-box">
-          <span>Money owed</span>
-          <strong>${formatMoney(invoice.amount)}</strong>
-          <p class="quote-preview-copy">${escapeHtml(balanceCopy)}</p>
-        </div>
-      </div>
-
-      <div class="quote-line-table">
-        <div class="quote-line-row">
-          <span>Labour for ${escapeHtml(invoice.job)}</span>
-          <strong>${formatMoney(invoice.labourAmount)}</strong>
-        </div>
-        <div class="quote-line-row">
-          <span>Materials for ${escapeHtml(invoice.job)}</span>
-          <strong>${formatMoney(invoice.materialsAmount)}</strong>
-        </div>
-        <div class="quote-line-row">
-          <span>GST</span>
-          <strong>${formatMoney(invoice.gst)}</strong>
-        </div>
-      </div>
-
-      <p class="quote-preview-copy"><strong>Attachments:</strong> ${escapeHtml(invoice.attachmentsNote || "None added.")}</p>
-    </div>
-  `;
+  els.invoicePreviewContent.innerHTML = getInvoiceDocumentHtml(invoice);
   els.invoicePreviewOverlay.classList.remove("hidden");
 }
 
@@ -5397,44 +7374,35 @@ function sendInvoiceById(invoiceId) {
     return;
   }
 
-  if (invoice.status === "Approved") {
-    invoice.status = getInvoiceStatus({ ...invoice, status: "Unpaid" });
-  }
+  const recipientEmail = ensureRecordEmail({
+    email: invoice.clientEmail,
+    clientId: invoice.clientId,
+    clientName: invoice.client,
+    label: "invoice",
+  });
+  if (!recipientEmail) return;
+  invoice.clientEmail = recipientEmail;
 
-  if (invoice.status === "Draft") {
-    invoice.status = getInvoiceStatus({ ...invoice, status: "Unpaid" });
+  if (invoice.status === "Approved" || ["Draft", "Scheduled", "Unpaid"].includes(invoice.status)) {
+    invoice.status = "Sent";
   }
-
-  const subject = encodeURIComponent(`${invoice.invoiceNumber} - Invoice for ${invoice.job}`);
-  const body = encodeURIComponent(
-    [
-      `Hi ${invoice.client},`,
-      "",
-      `Please find ${invoice.invoiceNumber} for ${invoice.job}.`,
-      `Labour: ${formatMoney(invoice.labourAmount)}`,
-      `Materials: ${formatMoney(invoice.materialsAmount)}`,
-      `GST: ${formatMoney(invoice.gst)}`,
-      `Total inc GST: ${formatMoney(invoice.amount)}`,
-      `Due date: ${formatDate(invoice.dueDate)}`,
-      `Payment method: ${invoice.paymentMethod}`,
-      `Payment terms: ${invoice.paymentTerms}`,
-      "",
-      invoice.notes,
-      invoice.attachmentsNote ? `Supporting notes: ${invoice.attachmentsNote}` : "",
-      "",
-      "Cheers,",
-      currentUser.name,
-    ].filter(Boolean).join("\n")
-  );
+  invoice.scheduledSendAt = null;
+  invoice.sentAt = new Date().toISOString();
+  invoice.sentTo = recipientEmail;
+  invoice.sentBy = currentUser.businessName || currentUser.name;
+  invoice.emailPayload = getInvoiceEmailPayload(invoice);
+  invoice.generatedPdfName = `${invoice.invoiceNumber}.pdf`;
+  invoice.generatedPdfHtml = getInvoiceDocumentHtml(invoice);
 
   persistCurrentUser();
   renderWorkspace();
-  window.location.href = `mailto:${invoice.clientEmail}?subject=${subject}&body=${body}`;
+  showToast(`Invoice sent to ${recipientEmail}`);
 }
 
 function exportInvoicePdf(invoiceId) {
   const invoice = currentUser.invoices.find((item) => item.id === invoiceId);
   if (!invoice) return;
+  const profile = getBusinessProfile();
 
   const popup = window.open("", "_blank");
   if (!popup) {
@@ -5442,44 +7410,82 @@ function exportInvoicePdf(invoiceId) {
     return;
   }
 
-  const status = getInvoiceStatus(invoice);
+  const status = getInvoiceDisplayStatus(invoice);
   popup.document.write(`
     <html>
       <head>
         <title>${escapeHtml(invoice.invoiceNumber)}</title>
         <style>
-          body { font-family: Arial, sans-serif; padding: 32px; color: #0b3d2c; }
-          .top { display: flex; justify-content: space-between; gap: 24px; }
+          body { font-family: Arial, sans-serif; padding: 32px; color: #0b3d2c; background: #f8fbf8; }
+          .sheet { max-width: 900px; margin: 0 auto; background: #fff; border: 1px solid #dce8e0; border-radius: 24px; padding: 32px; }
+          .top { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; }
+          .brand { display: flex; gap: 18px; align-items: flex-start; }
+          .brand img { max-width: 96px; max-height: 64px; object-fit: contain; }
           .badge { display: inline-block; padding: 8px 12px; border-radius: 999px; background: #e6f6ec; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+          .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 24px; }
+          .box { border: 1px solid #dce8e0; border-radius: 18px; padding: 18px; }
           table { width: 100%; border-collapse: collapse; margin-top: 24px; }
-          td { border: 1px solid #dce8e0; padding: 14px; }
-          .total { margin-top: 24px; font-size: 28px; font-weight: 800; }
+          th, td { border-bottom: 1px solid #dce8e0; padding: 14px; text-align: left; }
+          th:last-child, td:last-child { text-align: right; }
+          .totals { margin-top: 24px; margin-left: auto; width: min(320px, 100%); }
+          .totals div { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #dce8e0; }
+          .totals div:last-child { font-size: 24px; font-weight: 800; }
           .muted { color: #60756b; line-height: 1.6; }
+          .footer { margin-top: 28px; color: #60756b; }
         </style>
       </head>
       <body>
-        <div class="top">
-          <div>
-            <div class="badge">${escapeHtml(status)}</div>
-            <h1>${escapeHtml(invoice.invoiceNumber)}</h1>
-            <p class="muted">${escapeHtml(currentUser.businessName)} / ABN ${escapeHtml(currentUser.abn)}</p>
+        <div class="sheet">
+          <div class="top">
+            <div class="brand">
+              ${profile.businessLogo ? `<img src="${escapeHtml(profile.businessLogo)}" alt="${escapeHtml(profile.businessName)} logo">` : ""}
+              <div>
+                <h1>${escapeHtml(profile.businessName)}</h1>
+                <p class="muted">ABN ${escapeHtml(profile.abn || "ABN to confirm")}<br>${escapeHtml(profile.businessAddress || "Business address to confirm")}<br>${escapeHtml(profile.businessEmail || "")}${profile.businessPhone ? `<br>${escapeHtml(profile.businessPhone)}` : ""}</p>
+              </div>
+            </div>
+            <div>
+              <div class="badge">${escapeHtml(getInvoiceBadgeLabel(status))}</div>
+              <h2>${escapeHtml(invoice.invoiceNumber)}</h2>
+            </div>
           </div>
-          <div>
-            <p><strong>Issue:</strong> ${formatDate(invoice.issueDate)}</p>
-            <p><strong>Due:</strong> ${formatDate(invoice.dueDate)}</p>
-            <p><strong>Payment:</strong> ${escapeHtml(invoice.paymentMethod)}</p>
+
+          <div class="grid">
+            <div class="box">
+              <strong>Client</strong>
+              <p class="muted">${escapeHtml(invoice.client)}<br>${escapeHtml(getInvoiceClientRecord(invoice)?.address || invoice.siteAddress || "Address to confirm")}<br>${escapeHtml(invoice.clientEmail || "")}</p>
+            </div>
+            <div class="box">
+              <strong>Invoice details</strong>
+              <p class="muted">Invoice date ${formatDate(invoice.issueDate)}<br>Due date ${formatDate(invoice.dueDate)}<br>${escapeHtml(invoice.paymentMethod)} / ${escapeHtml(invoice.paymentTerms)}</p>
+            </div>
           </div>
+
+          <table>
+            <thead>
+              <tr><th>Description</th><th>Qty</th><th>Rate</th><th>Total</th></tr>
+            </thead>
+            <tbody>
+              ${(invoice.lineItems || []).map((item) => `
+                <tr>
+                  <td>${escapeHtml(item.description || "")}</td>
+                  <td>${escapeHtml(String(item.qty || 0))}</td>
+                  <td>${formatMoney(Number(item.rate || 0))}</td>
+                  <td>${formatMoney(Number(item.total || (Number(item.qty || 0) * Number(item.rate || 0))))}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+
+          <div class="totals">
+            <div><span>Subtotal</span><strong>${formatMoney((invoice.lineItems || []).reduce((sum, item) => sum + Number(item.total || (Number(item.qty || 0) * Number(item.rate || 0))), 0))}</strong></div>
+            <div><span>GST</span><strong>${formatMoney(Number(invoice.gst || 0))}</strong></div>
+            <div><span>Total</span><strong>${formatMoney(Number(invoice.amount || 0))}</strong></div>
+          </div>
+
+          <p class="muted">${escapeHtml(invoice.notes || "")}</p>
+          <p class="footer">Thank you for your business.</p>
         </div>
-        <h2>Bill to ${escapeHtml(invoice.client)}</h2>
-        <p class="muted">${escapeHtml(invoice.clientEmail)}<br>${escapeHtml(invoice.clientPhone || "")}</p>
-        <table>
-          <tr><td>Labour - ${escapeHtml(invoice.job)}</td><td>${formatMoney(invoice.labourAmount)}</td></tr>
-          <tr><td>Materials - ${escapeHtml(invoice.job)}</td><td>${formatMoney(invoice.materialsAmount)}</td></tr>
-          <tr><td>GST</td><td>${formatMoney(invoice.gst)}</td></tr>
-        </table>
-        <div class="total">Amount owing ${formatMoney(invoice.amount)}</div>
-        <p class="muted">${escapeHtml(invoice.notes)}</p>
-        <p class="muted">${escapeHtml(invoice.attachmentsNote || "")}</p>
         <script>window.print();<\/script>
       </body>
     </html>
@@ -5541,10 +7547,12 @@ function applyExpenseToLinkedJob(expense) {
     || currentUser.archivedJobs.find((job) => job.id === expense.jobId);
   if (!linkedJob) return;
 
-  linkedJob.materialCost = roundCurrency(Number(linkedJob.materialCost || 0) + Math.max(0, Number(expense.amount || 0) - Number(expense.gst || 0)));
-  linkedJob.internalNotes = linkedJob.internalNotes
-    ? `${linkedJob.internalNotes} | Expense logged: ${expense.supplier} ${formatMoney(expense.amount)}`
-    : `Expense logged: ${expense.supplier} ${formatMoney(expense.amount)}`;
+  const logLine = `Expense logged: ${expense.supplier} ${formatMoney(expense.amount)}`;
+  if (!String(linkedJob.internalNotes || "").includes(logLine)) {
+    linkedJob.internalNotes = linkedJob.internalNotes
+      ? `${linkedJob.internalNotes} | ${logLine}`
+      : logLine;
+  }
 }
 
 function renderPayrollQuickSummary() {
@@ -5591,6 +7599,8 @@ function handleExpenseReceiptUpload() {
 
   const reader = new FileReader();
   reader.onload = () => {
+    activeExpenseStartMode = "receipt";
+    syncExpenseStartUi();
     pendingExpenseReceipt = {
       name: file.name,
       data: String(reader.result || ""),
@@ -5603,6 +7613,8 @@ function handleExpenseReceiptUpload() {
     } else {
       els.expenseReceiptPreviewImage.src = "assets/receipt-sample.jpg";
     }
+    showToast(`${file.name} attached.`);
+    focusExpenseManualEntry();
   };
   reader.readAsDataURL(file);
 }
@@ -5621,6 +7633,9 @@ function handleSettingsLogoUpload() {
 }
 
 function resetExpenseForm() {
+  editingExpenseId = null;
+  const submitButton = els.expenseForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.textContent = "Save expense";
   els.expenseForm.reset();
   pendingExpenseReceipt = null;
   els.expenseReceiptPreviewWrap.classList.add("hidden");
@@ -5647,6 +7662,10 @@ function recalculateExpenseGst() {
 }
 
 function setPayrollFormDefaults() {
+  if (!editingPayrollEmployeeId) {
+    const submitButton = els.payrollEmployeeForm.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.textContent = "Save worker";
+  }
   if (!els.payrollLastPayInput.value) {
     els.payrollLastPayInput.value = toDateInputValue(new Date(Date.now() - 604800000).toISOString());
   }
@@ -5655,22 +7674,29 @@ function setPayrollFormDefaults() {
 
 function handlePayrollEmployeeSubmit(event) {
   event.preventDefault();
-  if (!canAddMorePayrollStaff()) {
+  if (!editingPayrollEmployeeId && !canAddMorePayrollStaff()) {
     showToast(`Your ${currentUser.plan} plan includes up to ${getPlanUserLimit()} workers.`);
     return;
   }
-  flashSaving(els.payrollEmployeeForm, "Saving staff...");
+  flashSaving(els.payrollEmployeeForm, editingPayrollEmployeeId ? "Updating worker..." : "Saving staff...");
   const data = Object.fromEntries(new FormData(els.payrollEmployeeForm));
-  savePayrollEmployeePayload(buildPayrollEmployeePayload(data));
+  const isEditing = Boolean(editingPayrollEmployeeId);
+  const existingEmployee = editingPayrollEmployeeId
+    ? currentUser.payrollEmployees.find((staff) => staff.id === editingPayrollEmployeeId) || null
+    : null;
+  const employeePayload = savePayrollEmployeePayload(buildPayrollEmployeePayload(data, { existingEmployee }), { existingEmployeeId: editingPayrollEmployeeId });
+  editingPayrollEmployeeId = null;
+  els.payrollEmployeeForm.querySelector('button[type="submit"]').textContent = "Save worker";
   els.payrollEmployeeForm.reset();
   setPayrollFormDefaults();
   renderWorkspace();
+  showToast(isEditing ? `${employeePayload.name} updated.` : `${employeePayload.name} added to payroll.`);
 }
 
 function handleQuickEmployeeSubmit(event) {
   event.preventDefault();
   if (!els.quickEmployeeForm) return;
-  if (!canAddMorePayrollStaff()) {
+  if (!editingPayrollEmployeeId && !canAddMorePayrollStaff()) {
     showToast(`Your ${currentUser.plan} plan includes up to ${getPlanUserLimit()} workers.`);
     return;
   }
@@ -5889,6 +7915,10 @@ function renderPayroll() {
         <p class="payroll-person-note"><strong>Tax file:</strong> ${escapeHtml(staff.taxFile)}</p>
         <p class="payroll-person-note"><strong>Bank:</strong> ${escapeHtml(staff.bankDetails)}</p>
         <p class="payroll-person-note">${escapeHtml(staff.notes)}</p>
+        <div class="record-actions">
+          <button class="mini-action" type="button" data-payroll-employee-action="edit" data-payroll-employee-id="${staff.id}">Edit</button>
+          <button class="mini-action" type="button" data-payroll-employee-action="delete" data-payroll-employee-id="${staff.id}">Delete</button>
+        </div>
       </article>
     `;
     }).join("") : (
@@ -5957,11 +7987,13 @@ function renderQuotes() {
           <span>${escapeHtml(quote.notes || "No exclusions listed.")}</span>
           <div class="record-actions">
             <button class="mini-action" type="button" data-quote-action="preview" data-quote-id="${quote.id}">Preview</button>
+            <button class="mini-action" type="button" data-quote-action="edit" data-quote-id="${quote.id}">Edit</button>
             <button class="mini-action" type="button" data-quote-action="send" data-quote-id="${quote.id}">Send quote</button>
             <button class="mini-action" type="button" data-quote-action="accept" data-quote-id="${quote.id}">Mark accepted</button>
             <button class="mini-action" type="button" data-quote-action="reject" data-quote-id="${quote.id}">Mark rejected</button>
             ${quoteStatus === "Accepted" ? `<button class="mini-action" type="button" data-quote-action="job" data-quote-id="${quote.id}">${jobButtonLabel}</button>` : ""}
             ${quoteStatus === "Accepted" ? `<button class="mini-action" type="button" data-quote-action="invoice" data-quote-id="${quote.id}">Convert to invoice</button>` : ""}
+            <button class="mini-action" type="button" data-quote-action="delete" data-quote-id="${quote.id}">Delete</button>
           </div>
         </div>
         <div class="record-right">
@@ -6002,10 +8034,12 @@ function renderJobs() {
             <span class="client-chip">Invoice ${escapeHtml(job.invoiceStatus)}</span>
           </div>
           <div class="record-actions">
+            <button class="mini-action" type="button" data-action="edit" data-job-id="${job.id}">Edit job</button>
             <button class="mini-action" type="button" data-action="quote" data-job-id="${job.id}">Convert to quote</button>
             <button class="mini-action" type="button" data-action="complete" data-job-id="${job.id}">Mark complete</button>
             <button class="mini-action" type="button" data-action="invoice" data-job-id="${job.id}">Convert to invoice</button>
             <button class="mini-action" type="button" data-action="archive" data-job-id="${job.id}">Archive</button>
+            <button class="mini-action" type="button" data-action="delete" data-job-id="${job.id}">Delete</button>
           </div>
           <details class="record-details">
             <summary>View job details</summary>
@@ -6050,16 +8084,18 @@ function renderTeamJobBoard() {
 
   els.teamJobBoardCard.classList.toggle("is-plan-locked", !canUseTeamBoard);
   setLockedPrompt(els.teamJobBoardLockedPrompt, {
-    eyebrow: "Crew feature",
-    title: "Team job board is available on Crew plan",
+    eyebrow: "Team management",
+    title: "Team job board",
     copy: "See assigned jobs, next calls, and margin pressure across your crew in one place.",
     feature: "teamJobBoard",
     buttonLabel: "Upgrade plan",
   }, !canUseTeamBoard);
 
   if (!canUseTeamBoard) {
-    els.teamJobBoardCount.textContent = "Crew feature";
-    els.teamJobBoard.innerHTML = emptyCard("Unlock crew visibility", "Upgrade to Crew to see jobs grouped by worker, with next actions and margin risk.");
+    els.teamJobBoardCount.textContent = "Team management";
+    els.teamJobBoard.innerHTML = emptyCard("Unlock crew visibility", normalisePlanName(currentUser?.plan, "Starter") === "Custom"
+      ? "Add team management to your plan for $5/month to see jobs grouped by worker, with next actions and margin risk."
+      : "Upgrade to Crew to see jobs grouped by worker, with next actions and margin risk. $29/month billed monthly.");
     return;
   }
 
@@ -6071,7 +8107,7 @@ function renderTeamJobBoard() {
       const marginRisk = jobs.filter((job) => getJobEstimatedProfit(job) < 0).length;
       const overdueInvoices = currentUser.invoices.filter((invoice) => {
         const invoiceJob = invoice.jobId || "";
-        return jobs.some((job) => job.id === invoiceJob) && getInvoiceStatus(invoice) === "Overdue";
+        return jobs.some((job) => job.id === invoiceJob) && getInvoiceDisplayStatus(invoice) === "Overdue";
       }).length;
       return { assignee, jobs, nextJob, marginRisk, overdueInvoices };
     });
@@ -6100,10 +8136,10 @@ function renderInvoices() {
   refreshOverdueInvoices();
   const visibleInvoices = getVisibleInvoices();
   const totalUnpaid = currentUser.invoices
-    .filter((invoice) => ["Unpaid", "Overdue"].includes(getInvoiceStatus(invoice)))
+    .filter((invoice) => ["Unpaid", "Sent", "Overdue"].includes(getInvoiceDisplayStatus(invoice)))
     .reduce((sum, invoice) => sum + Number(invoice.amount || 0), 0);
   const overdueAmount = currentUser.invoices
-    .filter((invoice) => getInvoiceStatus(invoice) === "Overdue")
+    .filter((invoice) => getInvoiceDisplayStatus(invoice) === "Overdue")
     .reduce((sum, invoice) => sum + Number(invoice.amount || 0), 0);
   const paidThisMonth = currentUser.invoices
     .filter((invoice) => invoice.status === "Paid" && isThisMonth(invoice.paidAt || invoice.issueDate || invoice.createdAt))
@@ -6114,16 +8150,20 @@ function renderInvoices() {
   els.invoiceSummaryPaid.textContent = formatMoney(paidThisMonth);
   els.invoiceCount.textContent = `${visibleInvoices.length} invoices`;
   els.invoicesList.innerHTML = visibleInvoices.length ? visibleInvoices.map((invoice) => {
-    const status = getInvoiceStatus(invoice);
+    const status = getInvoiceDisplayStatus(invoice);
     const isOverdue = status === "Overdue";
     const canSendReminder = hasFeature("overdueReminders");
     const approvalState = getInvoiceApprovalState(invoice);
     const overdueDays = isOverdue ? getDaysOverdue(invoice.dueDate) : 0;
-    const rowClass = isOverdue ? "record-row row-overdue" : status === "Unpaid" ? "record-row row-attention" : "record-row";
+    const rowClass = isOverdue ? "record-row row-overdue" : ["Unpaid", "Sent"].includes(status) ? "record-row row-attention" : "record-row";
     const paymentCopy = status === "Paid"
       ? `Paid via ${invoice.paymentMethod}`
       : status === "Draft"
         ? "Draft waiting to send"
+        : status === "Scheduled"
+          ? "Saved to send later"
+        : status === "Sent"
+          ? `Sent ${invoice.sentAt ? formatDate(invoice.sentAt) : "just now"}`
         : status === "Pending approval"
           ? "Waiting for approval before sending"
           : status === "Approved"
@@ -6137,7 +8177,11 @@ function renderInvoices() {
     const approvalChip = invoice.approvalRequired
       ? `<span class="client-chip">${escapeHtml(approvalState)}</span>`
       : "";
-    const sendLabel = status === "Approved" ? "Send approved invoice" : "Send invoice";
+    const sendLabel = status === "Approved"
+      ? "Send approved invoice"
+      : status === "Scheduled"
+        ? "Send now"
+        : "Send invoice";
     const reminderButton = canSendReminder
       ? `<button class="mini-action" type="button" data-invoice-action="remind" data-invoice-id="${invoice.id}">${isOverdue ? "Send overdue reminder" : "Send reminder"}</button>`
       : "";
@@ -6159,11 +8203,13 @@ function renderInvoices() {
           ${reminderCopy ? `<span class="invoice-reminder-chip invoice-reminder-chip-muted">${escapeHtml(reminderCopy)}</span>` : ""}
           <div class="record-actions">
             <button class="mini-action" type="button" data-invoice-action="preview" data-invoice-id="${invoice.id}">Preview</button>
+            <button class="mini-action" type="button" data-invoice-action="edit" data-invoice-id="${invoice.id}">Edit</button>
             <button class="mini-action" type="button" data-invoice-action="send" data-invoice-id="${invoice.id}">${sendLabel}</button>
             <button class="mini-action" type="button" data-invoice-action="export" data-invoice-id="${invoice.id}">Export PDF</button>
             <button class="mini-action" type="button" data-invoice-action="paid" data-invoice-id="${invoice.id}">Mark paid</button>
             ${approveButton}
             ${reminderButton}
+            <button class="mini-action" type="button" data-invoice-action="delete" data-invoice-id="${invoice.id}">Delete</button>
           </div>
         </div>
         <div class="record-right">
@@ -6180,6 +8226,7 @@ function renderInvoices() {
 }
 
 function renderExpenses() {
+  if (!guardFeatureRender("expensesPage")) return;
   const visibleExpenses = getVisibleExpenses();
   const totalThisMonth = currentUser.expenses
     .filter((expense) => isThisMonth(expense.expenseDate || expense.createdAt))
@@ -6215,6 +8262,10 @@ function renderExpenses() {
           <span class="client-chip">${expense.jobId ? "Job cost tracked" : "General spend"}</span>
           <span class="client-chip">${deductibleLabel}</span>
           <span class="client-chip">${gstLabel}</span>
+        </div>
+        <div class="record-actions">
+          <button class="mini-action" type="button" data-expense-action="edit" data-expense-id="${expense.id}">Edit</button>
+          <button class="mini-action" type="button" data-expense-action="delete" data-expense-id="${expense.id}">Delete</button>
         </div>
       </div>
       <div class="record-right">
@@ -6408,7 +8459,7 @@ function renderReports() {
     .filter((invoice) => invoice.status === "Paid")
     .reduce((sum, invoice) => sum + Number(invoice.amount || 0), 0);
   const unpaidAmount = reportData.invoices
-    .filter((invoice) => ["Unpaid", "Overdue"].includes(getInvoiceStatus(invoice)))
+    .filter((invoice) => ["Unpaid", "Sent", "Overdue"].includes(getInvoiceDisplayStatus(invoice)))
     .reduce((sum, invoice) => sum + Number(invoice.amount || 0), 0);
   const totalExpenseSpend = reportData.expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
   const payrollSpend = reportData.payrollRuns.reduce((sum, run) => sum + Number(run.grossTotal || 0) + Number(run.superTotal || 0), 0);
@@ -6419,7 +8470,7 @@ function renderReports() {
   const taxEstimate = Math.max(0, gstCollected - gstPaid + totalRevenue * currentUser.taxVaultRate);
   const avgPaymentDays = getAveragePaymentDays(reportData.invoices);
   const paidOnTime = reportData.invoices.filter((invoice) => invoice.status === "Paid" && new Date(invoice.paidAt || invoice.dueDate) <= new Date(`${invoice.dueDate}T23:59:59`)).length;
-  const overdueCount = reportData.invoices.filter((invoice) => getInvoiceStatus(invoice) === "Overdue").length;
+  const overdueCount = reportData.invoices.filter((invoice) => getInvoiceDisplayStatus(invoice) === "Overdue").length;
   const topJob = [...reportData.jobs].sort((a, b) => (b.quoteAmount - b.materialCost - b.labourCost) - (a.quoteAmount - a.materialCost - a.labourCost))[0];
   const marginWarningJob = [...reportData.jobs].sort((a, b) => (a.quoteAmount - a.materialCost - a.labourCost) - (b.quoteAmount - b.materialCost - b.labourCost))[0];
 
@@ -6486,8 +8537,8 @@ function renderReports() {
         .map((job) => {
           const { totalSpend, profit } = getJobSpendSummary(job);
           const linkedInvoices = reportData.invoices.filter((invoice) => invoice.jobId === job.id);
-          const unpaidLinked = linkedInvoices.filter((invoice) => ["Unpaid", "Overdue"].includes(getInvoiceStatus(invoice)));
-          const approvalPending = linkedInvoices.some((invoice) => getInvoiceStatus(invoice) === "Pending approval");
+          const unpaidLinked = linkedInvoices.filter((invoice) => ["Unpaid", "Sent", "Overdue"].includes(getInvoiceDisplayStatus(invoice)));
+          const approvalPending = linkedInvoices.some((invoice) => getInvoiceDisplayStatus(invoice) === "Pending approval");
           return `
             <article class="record-row">
               <div>
@@ -6611,7 +8662,7 @@ function exportReportsSummary() {
   const grossRevenue = reportData.invoices.filter((invoice) => invoice.status === "Paid").reduce((sum, invoice) => sum + Number(invoice.amount || 0), 0);
   const expenseTotal = reportData.expenses.reduce((sum, expense) => sum + Number(expense.amount || 0), 0);
   const payrollTotal = reportData.payrollRuns.reduce((sum, run) => sum + Number(run.grossTotal || 0) + Number(run.superTotal || 0), 0);
-  const outstanding = reportData.invoices.filter((invoice) => ["Unpaid", "Overdue"].includes(getInvoiceStatus(invoice))).reduce((sum, invoice) => sum + Number(invoice.amount || 0), 0);
+  const outstanding = reportData.invoices.filter((invoice) => ["Unpaid", "Sent", "Overdue"].includes(getInvoiceDisplayStatus(invoice))).reduce((sum, invoice) => sum + Number(invoice.amount || 0), 0);
   const popup = window.open("", "_blank");
   if (!popup) {
     showToast("Your browser blocked the report export window. Please allow pop-ups and try again.");
@@ -6695,13 +8746,43 @@ function renderSettings() {
 
 function renderAlerts() {
   if (isFirstUseWorkspace()) {
+    const priority = currentUser.onboarding?.priority || "";
+    const gstAnswer = currentUser.onboarding?.gstRegistered || "Yes";
+    const previousSystem = currentUser.onboarding?.previousSystem || "None";
+    const starterSteps = {
+      Quotes: [
+        { icon: "1", title: "Send your first quote", copy: "Price the work fast and reuse it later on the invoice.", tone: "tone-positive" },
+        { icon: "2", title: "Add your first client", copy: "Save details once so the quote and invoice can prefill.", tone: "tone-positive" },
+        { icon: "3", title: "Create your first job", copy: "Track the work once the quote is approved.", tone: "tone-positive" },
+      ],
+      Invoices: [
+        { icon: "1", title: "Send your first invoice", copy: "Start showing unpaid money and due dates right here.", tone: "tone-positive" },
+        { icon: "2", title: "Add your first client", copy: "Save the client once so invoices and quotes prefill.", tone: "tone-positive" },
+        { icon: "3", title: "Create your first job", copy: "Link work to the invoice without extra typing.", tone: "tone-positive" },
+      ],
+      Expenses: [
+        { icon: "1", title: "Upload your first receipt", copy: gstAnswer === "Yes" ? "Get fuel, materials, and GST into the app straight away." : "Get fuel, materials, and job costs into the app straight away.", tone: "tone-positive" },
+        { icon: "2", title: "Add your first client", copy: "Keep job and client details ready for later quoting and invoicing.", tone: "tone-positive" },
+        { icon: "3", title: "Create your first job", copy: "Attach site spend to the right work when you need it.", tone: "tone-positive" },
+      ],
+      "Job tracking": [
+        { icon: "1", title: "Create your first job", copy: "Track the work before anything slips through the cracks.", tone: "tone-positive" },
+        { icon: "2", title: "Add your first client", copy: "Save one client and reuse them across the app.", tone: "tone-positive" },
+        { icon: "3", title: "Send your first invoice", copy: "Bill the job once the work is ready to go out.", tone: "tone-positive" },
+      ],
+      Payroll: [
+        { icon: "1", title: "Add your first worker", copy: "Keep wages and labour in the same place as jobs and cash flow.", tone: "tone-positive" },
+        { icon: "2", title: "Create your first job", copy: "Link labour back to real work on site.", tone: "tone-positive" },
+        { icon: "3", title: "Send your first invoice", copy: "Bring money in before payroll becomes pressure.", tone: "tone-positive" },
+      ],
+    };
     if (els.dashboardPriorityStrip) {
-      els.dashboardPriorityStrip.innerHTML = [
-        { icon: "1", title: "Add your first client", copy: "Save one client and reuse them everywhere." },
-        { icon: "2", title: "Create your first job", copy: "Track the work before anything slips." },
-        { icon: "3", title: "Send your first invoice", copy: "See unpaid money and due dates once work is billed." },
-      ].map((item) => `
-        <article class="dashboard-priority-pill">
+      els.dashboardPriorityStrip.innerHTML = (starterSteps[priority] || [
+        { icon: "1", title: "Add your first client", copy: "Save one client and reuse them everywhere.", tone: "tone-positive" },
+        { icon: "2", title: "Create your first job", copy: "Track the work before anything slips.", tone: "tone-positive" },
+        { icon: "3", title: "Send your first invoice", copy: "See unpaid money and due dates once work is billed.", tone: "tone-positive" },
+      ]).map((item) => `
+        <article class="dashboard-priority-pill ${escapeHtml(item.tone)}">
           <span class="dashboard-priority-icon" aria-hidden="true">${escapeHtml(item.icon)}</span>
           <div>
             <b>${escapeHtml(item.title)}</b>
@@ -6715,7 +8796,9 @@ function renderAlerts() {
     els.taxSaved.textContent = "Ready";
     els.dashboardUrgentUnpaid.textContent = "Next";
     els.expenseTotal.textContent = "Track";
-    els.dashboardUrgentUnpaidCopy.textContent = "Once you send an invoice, unpaid money will stay visible here.";
+    els.dashboardUrgentUnpaidCopy.textContent = previousSystem === "Spreadsheet" || previousSystem === "Paper"
+      ? "Once you send an invoice here, unpaid money stops living in scattered notes and spreadsheets."
+      : "Once you send an invoice, unpaid money will stay visible here.";
     els.alertsList.innerHTML = [
       ["Clients", "No clients yet", "Add your first client to reuse their details in jobs, quotes, and invoices."],
       ["Jobs", "No jobs yet", "Create a job to track site work, notes, and what needs doing next."],
@@ -6739,8 +8822,8 @@ function renderAlerts() {
   const canUsePayroll = hasFeature("payrollPage");
   const canSeeProfitability = hasFeature("jobProfitability");
   const canCompareJobs = hasFeature("compareActiveJobs");
-  const openInvoices = currentUser.invoices.filter((invoice) => ["Unpaid", "Overdue"].includes(getInvoiceStatus(invoice)));
-  const overdueInvoices = openInvoices.filter((invoice) => getInvoiceStatus(invoice) === "Overdue");
+  const openInvoices = currentUser.invoices.filter((invoice) => ["Unpaid", "Sent", "Overdue"].includes(getInvoiceDisplayStatus(invoice)));
+  const overdueInvoices = openInvoices.filter((invoice) => getInvoiceDisplayStatus(invoice) === "Overdue");
   const unpaidAmount = openInvoices.reduce((sum, invoice) => sum + Number(invoice.amount || 0), 0);
   const underquotedJobs = currentUser.jobs
     .map((job) => ({
@@ -6764,6 +8847,7 @@ function renderAlerts() {
           icon: overdueInvoices.length ? "!" : "$",
           title: overdueInvoices.length ? `${overdueInvoices.length} overdue invoice${overdueInvoices.length === 1 ? "" : "s"}` : `${openInvoices.length} invoice${openInvoices.length === 1 ? "" : "s"} to watch`,
           copy: overdueInvoices.length ? "Chase these today." : "Keep an eye on incoming cash.",
+          tone: overdueInvoices.length || openInvoices.length ? "tone-warning" : "tone-positive",
         },
         {
           icon: canCompareJobs ? "#" : underquotedJobs.length ? "%" : "+",
@@ -6781,6 +8865,7 @@ function renderAlerts() {
               : canSeeProfitability
                 ? "No margin risk showing right now."
                 : "Keep the next job moving without extra admin clutter.",
+          tone: underquotedJobs.length ? "tone-warning" : canCompareJobs ? "tone-info" : "tone-positive",
         },
         {
           icon: canUsePayroll ? "P" : "B",
@@ -6790,11 +8875,14 @@ function renderAlerts() {
           copy: canUsePayroll
             ? payrollRunStatus === "Due soon" ? "Review hours and run the cycle." : "Next team pay run is already lined up."
             : taxBuffer >= unpaidAmount * 0.1 ? "GST money is set aside and visible." : "Hold more aside before the next BAS run.",
+          tone: canUsePayroll
+            ? payrollRunStatus === "Due soon" ? "tone-warning" : "tone-info"
+            : taxBuffer >= unpaidAmount * 0.1 ? "tone-mint" : "tone-warning",
         },
       ];
 
     els.dashboardPriorityStrip.innerHTML = priorityItems.map((item) => `
-      <article class="dashboard-priority-pill">
+      <article class="dashboard-priority-pill ${escapeHtml(item.tone)}">
         <span class="dashboard-priority-icon" aria-hidden="true">${escapeHtml(item.icon)}</span>
         <div>
           <b>${escapeHtml(item.title)}</b>
@@ -6828,7 +8916,7 @@ function renderAlerts() {
     : "Top up tax savings before the next BAS run.";
 
   openInvoices.slice(0, 4).forEach((invoice) => {
-    const status = getInvoiceStatus(invoice);
+    const status = getInvoiceDisplayStatus(invoice);
     alertRows.push({
       label: status === "Overdue" ? "Invoice overdue" : "Invoice unpaid",
       title: `${invoice.invoiceNumber} / ${invoice.client}`,
@@ -6915,7 +9003,7 @@ function renderDashboardActivity() {
       date: job.createdAt || job.scheduledAt,
     })),
     ...currentUser.invoices.map((invoice) => {
-      const status = getInvoiceStatus(invoice);
+      const status = getInvoiceDisplayStatus(invoice);
       return {
         type: "Invoice",
         title: `${invoice.invoiceNumber} / ${invoice.client}`,
@@ -7071,6 +9159,8 @@ function getQuoteBadgeLabel(status) {
 function getInvoiceBadgeLabel(status) {
   if (status === "Overdue") return "Chase now";
   if (status === "Unpaid") return "Awaiting payment";
+  if (status === "Scheduled") return "Send later";
+  if (status === "Sent") return "Sent";
   if (status === "Pending approval") return "Pending approval";
   if (status === "Approved") return "Approved";
   return status;
@@ -7196,3 +9286,4 @@ function handleDemoSubmit(event) {
     els.formNote.textContent = "If your email app didn't open, email hello@paydaytradie.com.au and we'll tee up a demo.";
   }, 1200);
 }
+
