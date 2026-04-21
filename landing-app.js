@@ -1,5 +1,6 @@
 ﻿const USERS_KEY = "paydaytradie-users-v3";
 const SESSION_KEY = "paydaytradie-session-v3";
+const EMAIL_FUNCTION_ENDPOINT = "/.netlify/functions/send-email";
 const PLAN_ORDER = ["Starter", "Crew", "Business", "Custom"];
 const TRIAL_LENGTH_DAYS = 30;
 const TRIAL_EFFECTIVE_PLAN = "Business";
@@ -1746,6 +1747,65 @@ function ensureRecordEmail({ email = "", clientId = "", clientName = "", label =
     }
   }
   return cleanedEmail;
+}
+
+function emailBodyToHtml(body = "") {
+  return String(body || "")
+    .split("\n")
+    .map((line) => line.trim() ? `<p>${escapeHtml(line)}</p>` : "<br>")
+    .join("");
+}
+
+function documentHtmlToText(html = "") {
+  const element = document.createElement("div");
+  element.innerHTML = html;
+  return element.textContent.replace(/\s+/g, " ").trim();
+}
+
+async function sendDocumentEmail({
+  documentType,
+  to,
+  subject,
+  body,
+  attachmentName,
+  documentHtml,
+  documentNumber,
+}) {
+  const profile = getBusinessProfile();
+  const response = await fetch(EMAIL_FUNCTION_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      documentType,
+      to,
+      subject,
+      text: body,
+      html: emailBodyToHtml(body),
+      attachmentName,
+      documentHtml,
+      documentText: documentHtmlToText(documentHtml),
+      documentNumber,
+      business: {
+        name: profile.businessName,
+        email: profile.businessEmail || currentUser.email,
+        phone: profile.businessPhone,
+        address: profile.businessAddress,
+        abn: profile.abn,
+      },
+    }),
+  });
+
+  let result = {};
+  try {
+    result = await response.json();
+  } catch (error) {
+    result = {};
+  }
+
+  if (!response.ok || result.error) {
+    throw new Error(result.error || "Email service did not accept the message.");
+  }
+  return result;
 }
 
 function isFirstUseWorkspace(user = currentUser) {
@@ -5128,9 +5188,10 @@ function createInvoiceFromQuote(quote) {
   return invoice;
 }
 
-function sendQuoteById(quoteId) {
+async function sendQuoteById(quoteId) {
   const quote = currentUser.quotes.find((item) => item.id === quoteId);
   if (!quote) return;
+  const previousStatus = quote.status;
   const recipientEmail = ensureRecordEmail({
     email: quote.clientEmail,
     clientId: quote.clientId,
@@ -5139,20 +5200,42 @@ function sendQuoteById(quoteId) {
   });
   if (!recipientEmail) return;
   quote.clientEmail = recipientEmail;
-
-  if (!["Accepted", "Rejected"].includes(quote.status)) {
-    quote.status = "Sent";
-    syncJobFromQuote(quote, "Sent");
-  }
-  quote.sentAt = new Date().toISOString();
-  quote.sentTo = recipientEmail;
-  quote.sentBy = currentUser.businessName || currentUser.name;
-  quote.emailPayload = getQuoteEmailPayload(quote);
-  quote.generatedPdfName = `${quote.quoteNumber}.pdf`;
-  quote.generatedPdfHtml = getQuoteDocumentHtml(quote);
   persistCurrentUser();
-  renderWorkspace();
-  showToast(`Quote sent to ${recipientEmail}`);
+
+  const emailPayload = getQuoteEmailPayload(quote);
+  const documentHtml = getQuoteDocumentHtml(quote);
+  showToast(`Sending ${quote.quoteNumber} to ${recipientEmail}...`);
+
+  try {
+    const delivery = await sendDocumentEmail({
+      documentType: "quote",
+      to: recipientEmail,
+      subject: emailPayload.subject,
+      body: emailPayload.body,
+      attachmentName: emailPayload.attachmentName,
+      documentHtml,
+      documentNumber: quote.quoteNumber,
+    });
+
+    if (!["Accepted", "Rejected"].includes(quote.status)) {
+      quote.status = "Sent";
+      syncJobFromQuote(quote, "Sent");
+    }
+    quote.sentAt = new Date().toISOString();
+    quote.sentTo = recipientEmail;
+    quote.sentBy = currentUser.businessName || currentUser.name;
+    quote.emailPayload = emailPayload;
+    quote.emailDeliveryId = delivery.id || "";
+    quote.generatedPdfName = `${quote.quoteNumber}.pdf`;
+    quote.generatedPdfHtml = getQuoteDocumentHtml(quote);
+    persistCurrentUser();
+    renderWorkspace();
+    showToast(`Quote sent to ${recipientEmail}`);
+  } catch (error) {
+    quote.status = previousStatus;
+    renderWorkspace();
+    showToast(`Email not sent: ${error.message}`);
+  }
 }
 
 function renderWorkspace() {
@@ -7421,7 +7504,7 @@ function openInvoicePreview(invoiceId) {
   els.invoicePreviewOverlay.classList.remove("hidden");
 }
 
-function sendInvoiceById(invoiceId) {
+async function sendInvoiceById(invoiceId) {
   const invoice = currentUser.invoices.find((item) => item.id === invoiceId);
   if (!invoice) return;
 
@@ -7438,21 +7521,44 @@ function sendInvoiceById(invoiceId) {
   });
   if (!recipientEmail) return;
   invoice.clientEmail = recipientEmail;
-
-  if (invoice.status === "Approved" || ["Draft", "Scheduled", "Unpaid"].includes(invoice.status)) {
-    invoice.status = "Sent";
-  }
-  invoice.scheduledSendAt = null;
-  invoice.sentAt = new Date().toISOString();
-  invoice.sentTo = recipientEmail;
-  invoice.sentBy = currentUser.businessName || currentUser.name;
-  invoice.emailPayload = getInvoiceEmailPayload(invoice);
-  invoice.generatedPdfName = `${invoice.invoiceNumber}.pdf`;
-  invoice.generatedPdfHtml = getInvoiceDocumentHtml(invoice);
-
   persistCurrentUser();
-  renderWorkspace();
-  showToast(`Invoice sent to ${recipientEmail}`);
+
+  const previousStatus = invoice.status;
+  const emailPayload = getInvoiceEmailPayload(invoice);
+  const documentHtml = getInvoiceDocumentHtml(invoice);
+  showToast(`Sending ${invoice.invoiceNumber} to ${recipientEmail}...`);
+
+  try {
+    const delivery = await sendDocumentEmail({
+      documentType: "invoice",
+      to: recipientEmail,
+      subject: emailPayload.subject,
+      body: emailPayload.body,
+      attachmentName: emailPayload.attachmentName,
+      documentHtml,
+      documentNumber: invoice.invoiceNumber,
+    });
+
+    if (invoice.status === "Approved" || ["Draft", "Scheduled", "Unpaid"].includes(invoice.status)) {
+      invoice.status = "Sent";
+    }
+    invoice.scheduledSendAt = null;
+    invoice.sentAt = new Date().toISOString();
+    invoice.sentTo = recipientEmail;
+    invoice.sentBy = currentUser.businessName || currentUser.name;
+    invoice.emailPayload = emailPayload;
+    invoice.emailDeliveryId = delivery.id || "";
+    invoice.generatedPdfName = `${invoice.invoiceNumber}.pdf`;
+    invoice.generatedPdfHtml = getInvoiceDocumentHtml(invoice);
+
+    persistCurrentUser();
+    renderWorkspace();
+    showToast(`Invoice sent to ${recipientEmail}`);
+  } catch (error) {
+    invoice.status = previousStatus;
+    renderWorkspace();
+    showToast(`Email not sent: ${error.message}`);
+  }
 }
 
 function exportInvoicePdf(invoiceId) {
