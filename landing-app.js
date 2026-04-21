@@ -1750,10 +1750,26 @@ function ensureRecordEmail({ email = "", clientId = "", clientName = "", label =
 }
 
 function emailBodyToHtml(body = "") {
-  return String(body || "")
+  const paragraphs = String(body || "")
     .split("\n")
     .map((line) => line.trim() ? `<p>${escapeHtml(line)}</p>` : "<br>")
     .join("");
+  return `
+    <div style="margin:0;background:#f4f7f5;padding:24px;font-family:Arial,Helvetica,sans-serif;color:#173b2c;">
+      <div style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #dce8e0;border-radius:14px;overflow:hidden;">
+        <div style="background:#0d3d2c;color:#ffffff;padding:22px 26px;">
+          <div style="font-size:18px;font-weight:700;">${escapeHtml(getBusinessProfile().businessName)}</div>
+          <div style="font-size:13px;color:#cfe4d7;margin-top:4px;">PayDay Tradie document delivery</div>
+        </div>
+        <div style="padding:24px 26px;font-size:15px;line-height:1.55;">
+          ${paragraphs}
+          <div style="margin-top:22px;padding:14px 16px;background:#eef7f1;border-radius:10px;font-size:13px;color:#2b4a3b;">
+            The attached PDF includes the full breakdown, dates, totals, and payment details.
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function documentHtmlToText(html = "") {
@@ -1770,6 +1786,7 @@ async function sendDocumentEmail({
   attachmentName,
   documentHtml,
   documentNumber,
+  documentData = {},
 }) {
   const profile = getBusinessProfile();
   const response = await fetch(EMAIL_FUNCTION_ENDPOINT, {
@@ -1785,6 +1802,7 @@ async function sendDocumentEmail({
       documentHtml,
       documentText: documentHtmlToText(documentHtml),
       documentNumber,
+      documentData,
       business: {
         name: profile.businessName,
         email: profile.businessEmail || currentUser.email,
@@ -5215,6 +5233,7 @@ async function sendQuoteById(quoteId) {
       attachmentName: emailPayload.attachmentName,
       documentHtml,
       documentNumber: quote.quoteNumber,
+      documentData: quote,
     });
 
     if (!["Accepted", "Rejected"].includes(quote.status)) {
@@ -7537,6 +7556,7 @@ async function sendInvoiceById(invoiceId) {
       attachmentName: emailPayload.attachmentName,
       documentHtml,
       documentNumber: invoice.invoiceNumber,
+      documentData: invoice,
     });
 
     if (invoice.status === "Approved" || ["Draft", "Scheduled", "Unpaid"].includes(invoice.status)) {
