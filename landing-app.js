@@ -1596,12 +1596,12 @@ function getBusinessProfile(user = currentUser) {
   const onboarding = user?.onboarding || {};
   const businessName = String(user?.businessName || onboarding.businessName || "").trim();
   const tradeType = String(user?.tradeType || onboarding.tradeType || "").trim();
-  const businessLogo = user?.businessLogo || onboarding.businessLogo || "assets/logo-wordmark.png";
+  const businessLogo = getPreferredBusinessLogo(user);
   return {
     businessName: businessName || "PayDay Tradie",
     tradeType,
     businessLogo,
-    hasUploadedLogo: Boolean(businessLogo && businessLogo !== "assets/logo-wordmark.png" && businessLogo !== "assets/pdt-logo.png"),
+    hasUploadedLogo: isUploadedBusinessLogo(businessLogo),
     businessEmail: String(user?.businessEmail || user?.email || "").trim(),
     businessPhone: String(user?.businessPhone || "").trim(),
     businessAddress: String(user?.businessAddress || onboarding.businessAddress || "").trim(),
@@ -1610,6 +1610,17 @@ function getBusinessProfile(user = currentUser) {
     quoteExpiryDays: Number(user?.defaultQuoteExpiryDays || onboarding.defaultQuoteExpiryDays || 14),
     paymentMethod: String(user?.paymentMethod || onboarding.paymentMethod || "Bank transfer").trim(),
   };
+}
+
+function isUploadedBusinessLogo(value = "") {
+  const logo = String(value || "").trim();
+  return Boolean(logo && logo !== "assets/logo-wordmark.png" && logo !== "assets/pdt-logo.png");
+}
+
+function getPreferredBusinessLogo(user = currentUser) {
+  const onboarding = user?.onboarding || {};
+  const candidates = [user?.businessLogo, onboarding.businessLogo].map((item) => String(item || "").trim());
+  return candidates.find(isUploadedBusinessLogo) || candidates.find(Boolean) || "assets/logo-wordmark.png";
 }
 
 function getTradeLabel(user = currentUser) {
@@ -1682,6 +1693,12 @@ function isGeneratedTradeTemplateValue(value = "", field = "scope") {
 function updateWorkspaceBrand() {
   const profile = getBusinessProfile();
   if (els.workspaceBrandLogo) {
+    els.workspaceBrandLogo.onerror = () => {
+      els.workspaceBrandLogo.onerror = null;
+      els.workspaceBrandLogo.src = "assets/pdt-logo.png";
+      els.workspaceBrandLogo.alt = "PayDay Tradie app logo";
+      els.workspaceBrandLogo.classList.remove("has-business-logo");
+    };
     els.workspaceBrandLogo.src = profile.hasUploadedLogo ? profile.businessLogo : "assets/pdt-logo.png";
     els.workspaceBrandLogo.alt = profile.hasUploadedLogo
       ? `${profile.businessName} logo`
@@ -4861,18 +4878,6 @@ function handleInvoiceAction(event) {
   }
 
   if (button.dataset.invoiceAction === "remind") {
-    const subject = encodeURIComponent(`Quick reminder: ${invoice.invoiceNumber} for ${invoice.job}`);
-    const body = encodeURIComponent(
-      [
-        `Hi ${invoice.client},`,
-        "",
-        `Just following up on ${invoice.invoiceNumber} for ${invoice.job}. The balance owing is ${formatMoney(invoice.amount)} and it was due on ${formatDate(invoice.dueDate)}.`,
-        "If payment has already been sent, thanks, otherwise please let me know when to expect it.",
-        "",
-        "Cheers,",
-        currentUser.name,
-      ].join("\n")
-    );
     const reminderAddress = ensureRecordEmail({
       email: invoice.clientEmail || getClientEmail(invoice.client),
       clientId: invoice.clientId,
@@ -4883,7 +4888,20 @@ function handleInvoiceAction(event) {
     invoice.lastReminderAt = new Date().toISOString();
     invoice.reminderCount = Number(invoice.reminderCount || 0) + 1;
     invoice.clientEmail = reminderAddress;
-    window.location.href = `mailto:${reminderAddress}?subject=${subject}&body=${body}`;
+    invoice.reminderPayload = {
+      senderName: getBusinessProfile().businessName,
+      subject: `Quick reminder: ${invoice.invoiceNumber} for ${invoice.job}`,
+      body: [
+        `Hi ${invoice.client},`,
+        "",
+        `Just following up on ${invoice.invoiceNumber} for ${invoice.job}. The balance owing is ${formatMoney(invoice.amount)} and it was due on ${formatDate(invoice.dueDate)}.`,
+        "If payment has already been sent, thanks, otherwise please let me know when to expect it.",
+        "",
+        "Cheers,",
+        getBusinessProfile().businessName,
+      ].join("\n"),
+    };
+    showToast(`Reminder logged for ${reminderAddress}`);
   }
 
   if (button.dataset.invoiceAction === "delete") {
@@ -4953,11 +4971,14 @@ function handleQuoteAction(event) {
   }
 
   if (button.dataset.quoteAction === "invoice") {
-    activeInvoiceStartMode = "quote";
-    fillInvoiceForm(invoiceDraftFromQuote(quote));
-    syncInvoiceStartUi();
-    window.location.hash = "#workspace-invoices";
-    els.invoiceForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    const invoice = quote.convertedInvoiceId
+      ? currentUser.invoices.find((item) => item.id === quote.convertedInvoiceId) || createInvoiceFromQuote(quote)
+      : createInvoiceFromQuote(quote);
+    persistCurrentUser();
+    renderWorkspace();
+    openInvoicePreview(invoice.id);
+    showToast(`${quote.quoteNumber} converted to ${invoice.invoiceNumber}.`);
+    return;
   }
 
   if (button.dataset.quoteAction === "delete") {
@@ -5056,28 +5077,55 @@ function createInvoiceFromJob(job) {
   return invoice;
 }
 
-function openQuoteEmail(job) {
-  const subject = encodeURIComponent(`Quote for ${job.name}`);
-  const body = encodeURIComponent(
-    [
-      `Hi ${job.clientName},`,
-      "",
-      `Here's the quote for ${job.name}.`,
-      `Site address: ${job.address}`,
-      `Scheduled for: ${formatSchedule(job.scheduledAt)}`,
-      `Scope: ${job.description}`,
-      `Materials estimate: ${formatMoney(job.materialCost)}`,
-      `Labour estimate: ${formatMoney(job.labourCost)}`,
-      `Quoted amount: ${formatMoney(job.quoteAmount)}`,
-      `Recurring: ${job.recurring}`,
-      "",
-      "If you're happy to proceed, reply and we'll book the work in.",
-      "",
-      "Cheers,",
-      getBusinessProfile().businessName,
-    ].join("\n")
-  );
-  window.location.href = `mailto:${job.clientEmail}?subject=${subject}&body=${body}`;
+function createInvoiceFromQuote(quote) {
+  const draft = invoiceDraftFromQuote(quote);
+  const invoice = {
+    id: crypto.randomUUID(),
+    invoiceNumber: nextInvoiceNumber(),
+    clientId: draft.clientId,
+    client: quote.clientName,
+    clientEmail: draft.clientEmail,
+    clientPhone: draft.clientPhone,
+    jobId: draft.sourceJobId,
+    job: draft.jobName,
+    siteAddress: draft.siteAddress,
+    invoiceType: draft.invoiceType,
+    lineItems: draft.lineItems.map((item) => ({
+      ...item,
+      total: Number(item.total || (Number(item.qty || 0) * Number(item.rate || 0))),
+    })),
+    materialsAmount: draft.materialsAmount,
+    labourAmount: draft.labourAmount,
+    amount: draft.amount,
+    gst: draft.gst,
+    status: "Draft",
+    approvalRequired: false,
+    approvalRequestedAt: null,
+    approvedAt: null,
+    approvedBy: "",
+    issueDate: draft.issueDate,
+    dueDate: draft.dueDate,
+    paymentMethod: draft.paymentMethod,
+    paymentTerms: draft.paymentTerms,
+    scheduledSendAt: null,
+    notes: draft.notes,
+    attachmentsNote: draft.attachmentsNote,
+    paidAt: null,
+    sourceQuoteId: quote.id,
+    createdAt: new Date().toISOString(),
+  };
+  currentUser.invoices.unshift(invoice);
+  quote.status = "Accepted";
+  quote.convertedInvoiceId = invoice.id;
+  quote.convertedAt = new Date().toISOString();
+  const linkedJob = currentUser.jobs.find((job) => job.id === quote.jobId)
+    || currentUser.archivedJobs.find((job) => job.id === quote.jobId);
+  if (linkedJob) {
+    linkedJob.invoiceStatus = "Draft";
+    linkedJob.invoiceSent = false;
+    linkedJob.quoteStatus = "Approved";
+  }
+  return invoice;
 }
 
 function sendQuoteById(quoteId) {
@@ -5092,44 +5140,19 @@ function sendQuoteById(quoteId) {
   if (!recipientEmail) return;
   quote.clientEmail = recipientEmail;
 
-  const subject = encodeURIComponent(`${quote.quoteNumber} - Quote for ${quote.jobName}`);
-  const body = encodeURIComponent(
-    [
-      `Hi ${quote.clientName},`,
-      "",
-      `Here is ${quote.quoteNumber} for ${quote.jobName}.`,
-      `Site address: ${quote.siteAddress}`,
-      "",
-      `Scope of work:`,
-      quote.description,
-      "",
-      `Labour:`,
-      quote.labourItems,
-      `Labour total ex GST: ${formatMoney(quote.labourAmount)}`,
-      "",
-      `Materials:`,
-      quote.materialItems,
-      `Materials total ex GST: ${formatMoney(quote.materialAmount)}`,
-      "",
-      `GST: ${formatMoney(quote.gst)}`,
-      `Total inc GST: ${formatMoney(quote.total)}`,
-      `Valid until: ${formatDate(quote.expiryDate)}`,
-      quote.notes ? `Notes: ${quote.notes}` : "",
-      "",
-      "If you're happy to proceed, reply to approve and we'll lock the job in.",
-      "",
-      "Cheers,",
-      getBusinessProfile().businessName,
-    ].filter(Boolean).join("\n")
-  );
-
   if (!["Accepted", "Rejected"].includes(quote.status)) {
     quote.status = "Sent";
     syncJobFromQuote(quote, "Sent");
   }
+  quote.sentAt = new Date().toISOString();
+  quote.sentTo = recipientEmail;
+  quote.sentBy = currentUser.businessName || currentUser.name;
+  quote.emailPayload = getQuoteEmailPayload(quote);
+  quote.generatedPdfName = `${quote.quoteNumber}.pdf`;
+  quote.generatedPdfHtml = getQuoteDocumentHtml(quote);
   persistCurrentUser();
   renderWorkspace();
-  window.location.href = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
+  showToast(`Quote sent to ${recipientEmail}`);
 }
 
 function renderWorkspace() {
@@ -6779,17 +6802,39 @@ function createOrUpdateJobFromQuote(quote) {
   currentUser.jobs.unshift(newJob);
 }
 
-function openQuotePreview(quoteId) {
-  const quote = currentUser.quotes.find((item) => item.id === quoteId);
-  if (!quote) return;
-
-  selectedQuoteId = quoteId;
+function getQuoteEmailPayload(quote) {
   const status = getQuoteStatus(quote);
   const profile = getBusinessProfile();
+  return {
+    senderName: profile.businessName,
+    subject: `${quote.quoteNumber} | Quote for ${quote.jobName}`,
+    body: [
+      `Hi ${quote.clientName},`,
+      "",
+      `Attached is ${quote.quoteNumber} from ${profile.businessName} for ${quote.jobName}.`,
+      `The quote total is ${formatMoney(quote.total)} and it is valid until ${formatDate(quote.expiryDate)}.`,
+      status === "Accepted" ? "This quote is already marked as accepted in PayDay Tradie." : "",
+      "",
+      "Please reply if you would like to go ahead or need anything clarified.",
+      "",
+      "Thanks,",
+      profile.businessName,
+    ].filter(Boolean).join("\n"),
+    attachmentName: `${quote.quoteNumber}.pdf`,
+  };
+}
+
+function getQuoteDocumentHtml(quote) {
+  const status = getQuoteStatus(quote);
+  const profile = getBusinessProfile();
+  const emailPayload = getQuoteEmailPayload(quote);
+  const sentCopy = quote.sentAt
+    ? `<p class="quote-preview-copy"><strong>Sent:</strong> ${escapeHtml(formatDate(quote.sentAt))}${quote.sentTo ? ` / ${escapeHtml(quote.sentTo)}` : ""}</p>`
+    : "";
   const logoMarkup = profile.hasUploadedLogo || profile.businessLogo
     ? `<img src="${escapeHtml(profile.businessLogo)}" alt="${escapeHtml(profile.businessName)} logo" class="invoice-brand-logo">`
     : `<div class="invoice-brand-name">${escapeHtml(profile.businessName)}</div>`;
-  els.quotePreviewContent.innerHTML = `
+  return `
     <div class="quote-preview-shell">
       <div class="invoice-document-brand">
         <div class="invoice-brand-lockup">
@@ -6842,9 +6887,20 @@ function openQuotePreview(quoteId) {
       </div>
 
       <p class="quote-preview-copy"><strong>Notes:</strong> ${escapeHtml(quote.notes || "No exclusions added.")}</p>
+      <p class="quote-preview-copy"><strong>Email subject:</strong> ${escapeHtml(emailPayload.subject)}</p>
+      <p class="quote-preview-copy"><strong>Email body:</strong><br>${escapeHtml(emailPayload.body).replaceAll("\n", "<br>")}</p>
+      ${sentCopy}
       <p class="quote-preview-copy invoice-document-footer">${escapeHtml(profile.businessName)} / ${escapeHtml(profile.paymentTerms)} terms / ${escapeHtml(profile.paymentMethod)}</p>
     </div>
   `;
+}
+
+function openQuotePreview(quoteId) {
+  const quote = currentUser.quotes.find((item) => item.id === quoteId);
+  if (!quote) return;
+
+  selectedQuoteId = quoteId;
+  els.quotePreviewContent.innerHTML = getQuoteDocumentHtml(quote);
   els.quotePreviewOverlay.classList.remove("hidden");
 }
 
@@ -9266,24 +9322,20 @@ function handleDemoSubmit(event) {
   const email = String(formData.get("email") || "").trim();
   const trade = String(formData.get("trade") || "").trim();
   const message = String(formData.get("message") || "").trim();
+  const demoRequests = JSON.parse(localStorage.getItem("payday-tradie-demo-requests") || "[]");
+  demoRequests.unshift({
+    id: `demo-${Date.now()}`,
+    name,
+    email,
+    trade,
+    message: message || "I'd like a walkthrough of invoicing, expense tracking, GST/BAS support, and job costing.",
+    status: "Requested",
+    createdAt: new Date().toISOString(),
+  });
+  localStorage.setItem("payday-tradie-demo-requests", JSON.stringify(demoRequests.slice(0, 20)));
 
-  const subject = encodeURIComponent(`PayDay Tradie demo request from ${name}`);
-  const body = encodeURIComponent(
-    [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Trade: ${trade}`,
-      "",
-      "What I want to fix first:",
-      message || "I'd like a walkthrough of invoicing, expense tracking, GST/BAS support, and job costing.",
-    ].join("\n")
-  );
-
-  els.formNote.textContent = "Opening your email app with a pre-filled demo request...";
-  window.location.href = `mailto:hello@paydaytradie.com.au?subject=${subject}&body=${body}`;
-
-  window.setTimeout(() => {
-    els.formNote.textContent = "If your email app didn't open, email hello@paydaytradie.com.au and we'll tee up a demo.";
-  }, 1200);
+  els.demoForm.reset();
+  els.formNote.textContent = "Demo request saved. We'll use these details for the walkthrough.";
+  showToast("Demo request saved");
 }
 
