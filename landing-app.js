@@ -366,6 +366,8 @@ const els = {
   onboardingUploadLogoButton: document.getElementById("onboardingUploadLogoButton"),
   onboardingSkipLogoButton: document.getElementById("onboardingSkipLogoButton"),
   onboardingLogoHelper: document.getElementById("onboardingLogoHelper"),
+  onboardingCustomTradeWrap: document.getElementById("onboardingCustomTradeWrap"),
+  onboardingCustomTradeInput: document.getElementById("onboardingCustomTradeInput"),
   onboardingTaxVault: document.getElementById("onboardingTaxVault"),
   onboardingInvoiceReminders: document.getElementById("onboardingInvoiceReminders"),
   onboardingOverdueReminders: document.getElementById("onboardingOverdueReminders"),
@@ -478,6 +480,8 @@ const els = {
   reportClientFilter: document.getElementById("reportClientFilter"),
   reportCategoryFilter: document.getElementById("reportCategoryFilter"),
   reportTeamFilter: document.getElementById("reportTeamFilter"),
+  settingsCustomTradeWrap: document.getElementById("settingsCustomTradeWrap"),
+  settingsCustomTradeInput: document.getElementById("settingsCustomTradeInput"),
   reportProfitJobs: document.getElementById("reportProfitJobs"),
   reportActiveJobsCompare: document.getElementById("reportActiveJobsCompare"),
   reportCashFlowBars: document.getElementById("reportCashFlowBars"),
@@ -872,6 +876,7 @@ function bindEvents() {
   els.onboardingUploadLogoButton?.addEventListener("click", () => els.onboardingLogoInput?.click());
   els.onboardingSkipLogoButton?.addEventListener("click", handleOnboardingSkipLogo);
   els.onboardingLogoInput?.addEventListener("change", handleOnboardingLogoUpload);
+  els.tradeTypeInput?.addEventListener("change", syncTradeCustomFields);
   els.clientForm.addEventListener("submit", handleClientSubmit);
   els.clientSearchInput.addEventListener("input", () => {
     clientSearchQuery = els.clientSearchInput.value.trim().toLowerCase();
@@ -1276,6 +1281,7 @@ function bindEvents() {
   if (els.demoForm) {
     els.demoForm.addEventListener("submit", handleDemoSubmit);
   }
+  applyWorkspaceFormCleanup();
 }
 
 function initStore() {
@@ -1515,6 +1521,7 @@ function getEmptyOnboarding() {
     businessName: "",
     abn: "",
     tradeType: "",
+    customTradeType: "",
     teamSize: "",
     addressSearch: "",
     addressManual: false,
@@ -1611,6 +1618,52 @@ function getBusinessProfile(user = currentUser) {
     quoteExpiryDays: Number(user?.defaultQuoteExpiryDays || onboarding.defaultQuoteExpiryDays || 14),
     paymentMethod: String(user?.paymentMethod || onboarding.paymentMethod || "Bank transfer").trim(),
   };
+}
+
+function resolveTradeType(tradeType = "", customTradeType = "") {
+  const selectedTrade = String(tradeType || "").trim();
+  const customTrade = String(customTradeType || "").trim();
+  if (selectedTrade === "Other") {
+    return customTrade || "Other";
+  }
+  return selectedTrade || customTrade;
+}
+
+function syncTradeCustomFields() {
+  const onboardingNeedsCustomTrade = onboardingAnswers.tradeType === "Other";
+  els.onboardingCustomTradeWrap?.classList.toggle("hidden", !onboardingNeedsCustomTrade);
+  if (els.onboardingCustomTradeInput) {
+    els.onboardingCustomTradeInput.value = onboardingAnswers.customTradeType || "";
+  }
+
+  const settingsNeedsCustomTrade = els.tradeTypeInput?.value === "Other";
+  els.settingsCustomTradeWrap?.classList.toggle("hidden", !settingsNeedsCustomTrade);
+  if (els.settingsCustomTradeInput && settingsNeedsCustomTrade && currentUser) {
+    const storedTrade = String(currentUser.tradeType || "").trim();
+    if (!els.settingsCustomTradeInput.value && storedTrade && !["Landscaping", "Electrical", "Plumbing", "Carpentry", "Painting", "Tiling", "General building", "Other"].includes(storedTrade)) {
+      els.settingsCustomTradeInput.value = storedTrade;
+    }
+  }
+}
+
+function applyWorkspaceFormCleanup() {
+  document.querySelectorAll('.workspace-form input[placeholder], .workspace-form textarea[placeholder], .compact-overlay-form input[placeholder], .compact-overlay-form textarea[placeholder]').forEach((field) => {
+    if (field.type === "search") return;
+    field.setAttribute("placeholder", "");
+  });
+  document.querySelectorAll('.workspace-form input:not([readonly])[value="8500"], .workspace-form input:not([readonly])[value="2400"], .workspace-form input:not([readonly])[value="3850"], .workspace-form input:not([readonly])[value="4620"], .workspace-form input:not([readonly])[value="1800"], .workspace-form input:not([readonly])[value="420"], .workspace-form input:not([readonly])[value="200.00"], .workspace-form input:not([readonly])[value="2200.00"], .workspace-form input:not([readonly])[value="850.00"], .workspace-form input:not([readonly])[value="1150.00"], .workspace-form input:not([readonly])[value="286.90"], .workspace-form input:not([readonly])[value="26.08"], .compact-overlay-form input:not([readonly])[value="8500"], .compact-overlay-form input:not([readonly])[value="2400"], .compact-overlay-form input:not([readonly])[value="3850"], .compact-overlay-form input:not([readonly])[value="1800"], .compact-overlay-form input:not([readonly])[value="48"], .compact-overlay-form input:not([readonly])[value="38"]').forEach((field) => {
+    if (!field.dataset.userEdited) {
+      field.value = "";
+    }
+  });
+  document.querySelectorAll('#workspaceApp [required], #jobClientOverlay [required], #quickJobOverlay [required], #quickQuoteOverlay [required], #quickEmployeeOverlay [required]').forEach((field) => {
+    const keepRequired = field.name === "clientId" || field.name === "name";
+    field.required = keepRequired;
+  });
+  if (els.quoteForm) recalculateQuoteTotals();
+  if (els.invoiceForm) recalculateInvoiceTotals();
+  if (els.expenseForm) recalculateExpenseGst();
+  if (els.payrollEmployeeForm) renderPayrollQuickSummary();
 }
 
 function isUploadedBusinessLogo(value = "") {
@@ -3110,10 +3163,9 @@ function normalisePayrollEmployee(staff, index = 0) {
     payType: staff.payType || "Hourly",
     payRate: Number(staff.payRate || 0),
     cycleHours: Number(staff.cycleHours || 0),
-    superDetails: staff.superDetails || "Super details to confirm",
-    taxFile: staff.taxFile || "TFN details to confirm",
-    bankDetails: staff.bankDetails || "Bank details to confirm",
-    notes: staff.notes || "Payroll note.",
+    overtimeHours: Number(staff.overtimeHours || 0),
+    overtimeMultiplier: Number(staff.overtimeMultiplier || 1.5),
+    notes: staff.notes || "",
     lastPayDate: toDateInputValue(staff.lastPayDate || new Date(Date.now() - index * 604800000).toISOString()),
     status: staff.status || "Active",
   };
@@ -3263,6 +3315,7 @@ function openWorkspace() {
   const effectivePlan = getEffectivePlanName(currentUser);
   const planChoiceNeeded = needsPostTrialPlanChoice(currentUser);
   const profile = getBusinessProfile();
+  applyWorkspaceFormCleanup();
   updateWorkspaceBrand();
   els.workspaceTitle.textContent = profile.businessName !== "PayDay Tradie"
     ? `G'day, ${profile.businessName}`
@@ -3299,7 +3352,12 @@ function openOnboarding() {
     ...saved,
     businessName: saved.businessName || currentUser.businessName || `${currentUser.name}'s Trade Co`,
     abn: saved.abn || currentUser.abn || "",
-    tradeType: saved.tradeType || currentUser.tradeType || "",
+    tradeType: ["Landscaping", "Plumbing", "Electrical", "Carpentry", "Painting", "Tiling"].includes(saved.tradeType || currentUser.tradeType || "")
+      ? (saved.tradeType || currentUser.tradeType || "")
+      : ((saved.tradeType || currentUser.tradeType) ? "Other" : ""),
+    customTradeType: ["Landscaping", "Plumbing", "Electrical", "Carpentry", "Painting", "Tiling"].includes(saved.tradeType || currentUser.tradeType || "")
+      ? ""
+      : (saved.customTradeType || currentUser.tradeType || ""),
     businessAddress: saved.businessAddress || currentUser.businessAddress || "",
     businessLogo: saved.businessLogo || currentUser.businessLogo || "assets/logo-wordmark.png",
     gstRegistered: saved.gstRegistered || (currentUser.gstMode === "No GST" ? "No" : "Yes"),
@@ -3343,6 +3401,7 @@ function isOnboardingStepComplete(stepKey = "") {
     case "business":
       return Boolean(String(onboardingAnswers.businessName || "").trim());
     case "tradeType":
+      return Boolean(resolveTradeType(onboardingAnswers.tradeType, onboardingAnswers.customTradeType));
     case "teamSize":
     case "priority":
       return Boolean(onboardingAnswers[stepKey]);
@@ -3381,6 +3440,7 @@ function syncOnboardingInputs() {
       ? "Logo ready for quotes and invoices."
       : "You can add or replace it later in Settings.";
   }
+  syncTradeCustomFields();
 }
 
 function getOnboardingAddressMatches(query = "") {
@@ -3590,6 +3650,9 @@ function handleOnboardingChoiceClick(event) {
   const value = button.getAttribute("data-value") || "";
   if (!stepKey) return;
   onboardingAnswers[stepKey] = value;
+  if (stepKey === "tradeType" && value !== "Other") {
+    onboardingAnswers.customTradeType = "";
+  }
   if (stepKey === "gstRegistered" && value === "No") {
     onboardingAnswers.taxVaultRate = 0;
   } else if (stepKey === "gstRegistered" && Number(onboardingAnswers.taxVaultRate) === 0) {
@@ -3623,7 +3686,7 @@ function completeOnboarding() {
   currentUser.businessName = onboardingAnswers.businessName.trim();
   currentUser.abn = onboardingAnswers.abn.trim();
   currentUser.businessAddress = onboardingAnswers.businessAddress.trim();
-  currentUser.tradeType = onboardingAnswers.tradeType || currentUser.tradeType;
+  currentUser.tradeType = resolveTradeType(onboardingAnswers.tradeType, onboardingAnswers.customTradeType) || currentUser.tradeType;
   currentUser.businessLogo = onboardingAnswers.businessLogo || currentUser.businessLogo;
   currentUser.gstMode = getGstModeFromOnboarding(onboardingAnswers.gstRegistered);
   currentUser.taxVaultRate = Number(onboardingAnswers.taxVaultRate ?? 20) / 100;
@@ -4159,8 +4222,8 @@ function quoteDraftFromClient(client) {
     jobName: "",
     siteAddress: client.address,
     description: "",
-    labourItems: "Labour allowance",
-    materialItems: "Material allowance",
+    labourItems: "",
+    materialItems: "",
     labourAmount: 0,
     materialAmount: 0,
     gst: 0,
@@ -4228,10 +4291,9 @@ function buildPayrollEmployeePayload(data, options = {}) {
     payType: String(data.payType),
     payRate: Number(data.payRate || 0),
     cycleHours: Number(data.cycleHours || 0),
-    superDetails: String(data.superDetails || "Super details to confirm").trim(),
-    taxFile: String(data.taxFile || "TFN details to confirm").trim(),
-    bankDetails: String(data.bankDetails || "Bank details to confirm").trim(),
-    notes: String(data.notes || "Payroll note.").trim(),
+    overtimeHours: Number(data.overtimeHours || 0),
+    overtimeMultiplier: Number(data.overtimeMultiplier || 1.5),
+    notes: String(data.notes || "").trim(),
     lastPayDate: String(data.lastPayDate),
     status: String(data.status),
   };
@@ -4531,11 +4593,6 @@ function handleQuickJobSubmit(event) {
 }
 
 function handleQuoteForJob() {
-  if (!els.jobForm.checkValidity()) {
-    els.jobForm.reportValidity();
-    return;
-  }
-
   const data = Object.fromEntries(new FormData(els.jobForm));
   const client = currentUser.clients.find((item) => item.id === data.clientId);
   if (!client || !String(data.name || "").trim()) {
@@ -4551,13 +4608,13 @@ function handleQuoteForJob() {
     jobName: String(data.name).trim(),
     siteAddress: String(data.address || client.address || "").trim(),
     description: String(data.description).trim(),
-    labourItems: `${String(data.assignee || currentUser.name || "Crew").trim()} labour allowance`,
-    materialItems: `Materials allowance for ${String(data.name).trim()}`,
+    labourItems: "",
+    materialItems: "",
     labourAmount: Number(data.labourCost || 0),
     materialAmount: Number(data.materialCost || 0),
     gst: roundCurrency(Number(data.quoteAmount || 0) / 11),
     total: Number(data.quoteAmount || 0),
-    notes: String(data.internalNotes || "Quote prepared from job details.").trim(),
+    notes: String(data.internalNotes || "").trim(),
     expiryDate: toDateInputValue(new Date(Date.now() + Number(currentUser.defaultQuoteExpiryDays || 14) * 86400000).toISOString()),
   });
 
@@ -4749,7 +4806,7 @@ function handleSettingsSubmit(event) {
   currentUser.businessEmail = String(data.businessEmail).trim();
   currentUser.businessPhone = String(data.businessPhone).trim();
   currentUser.businessAddress = String(data.businessAddress).trim();
-  currentUser.tradeType = String(data.tradeType).trim();
+  currentUser.tradeType = resolveTradeType(data.tradeType, data.customTradeType);
   currentUser.brandTone = String(data.brandTone);
   currentUser.defaultPaymentTerms = String(data.defaultPaymentTerms);
   currentUser.defaultQuoteExpiryDays = Number(data.defaultQuoteExpiryDays || 14);
@@ -4782,7 +4839,8 @@ function handleSettingsSubmit(event) {
     ...(currentUser.onboarding || {}),
     businessName: currentUser.businessName,
     abn: currentUser.abn,
-    tradeType: currentUser.tradeType,
+    tradeType: String(data.tradeType || "").trim(),
+    customTradeType: String(data.customTradeType || "").trim(),
     businessAddress: currentUser.businessAddress,
     businessLogo: currentUser.businessLogo,
     gstRegistered: currentUser.gstMode === "No GST" ? "No" : "Yes",
@@ -6428,14 +6486,13 @@ function fillPayrollFormForEdit(staff) {
   els.payrollEmployeeForm.elements.payType.value = staff.payType || "Hourly";
   els.payrollEmployeeForm.elements.payRate.value = Number(staff.payRate || 0).toFixed(2);
   els.payrollEmployeeForm.elements.cycleHours.value = Number(staff.cycleHours || 0);
-  els.payrollEmployeeForm.elements.superDetails.value = staff.superDetails || "";
-  els.payrollEmployeeForm.elements.taxFile.value = staff.taxFile || "";
-  els.payrollEmployeeForm.elements.bankDetails.value = staff.bankDetails || "";
+  els.payrollEmployeeForm.elements.overtimeHours.value = Number(staff.overtimeHours || 0);
+  els.payrollEmployeeForm.elements.overtimeMultiplier.value = Number(staff.overtimeMultiplier || 1.5).toFixed(1);
   els.payrollEmployeeForm.elements.notes.value = staff.notes || "";
   els.payrollEmployeeForm.elements.lastPayDate.value = staff.lastPayDate || "";
   els.payrollEmployeeForm.elements.status.value = staff.status || "Active";
   const submitButton = els.payrollEmployeeForm.querySelector('button[type="submit"]');
-  if (submitButton) submitButton.textContent = "Update worker";
+  if (submitButton) submitButton.textContent = "Update employee";
   renderPayrollQuickSummary();
 }
 
@@ -6610,10 +6667,10 @@ function setJobFormDefaults() {
   const submitButton = els.jobForm.querySelector('button[type="submit"]');
   if (submitButton) submitButton.textContent = "Save job";
   if (!els.jobForm.elements.scheduledAt.value) {
-    els.jobForm.elements.scheduledAt.value = toDateTimeLocalValue(new Date(Date.now() + 86400000).toISOString());
+    els.jobForm.elements.scheduledAt.value = "";
   }
   if (!els.jobForm.elements.assignee.value) {
-    els.jobForm.elements.assignee.value = currentUser?.name || "Beau";
+    els.jobForm.elements.assignee.value = "";
   }
   if (els.jobStatusSelect && !els.jobStatusSelect.value) {
     els.jobStatusSelect.value = "Upcoming";
@@ -6730,13 +6787,13 @@ function quoteDraftFromJob(job) {
     jobName: job.name,
     siteAddress: job.address,
     description: job.description,
-    labourItems: `${job.assignee} labour allowance for ${job.name}`,
-    materialItems: `Materials allowance for ${job.name}`,
+    labourItems: "",
+    materialItems: "",
     labourAmount: job.labourCost,
     materialAmount: job.materialCost,
     gst: roundCurrency(job.quoteAmount / 11),
     total: job.quoteAmount,
-    notes: job.internalNotes || "Prepared from job details.",
+    notes: job.internalNotes || "",
     expiryDate: toDateInputValue(new Date(Date.now() + Number(currentUser.defaultQuoteExpiryDays || 14) * 86400000).toISOString()),
   };
 }
@@ -6790,13 +6847,12 @@ function resetQuoteForm(options = {}) {
     els.quoteClientSelect.selectedIndex = -1;
   }
   syncSelectedQuoteClientDetails();
-  const templates = getTradeTemplates();
   els.quoteJobNameInput.value = "";
-  els.quoteDescriptionInput.value = templates.scope;
-  els.quoteLabourItemsInput.value = templates.labour;
-  els.quoteMaterialItemsInput.value = templates.materials;
-  els.quoteLabourAmountInput.value = "0.00";
-  els.quoteMaterialAmountInput.value = "0.00";
+  els.quoteDescriptionInput.value = "";
+  els.quoteLabourItemsInput.value = "";
+  els.quoteMaterialItemsInput.value = "";
+  els.quoteLabourAmountInput.value = "";
+  els.quoteMaterialAmountInput.value = "";
   const selectedClient = currentUser.clients.find((item) => item.id === els.quoteClientSelect.value);
   els.quoteNotesInput.value = selectedClient?.notes || "";
   setQuoteFormDefaults();
@@ -6804,22 +6860,12 @@ function resetQuoteForm(options = {}) {
 }
 
 function setQuoteFormDefaults() {
-  const templates = getTradeTemplates();
   if (!els.quoteExpiryInput.value) {
     els.quoteExpiryInput.value = toDateInputValue(new Date(Date.now() + Number(currentUser.defaultQuoteExpiryDays || 14) * 86400000).toISOString());
   }
-  if (isGeneratedTradeTemplateValue(els.quoteDescriptionInput.value, "scope")) {
-    els.quoteDescriptionInput.value = templates.scope;
-  }
-  if (isGeneratedTradeTemplateValue(els.quoteLabourItemsInput.value, "labour") || els.quoteLabourItemsInput.value.trim() === "Labour allowance") {
-    els.quoteLabourItemsInput.value = templates.labour;
-  }
-  if (isGeneratedTradeTemplateValue(els.quoteMaterialItemsInput.value, "materials") || els.quoteMaterialItemsInput.value.trim() === "Material allowance") {
-    els.quoteMaterialItemsInput.value = templates.materials;
-  }
   if (!els.quoteNotesInput.value.trim()) {
     const selectedClient = currentUser.clients.find((item) => item.id === els.quoteClientSelect.value);
-    els.quoteNotesInput.value = selectedClient?.notes || "Standard exclusions apply unless listed here.";
+    els.quoteNotesInput.value = selectedClient?.notes || "";
   }
   recalculateQuoteTotals();
 }
@@ -7082,8 +7128,8 @@ function invoiceDraftFromJob(job) {
     dueDate: calculateDueDate(issueDate, paymentTerms),
     status: "Unpaid",
     paymentMethod: currentUser.paymentMethod || "Bank transfer",
-    notes: `Invoice generated from ${job.name}.`,
-    attachmentsNote: job.internalNotes || "Completion photos and signed job sheet can be supplied.",
+    notes: "",
+    attachmentsNote: job.internalNotes || "",
     lineItems: [
       { description: `Materials for ${job.name}`, qty: 1, rate: materialsAmount },
       { description: `Labour for ${job.name}`, qty: 1, rate: labourAmount },
@@ -7112,8 +7158,8 @@ function invoiceDraftFromQuote(quote) {
     dueDate: calculateDueDate(issueDate, paymentTerms),
     status: "Unpaid",
     paymentMethod: currentUser.paymentMethod || "Bank transfer",
-    notes: quote.notes || `Invoice converted from ${quote.quoteNumber}.`,
-    attachmentsNote: `Converted from quote ${quote.quoteNumber}.`,
+    notes: quote.notes || "",
+    attachmentsNote: "",
     lineItems: [
       { description: quote.materialItems || `Materials for ${quote.jobName}`, qty: 1, rate: Number(quote.materialAmount || 0) },
       { description: quote.labourItems || `Labour for ${quote.jobName}`, qty: 1, rate: Number(quote.labourAmount || 0) },
@@ -7141,8 +7187,8 @@ function invoiceDraftFromClient(client) {
     dueDate: calculateDueDate(issueDate, paymentTerms),
     status: "Draft",
     paymentMethod: currentUser.paymentMethod || "Bank transfer",
-    notes: client?.notes || "Please include the invoice number as the payment reference.",
-    attachmentsNote: "Supporting photos or signed site notes available on request.",
+    notes: client?.notes || "",
+    attachmentsNote: "",
     lineItems: [
       { description: "", qty: 1, rate: 0 },
       { description: "", qty: 1, rate: 0 },
@@ -7248,12 +7294,12 @@ function resetInvoiceForm(options = {}) {
   const templates = getTradeTemplates();
   els.invoiceSiteAddressInput.value = "";
   els.invoiceJobNameInput.value = "";
-  els.invoiceLineDescription1.value = templates.invoiceItems[1] || templates.materials;
-  els.invoiceLineQty1.value = "1";
-  els.invoiceLineRate1.value = "0.00";
-  els.invoiceLineDescription2.value = templates.invoiceItems[0] || templates.labour;
-  els.invoiceLineQty2.value = "1";
-  els.invoiceLineRate2.value = "0.00";
+  els.invoiceLineDescription1.value = "";
+  els.invoiceLineQty1.value = "";
+  els.invoiceLineRate1.value = "";
+  els.invoiceLineDescription2.value = "";
+  els.invoiceLineQty2.value = "";
+  els.invoiceLineRate2.value = "";
   els.invoiceTypeSelect.value = "Final invoice";
   els.invoiceStatusSelect.value = "Draft";
   if (els.invoiceApprovalRequiredSelect) {
@@ -7261,32 +7307,19 @@ function resetInvoiceForm(options = {}) {
   }
   els.invoicePaymentMethodSelect.value = currentUser.paymentMethod || "Bank transfer";
   const selectedClient = currentUser.clients.find((item) => item.id === els.invoiceClientSelect.value);
-  els.invoiceNotesInput.value = selectedClient?.notes || "Please include the invoice number as the payment reference.";
-  els.invoiceAttachmentInput.value = "Photos, receipts, and signed site notes available on request.";
+  els.invoiceNotesInput.value = selectedClient?.notes || "";
+  els.invoiceAttachmentInput.value = "";
   setInvoiceFormDefaults();
   recalculateInvoiceTotals();
   renderInvoiceClientWarning(selectedClient || null);
 }
 
 function setInvoiceFormDefaults() {
-  const templates = getTradeTemplates();
   if (!els.invoiceIssueDateInput.value) {
     els.invoiceIssueDateInput.value = toDateInputValue(new Date().toISOString());
   }
-  if (!els.invoiceLineDescription1.value.trim()) {
-    els.invoiceLineDescription1.value = templates.invoiceItems[1] || templates.materials;
-  }
-  if (!els.invoiceLineDescription2.value.trim()) {
-    els.invoiceLineDescription2.value = templates.invoiceItems[0] || templates.labour;
-  }
   if (!els.invoiceTermsSelect.value) {
     els.invoiceTermsSelect.value = currentUser?.defaultPaymentTerms || "14 days";
-  }
-  if (!els.invoiceNotesInput.value.trim()) {
-    els.invoiceNotesInput.value = "Please include the invoice number as the payment reference.";
-  }
-  if (!els.invoiceAttachmentInput.value.trim()) {
-    els.invoiceAttachmentInput.value = "Photos, receipts, and signed site notes available on request.";
   }
   syncInvoiceGstNote();
   syncInvoiceTermPills();
@@ -7742,30 +7775,35 @@ function renderPayrollQuickSummary() {
   const name = String(els.payrollEmployeeForm.elements.name?.value || "").trim();
   const payType = String(els.payrollEmployeeForm.elements.payType?.value || "Hourly");
   const hours = Number(els.payrollEmployeeForm.elements.cycleHours?.value || 0);
+  const overtimeHours = Number(els.payrollEmployeeForm.elements.overtimeHours?.value || 0);
+  const overtimeMultiplier = Number(els.payrollEmployeeForm.elements.overtimeMultiplier?.value || 1.5);
   const rate = Number(els.payrollEmployeeForm.elements.payRate?.value || 0);
-  const total = payType === "Salary" ? roundCurrency(rate / 26) : roundCurrency(hours * rate);
-  els.payrollQuickWorker.textContent = name || "New worker";
-  els.payrollQuickHours.textContent = hours ? String(hours) : "0";
+  const total = payType === "Salary"
+    ? roundCurrency(rate / 26)
+    : roundCurrency((hours * rate) + (overtimeHours * rate * overtimeMultiplier));
+  els.payrollQuickWorker.textContent = name || "New employee";
+  els.payrollQuickHours.textContent = overtimeHours ? `${hours} + ${overtimeHours} OT` : (hours ? String(hours) : "0");
   els.payrollQuickRate.textContent = formatMoney(rate);
   els.payrollQuickTotal.textContent = formatMoney(total);
 }
 
 function handlePayrollCopyLastWeek() {
   const latestRun = currentUser.payrollRuns[0];
-  els.payrollEmployeeForm.elements.cycleHours.value = currentUser.payrollEmployees[0]?.cycleHours || 38;
-  showToast(latestRun ? `Last week copied from ${formatDate(latestRun.runDate)}.` : "Using a standard 38 hour week.");
+  els.payrollEmployeeForm.elements.cycleHours.value = currentUser.payrollEmployees[0]?.cycleHours || "";
+  els.payrollEmployeeForm.elements.overtimeHours.value = currentUser.payrollEmployees[0]?.overtimeHours || "";
+  showToast(latestRun ? `Last pay cycle copied from ${formatDate(latestRun.runDate)}.` : "Previous hours copied where available.");
   renderPayrollQuickSummary();
 }
 
 function handlePayrollAddOvertime() {
-  const currentHours = Number(els.payrollEmployeeForm.elements.cycleHours.value || 0);
-  els.payrollEmployeeForm.elements.cycleHours.value = (currentHours + 4).toFixed(1).replace(/\.0$/, "");
+  const currentOvertime = Number(els.payrollEmployeeForm.elements.overtimeHours.value || 0);
+  els.payrollEmployeeForm.elements.overtimeHours.value = (currentOvertime + 2).toFixed(1).replace(/\.0$/, "");
   renderPayrollQuickSummary();
 }
 
 function handlePayrollAddAllowance() {
-  const currentRate = Number(els.payrollEmployeeForm.elements.payRate.value || 0);
-  els.payrollEmployeeForm.elements.payRate.value = (currentRate + 25).toFixed(2);
+  const currentMultiplier = Number(els.payrollEmployeeForm.elements.overtimeMultiplier.value || 1.5);
+  els.payrollEmployeeForm.elements.overtimeMultiplier.value = (currentMultiplier + 0.5).toFixed(1);
   renderPayrollQuickSummary();
 }
 
@@ -7830,9 +7868,6 @@ function setExpenseFormDefaults() {
   if (!els.expenseDateInput.value) {
     els.expenseDateInput.value = toDateInputValue(new Date().toISOString());
   }
-  if (!els.expenseNotesInput.value.trim()) {
-    els.expenseNotesInput.value = "Captured from site.";
-  }
   if (!els.expenseCategorySelect.value) {
     els.expenseCategorySelect.value = "Materials";
   }
@@ -7846,10 +7881,10 @@ function recalculateExpenseGst() {
 function setPayrollFormDefaults() {
   if (!editingPayrollEmployeeId) {
     const submitButton = els.payrollEmployeeForm.querySelector('button[type="submit"]');
-    if (submitButton) submitButton.textContent = "Save worker";
+    if (submitButton) submitButton.textContent = "Save employee";
   }
   if (!els.payrollLastPayInput.value) {
-    els.payrollLastPayInput.value = toDateInputValue(new Date(Date.now() - 604800000).toISOString());
+    els.payrollLastPayInput.value = toDateInputValue(new Date().toISOString());
   }
   renderPayrollQuickSummary();
 }
@@ -7860,7 +7895,7 @@ function handlePayrollEmployeeSubmit(event) {
     showToast(`Your ${currentUser.plan} plan includes up to ${getPlanUserLimit()} workers.`);
     return;
   }
-  flashSaving(els.payrollEmployeeForm, editingPayrollEmployeeId ? "Updating worker..." : "Saving staff...");
+  flashSaving(els.payrollEmployeeForm, editingPayrollEmployeeId ? "Updating employee..." : "Saving employee...");
   const data = Object.fromEntries(new FormData(els.payrollEmployeeForm));
   const isEditing = Boolean(editingPayrollEmployeeId);
   const existingEmployee = editingPayrollEmployeeId
@@ -7868,7 +7903,7 @@ function handlePayrollEmployeeSubmit(event) {
     : null;
   const employeePayload = savePayrollEmployeePayload(buildPayrollEmployeePayload(data, { existingEmployee }), { existingEmployeeId: editingPayrollEmployeeId });
   editingPayrollEmployeeId = null;
-  els.payrollEmployeeForm.querySelector('button[type="submit"]').textContent = "Save worker";
+  els.payrollEmployeeForm.querySelector('button[type="submit"]').textContent = "Save employee";
   els.payrollEmployeeForm.reset();
   setPayrollFormDefaults();
   renderWorkspace();
@@ -7882,7 +7917,7 @@ function handleQuickEmployeeSubmit(event) {
     showToast(`Your ${currentUser.plan} plan includes up to ${getPlanUserLimit()} workers.`);
     return;
   }
-  flashSaving(els.quickEmployeeForm, "Saving worker...");
+  flashSaving(els.quickEmployeeForm, "Saving employee...");
   const data = Object.fromEntries(new FormData(els.quickEmployeeForm));
   const employeePayload = savePayrollEmployeePayload(buildPayrollEmployeePayload(data));
   const modalTarget = quickCreateContext?.target || "payroll";
@@ -7898,9 +7933,8 @@ function handleQuickEmployeeSubmit(event) {
     els.payrollEmployeeForm.elements.payType.value = employeePayload.payType;
     els.payrollEmployeeForm.elements.payRate.value = Number(employeePayload.payRate || 0).toFixed(2);
     els.payrollEmployeeForm.elements.cycleHours.value = Number(employeePayload.cycleHours || 0);
-    els.payrollEmployeeForm.elements.superDetails.value = employeePayload.superDetails;
-    els.payrollEmployeeForm.elements.taxFile.value = employeePayload.taxFile;
-    els.payrollEmployeeForm.elements.bankDetails.value = employeePayload.bankDetails;
+    els.payrollEmployeeForm.elements.overtimeHours.value = Number(employeePayload.overtimeHours || 0);
+    els.payrollEmployeeForm.elements.overtimeMultiplier.value = Number(employeePayload.overtimeMultiplier || 1.5).toFixed(1);
     els.payrollEmployeeForm.elements.notes.value = employeePayload.notes;
     els.payrollEmployeeForm.elements.lastPayDate.value = employeePayload.lastPayDate;
     renderPayrollQuickSummary();
@@ -7917,8 +7951,6 @@ function getVisiblePayrollEmployees() {
         staff.role,
         staff.employmentType,
         staff.payType,
-        staff.superDetails,
-        staff.taxFile,
         staff.status,
         staff.notes,
       ].join(" ").toLowerCase();
@@ -7936,7 +7968,10 @@ function getPayrollCycleTotals() {
     .reduce((summary, staff) => {
       const grossPay = staff.payType === "Salary"
         ? roundCurrency(Number(staff.payRate || 0) / 26)
-        : roundCurrency(Number(staff.payRate || 0) * Number(staff.cycleHours || 0));
+        : roundCurrency(
+          (Number(staff.payRate || 0) * Number(staff.cycleHours || 0))
+          + (Number(staff.payRate || 0) * Number(staff.overtimeHours || 0) * Number(staff.overtimeMultiplier || 1.5))
+        );
       const superRate = staff.employmentType === "Contractor" ? 0 : 0.115;
       const superAmount = roundCurrency(grossPay * superRate);
       return {
@@ -8071,9 +8106,11 @@ function renderPayroll() {
   els.payrollList.innerHTML = visibleStaff.length ? visibleStaff.map((staff) => {
     const grossPay = staff.payType === "Salary"
       ? roundCurrency(Number(staff.payRate || 0) / 26)
-      : roundCurrency(Number(staff.payRate || 0) * Number(staff.cycleHours || 0));
+      : roundCurrency(
+        (Number(staff.payRate || 0) * Number(staff.cycleHours || 0))
+        + (Number(staff.payRate || 0) * Number(staff.overtimeHours || 0) * Number(staff.overtimeMultiplier || 1.5))
+      );
     const superAmount = staff.employmentType === "Contractor" ? 0 : roundCurrency(grossPay * 0.115);
-    const taxEstimate = staff.employmentType === "Contractor" ? 0 : roundCurrency(grossPay * 0.18);
     const payLabel = staff.payType === "Salary"
       ? `${formatMoney(staff.payRate)} salary`
       : `${formatMoney(staff.payRate)}/hr`;
@@ -8086,17 +8123,14 @@ function renderPayroll() {
         <div class="payroll-person-stats">
           <div><span>Worker</span><strong>${escapeHtml(staff.name)}</strong></div>
           <div><span>Hours</span><strong>${Number(staff.cycleHours || 0)}</strong></div>
+          <div><span>Overtime</span><strong>${Number(staff.overtimeHours || 0)}</strong></div>
           <div><span>Rate</span><strong>${payLabel}</strong></div>
           <div><span>Total</span><strong>${formatMoney(grossPay)}</strong></div>
           <div><span>Super due</span><strong>${formatMoney(superAmount)}</strong></div>
-          <div><span>Tax est.</span><strong>${formatMoney(taxEstimate)}</strong></div>
           <div><span>Last pay</span><strong>${formatDate(staff.lastPayDate)}</strong></div>
-          <div><span>Tax / super</span><strong>${escapeHtml(staff.employmentType === "Contractor" ? "Contractor ABN" : "PAYG + super")}</strong></div>
+          <div><span>OT rate</span><strong>${staff.payType === "Salary" ? "-" : `${Number(staff.overtimeMultiplier || 1.5).toFixed(1)}x`}</strong></div>
         </div>
-        <p class="payroll-person-note"><strong>Super:</strong> ${escapeHtml(staff.superDetails)}</p>
-        <p class="payroll-person-note"><strong>Tax file:</strong> ${escapeHtml(staff.taxFile)}</p>
-        <p class="payroll-person-note"><strong>Bank:</strong> ${escapeHtml(staff.bankDetails)}</p>
-        <p class="payroll-person-note">${escapeHtml(staff.notes)}</p>
+        ${staff.notes ? `<p class="payroll-person-note">${escapeHtml(staff.notes)}</p>` : ""}
         <div class="record-actions">
           <button class="mini-action" type="button" data-payroll-employee-action="edit" data-payroll-employee-id="${staff.id}">Edit</button>
           <button class="mini-action" type="button" data-payroll-employee-action="delete" data-payroll-employee-id="${staff.id}">Delete</button>
@@ -8886,7 +8920,11 @@ function renderSettings() {
   els.settingsBusinessEmailInput.value = currentUser.businessEmail;
   els.settingsBusinessPhoneInput.value = currentUser.businessPhone;
   els.settingsBusinessAddressInput.value = currentUser.businessAddress;
-  els.tradeTypeInput.value = currentUser.tradeType;
+  const knownTradeTypes = ["Landscaping", "Electrical", "Plumbing", "Carpentry", "Painting", "Tiling", "General building"];
+  els.tradeTypeInput.value = knownTradeTypes.includes(currentUser.tradeType) ? currentUser.tradeType : (currentUser.tradeType ? "Other" : "Landscaping");
+  if (els.settingsCustomTradeInput) {
+    els.settingsCustomTradeInput.value = knownTradeTypes.includes(currentUser.tradeType) ? "" : currentUser.tradeType;
+  }
   els.settingsLogoPreview.src = currentUser.businessLogo || "assets/logo-wordmark.png";
   els.settingsBrandToneSelect.value = currentUser.brandTone;
   els.settingsPaymentTermsSelect.value = currentUser.defaultPaymentTerms;
@@ -8924,6 +8962,7 @@ function renderSettings() {
       <span class="status-badge ${user.status === "Active" ? "status-active" : "status-draft"}">${escapeHtml(user.status)}</span>
     </article>
   `).join("");
+  syncTradeCustomFields();
 }
 
 function renderAlerts() {

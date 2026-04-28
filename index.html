@@ -515,16 +515,16 @@
       </a>
 
       <nav class="workspace-nav" aria-label="Workspace sections">
-        <a href="#workspace-dashboard" class="active" data-workspace-link><span class="nav-icon">DB</span><span>Dashboard</span></a>
-        <a href="#workspace-jobs" data-workspace-link><span class="nav-icon">JB</span><span>Jobs</span></a>
-        <a href="#workspace-clients" data-workspace-link><span class="nav-icon">CL</span><span>Clients</span></a>
-        <a href="#workspace-quotes" data-workspace-link><span class="nav-icon">QT</span><span>Quotes</span></a>
-        <a href="#workspace-invoices" data-workspace-link><span class="nav-icon">IN</span><span>Invoices</span></a>
-        <a href="#workspace-expenses" data-workspace-link><span class="nav-icon">EX</span><span>Expenses</span></a>
-        <a href="#workspace-payroll" data-workspace-link><span class="nav-icon">PY</span><span>Payroll</span></a>
-        <a href="#workspace-reports" data-workspace-link><span class="nav-icon">RP</span><span>Reports</span></a>
-        <a href="#workspace-billing" data-workspace-link><span class="nav-icon">BL</span><span>Billing</span></a>
-        <a href="#workspace-settings" data-workspace-link><span class="nav-icon">ST</span><span>Settings</span></a>
+        <a href="#workspace-dashboard" class="active" data-workspace-link><span>Dashboard</span></a>
+        <a href="#workspace-jobs" data-workspace-link><span>Jobs</span></a>
+        <a href="#workspace-clients" data-workspace-link><span>Clients</span></a>
+        <a href="#workspace-quotes" data-workspace-link><span>Quotes</span></a>
+        <a href="#workspace-invoices" data-workspace-link><span>Invoices</span></a>
+        <a href="#workspace-expenses" data-workspace-link><span>Expenses</span></a>
+        <a href="#workspace-payroll" data-workspace-link><span>Payroll</span></a>
+        <a href="#workspace-reports" data-workspace-link><span>Reports</span></a>
+        <a href="#workspace-billing" data-workspace-link><span>Billing</span></a>
+        <a href="#workspace-settings" data-workspace-link><span>Settings</span></a>
       </nav>
 
       <button class="sidebar-signout" type="button" id="signOutButton">Sign out</button>
@@ -1543,32 +1543,33 @@
         </div>
 
         <form class="workspace-form payroll-form-grid" id="payrollEmployeeForm" data-plan-lock-surface>
-          <div class="quick-start-strip compact-start-strip" aria-label="Payroll quick options">
-            <button class="quick-start-option active" type="button" id="payrollCopyLastWeekButton">Copy last week</button>
-            <button class="quick-start-option" type="button" id="payrollAddOvertimeButton">Add overtime</button>
-            <button class="quick-start-option" type="button" id="payrollAddAllowanceButton">Add allowance</button>
-          </div>
           <details class="form-collapse-card" open>
-            <summary><span>Staff profile</span><small>Name, role, contact, and employment type</small></summary>
+            <summary><span>Employee</span><small>Name and pay setup</small></summary>
             <div class="form-collapse-body">
               <div class="field-row">
-                <label>Name<input type="text" name="name" placeholder="Jake Thompson" required></label>
-                <label>Role<input type="text" name="role" placeholder="Carpenter / 2nd year apprentice" required></label>
+                <label>Name<input type="text" name="name" placeholder="Employee name"></label>
+                <label>Role<input type="text" name="role" placeholder="Role or trade"></label>
               </div>
               <div class="field-row">
-                <label>Mobile<input type="tel" name="mobile" placeholder="0400 222 333" required></label>
-                <label>Email<input type="email" name="email" placeholder="jake@crew.com.au" required></label>
+                <label>Mobile<input type="tel" name="mobile" placeholder="Mobile number"></label>
+                <label>Email<input type="email" name="email" placeholder="Email"></label>
               </div>
               <div class="field-row">
+                <label>Pay type
+                  <select name="payType" id="payrollPayTypeSelect">
+                    <option value="Hourly">Hourly</option>
+                    <option value="Salary">Salary</option>
+                  </select>
+                </label>
                 <label>Employment type
-                  <select name="employmentType" required>
+                  <select name="employmentType">
                     <option value="Employee">Employee</option>
                     <option value="Apprentice">Apprentice</option>
                     <option value="Contractor">Contractor</option>
                   </select>
                 </label>
                 <label>Current status
-                  <select name="status" required>
+                  <select name="status">
                     <option value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                   </select>
@@ -1578,7 +1579,7 @@
           </details>
 
           <details class="form-collapse-card">
-            <summary><span>Pay setup</span><small>Rate, hours, super, tax, and bank details</small></summary>
+            <summary><span>Pay cycle</span><small>Standard hours, overtime, and current run totals</small></summary>
             <div class="form-collapse-body">
               <div class="payroll-quick-grid">
                 <div><span>Worker</span><strong id="payrollQuickWorker">-</strong></div>
@@ -1587,35 +1588,23 @@
                 <div><span>Total</span><strong id="payrollQuickTotal">$0</strong></div>
               </div>
               <div class="field-row">
-                <label>Pay type
-                  <select name="payType" id="payrollPayTypeSelect" required>
-                    <option value="Hourly">Hourly</option>
-                    <option value="Salary">Salary</option>
-                  </select>
-                </label>
-                <label>Hourly rate or salary<input type="number" name="payRate" min="0" step="0.01" value="48" required></label>
+                <label>Hourly rate or salary<input type="number" name="payRate" min="0" step="0.01"></label>
+                <label>Standard hours this cycle<input type="number" name="cycleHours" min="0" step="0.1"></label>
               </div>
               <div class="field-row">
-                <label>Hours this cycle<input type="number" name="cycleHours" min="0" step="0.1" value="38" required></label>
-                <label>Last pay date<input type="date" name="lastPayDate" id="payrollLastPayInput" required></label>
+                <label>Overtime hours<input type="number" name="overtimeHours" min="0" step="0.1"></label>
+                <label>Overtime multiplier<input type="number" name="overtimeMultiplier" min="1" step="0.1" value="1.5"></label>
               </div>
               <div class="field-row">
-                <label>Super details<input type="text" name="superDetails" placeholder="Hostplus / 11.5% super"></label>
-                <label>Tax file details<input type="text" name="taxFile" placeholder="TFN on file / contractor ABN pending"></label>
+                <label>Last pay date<input type="date" name="lastPayDate" id="payrollLastPayInput"></label>
+                <label>Notes<input type="text" name="notes" placeholder="Anything to remember for this worker"></label>
               </div>
-              <label>Bank details<input type="text" name="bankDetails" placeholder="BSB + account ending 4421"></label>
             </div>
           </details>
 
-          <details class="form-collapse-card">
-            <summary><span>Notes and pay history filter</span><small>Optional notes plus payroll history date range</small></summary>
-            <div class="form-collapse-body">
-              <label>Payroll history from<input type="date" id="payrollHistoryDateFilter"></label>
-              <label>Notes<textarea name="notes" rows="3" placeholder="Apprentice TAFE day Wednesdays, check overtime before next pay run."></textarea></label>
-            </div>
-          </details>
+          <label>Payroll history from<input type="date" id="payrollHistoryDateFilter"></label>
           <div class="invoice-gst-note" id="settingsMemoryNote">Save team, rates, and defaults once, then reuse them across payroll runs and the rest of the app.</div>
-          <button class="button button-primary" type="submit">Save staff member</button>
+          <button class="button button-primary" type="submit">Save employee</button>
         </form>
 
         <div class="client-summary-grid" id="payrollList" data-plan-lock-surface></div>
@@ -1705,6 +1694,9 @@
                   <option value="General building">General building</option>
                   <option value="Other">Other</option>
                 </select>
+              </label>
+              <label class="hidden" id="settingsCustomTradeWrap">Custom trade
+                <input type="text" name="customTradeType" id="settingsCustomTradeInput" placeholder="Enter your trade">
               </label>
               <label>Brand accent
                 <select name="brandTone" id="settingsBrandToneSelect">
@@ -1866,16 +1858,6 @@
     </section>
   </main>
 
-  <div class="workspace-quick-create" id="quickCreateWrap" aria-label="Quick create">
-    <div class="workspace-quick-create-menu hidden" id="quickCreateMenu">
-      <button class="mini-action" type="button" id="quickCreateQuote">New quote</button>
-      <button class="mini-action" type="button" id="quickCreateInvoice">New invoice</button>
-      <button class="mini-action" type="button" id="quickCreateJob">New job</button>
-      <button class="mini-action" type="button" id="quickCreateExpense">Add expense</button>
-    </div>
-    <button class="workspace-quick-create-toggle" type="button" id="quickCreateToggle" aria-expanded="false" aria-controls="quickCreateMenu">+</button>
-  </div>
-
   <div class="auth-overlay hidden" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
     <div class="auth-card">
       <button class="auth-close" type="button" id="closeAuthButton" aria-label="Close sign in dialog">×</button>
@@ -1938,6 +1920,10 @@
           <button class="onboarding-choice" type="button" data-onboarding-choice="tradeType" data-value="Tiling">Tiling</button>
           <button class="onboarding-choice" type="button" data-onboarding-choice="tradeType" data-value="Other">Other</button>
         </div>
+        <label class="onboarding-input hidden" id="onboardingCustomTradeWrap">
+          <span>Your trade</span>
+          <input type="text" id="onboardingCustomTradeInput" data-onboarding-input="customTradeType" placeholder="Enter your trade">
+        </label>
       </section>
 
       <section class="onboarding-step hidden" data-onboarding-step="teamSize">
