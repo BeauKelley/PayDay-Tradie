@@ -19,13 +19,14 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--charcoal);
-  overflow-x: hidden;
+  overflow-x: clip;
   background:
     radial-gradient(circle at top right, rgba(40, 179, 107, 0.14), transparent 28%),
     linear-gradient(180deg, #f8fbf8 0%, #f5f8f2 22%, #ffffff 65%);
@@ -5659,7 +5660,8 @@ body {
 }
 
 #landingApp {
-  width: min(1260px, calc(100vw - 48px));
+  width: min(1260px, calc(100% - 48px));
+  max-width: 1260px;
   margin: 0 auto;
   display: grid;
   gap: 26px;
@@ -5668,7 +5670,8 @@ body {
 }
 
 .site-footer {
-  width: min(1260px, calc(100vw - 48px));
+  width: min(1260px, calc(100% - 48px));
+  max-width: 1260px;
   margin: 0 auto;
 }
 
@@ -6097,9 +6100,10 @@ h1 {
 
 .section-heading {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 360px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
   align-items: end;
   justify-content: stretch;
+  column-gap: 24px;
   margin-bottom: 20px;
 }
 
@@ -6757,7 +6761,7 @@ h1 {
   .site-header,
   #landingApp,
   .site-footer {
-    width: min(1240px, calc(100vw - 28px));
+    width: min(1240px, calc(100% - 28px));
   }
 
   .hero-section,
@@ -7035,7 +7039,8 @@ h1 {
   .site-header,
   #landingApp,
   .site-footer {
-    width: min(100vw - 18px, 100%);
+    width: calc(100% - 18px);
+    max-width: 100%;
   }
 
   h1 {
