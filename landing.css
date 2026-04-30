@@ -5589,7 +5589,7 @@ body {
 .site-header {
   width: 100%;
   margin-top: 0;
-  padding: 12px 32px;
+  padding: 12px 24px;
   min-height: 66px;
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 0 0 12px 12px;
@@ -5660,19 +5660,19 @@ body {
 }
 
 #landingApp {
-  width: min(1260px, calc(100% - 48px));
-  max-width: 1260px;
+  width: min(1220px, 100%);
   margin: 0 auto;
   display: grid;
   gap: 26px;
+  padding-inline: 24px;
   padding-top: 24px;
   padding-bottom: 62px;
 }
 
 .site-footer {
-  width: min(1260px, calc(100% - 48px));
-  max-width: 1260px;
+  width: min(1220px, 100%);
   margin: 0 auto;
+  padding-inline: 24px;
 }
 
 #features,
@@ -6100,10 +6100,9 @@ h1 {
 
 .section-heading {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 320px);
-  align-items: end;
-  justify-content: stretch;
-  column-gap: 24px;
+  grid-template-columns: 1fr;
+  justify-items: start;
+  row-gap: 12px;
   margin-bottom: 20px;
 }
 
@@ -6120,8 +6119,8 @@ h1 {
 
 .section-lead {
   width: 100%;
-  max-width: 360px;
-  justify-self: end;
+  max-width: 640px;
+  justify-self: start;
   color: var(--landing-muted);
   font-size: 0.98rem;
   line-height: 1.68;
@@ -6761,7 +6760,7 @@ h1 {
   .site-header,
   #landingApp,
   .site-footer {
-    width: min(1240px, calc(100% - 28px));
+    width: 100%;
   }
 
   .hero-section,
@@ -7039,8 +7038,7 @@ h1 {
   .site-header,
   #landingApp,
   .site-footer {
-    width: calc(100% - 18px);
-    max-width: 100%;
+    width: 100%;
   }
 
   h1 {
