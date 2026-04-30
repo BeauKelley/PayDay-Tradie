@@ -6097,7 +6097,12 @@ h1 {
 
 .section-heading {
   align-items: end;
+  flex-wrap: wrap;
   margin-bottom: 20px;
+}
+
+.section-heading > * {
+  min-width: 0;
 }
 
 .section-heading h2 {
@@ -6108,6 +6113,8 @@ h1 {
 }
 
 .section-lead {
+  margin-left: auto;
+  width: min(360px, 100%);
   max-width: 360px;
   color: var(--landing-muted);
   font-size: 0.98rem;
@@ -6143,6 +6150,7 @@ h1 {
 .dashboard-preview-top {
   flex-wrap: wrap;
   align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .dashboard-preview-top > :first-child {
@@ -6150,8 +6158,10 @@ h1 {
 }
 
 .dashboard-preview-top > .preview-alert-badge {
-  flex: 0 1 auto;
+  flex: 0 1 100%;
   margin-left: auto;
+  width: fit-content;
+  max-width: 100%;
 }
 
 .dashboard-kpi {
