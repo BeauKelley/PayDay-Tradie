@@ -8258,67 +8258,50 @@ button.button-danger {
 .workspace-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
 }
 
 .workspace-profile {
   display: grid;
   justify-items: start;
-  gap: 12px;
-  padding: 4px 2px 8px;
+  gap: 10px;
+  padding: 2px 2px 6px;
 }
 
 .workspace-profile img {
-  width: 72px;
-  height: 72px;
-  border-radius: 22px;
-  flex: 0 0 72px;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  flex: 0 0 56px;
 }
 
 .workspace-profile-copy {
   display: grid;
-  gap: 4px;
+  gap: 0;
 }
 
 .workspace-profile-copy strong {
-  font-size: 1.02rem;
-  line-height: 1.2;
+  font-size: 0.98rem;
+  line-height: 1.15;
 }
 
 .workspace-profile-copy span {
-  margin-top: 0;
-  font-size: 0.8rem;
-  color: #6b837a;
+  display: none;
 }
 
 .workspace-nav {
   display: grid;
-  gap: 18px;
-  margin-top: 4px;
-}
-
-.workspace-nav-group {
-  display: grid;
-  gap: 6px;
-}
-
-.workspace-nav-label {
-  margin: 0 0 4px;
-  padding: 0 12px;
-  color: #7b8f88;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  gap: 4px;
+  margin-top: 2px;
 }
 
 .workspace-nav a {
-  min-height: 44px;
-  padding: 10px 14px 10px 16px;
-  border-radius: 12px;
-  border-left: 3px solid transparent;
+  min-height: 38px;
+  padding: 8px 12px 8px 14px;
+  border-radius: 10px;
+  border-left: 2px solid transparent;
   background: transparent;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 600;
 }
 
@@ -8336,11 +8319,11 @@ button.button-danger {
 .sidebar-signout {
   width: 100%;
   margin-top: auto;
-  padding-top: 16px;
+  padding-top: 14px;
   border-top: 1px solid rgba(15, 47, 42, 0.08);
   border-radius: 0;
   color: #6b837a;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   font-weight: 600;
   text-align: left;
 }
@@ -8353,24 +8336,20 @@ button.button-danger {
 
 @media (max-width: 900px) {
   .workspace-sidebar {
-    gap: 16px;
+    gap: 12px;
   }
 
   .workspace-profile {
-    gap: 10px;
+    gap: 8px;
   }
 
   .workspace-profile img {
-    width: 64px;
-    height: 64px;
-    border-radius: 20px;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
   }
 
   .workspace-nav {
-    gap: 14px;
-  }
-
-  .workspace-nav-group {
     gap: 4px;
   }
 }
