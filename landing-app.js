@@ -1366,7 +1366,7 @@ function renderLandingPricing() {
   els.pricingYearlyButton?.classList.toggle("is-active", !monthlySelected);
   els.pricingYearlyButton?.setAttribute("aria-pressed", !monthlySelected ? "true" : "false");
   if (els.pricingBillingCopy) {
-    els.pricingBillingCopy.textContent = "Pay yearly and save 15%";
+    els.pricingBillingCopy.textContent = "Yearly saves 15%";
   }
 
   Object.entries(LANDING_PRICING_MONTHLY).forEach(([planName, monthlyAmount]) => {

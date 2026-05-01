@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" href="assets/pdt-logo.png">
   <link rel="stylesheet" href="landing.css">
 </head>
-<body>
+<body class="landing-premium">
   <header class="site-header">
     <a class="brand" href="#top" aria-label="PayDay Tradie home">
       <img src="assets/logo-wordmark.png" alt="PayDay Tradie">
@@ -37,470 +37,218 @@
     </nav>
   </header>
 
-  <main id="landingApp">
+    <main id="landingApp">
     <div id="top"></div>
-    <section class="hero-section">
-      <div class="hero-copy">
-        <p class="eyebrow">Built for Australian tradies</p>
-        <h1>
-          <span class="hero-title-line">Quotes, invoices, receipts</span>
-          <span class="hero-title-line">and GST handled in one place</span>
-          <span class="hero-title-line">for tradies.</span>
-        </h1>
-        <p class="hero-text">
-          Create quotes fast, turn them into invoices, track what is unpaid, and keep BAS money visible without accountant-style software.
-        </p>
-        <div class="hero-actions">
-          <button class="button button-primary" type="button" data-plan="Starter">Start free for 30 days</button>
-          <a class="button button-secondary" href="#how-it-works">See how it works</a>
-        </div>
-        <p class="hero-trial-line">No card needed | 30-day trial | Built for Australian tradies who need clear numbers fast</p>
-        <div class="hero-confidence-row" aria-label="Trust points">
-          <span>GST/BAS ready</span>
-          <span>AUD-first workflow</span>
-          <span>Local support</span>
-        </div>
-        <div class="hero-proof-strip">
-          <div class="hero-proof-copy">
-            <strong>Keep quotes, invoices and GST in one clear workflow</strong>
-            <p>See what is owed, what is safe to spend, and what needs to be set aside for BAS without digging through bookkeeping software.</p>
-          </div>
-          <div class="hero-proof-mascot" aria-hidden="true">
-            <img src="assets/mascot.png" alt="PayDay Tradie mascot" class="hero-mascot-badge">
-          </div>
-        </div>
+
+    <section class="premium-hero">
+      <p class="eyebrow">PayDay Tradie</p>
+      <h1>Know what you've earned, what you're owed, and what's due.</h1>
+      <p class="premium-subhead">Quotes, invoices, jobs, receipts, and GST in one simple workspace for tradies.</p>
+      <div class="premium-hero-actions">
+        <button class="button button-primary" type="button" data-plan="Starter">Start free trial</button>
+        <a class="button button-secondary" href="#how-it-works">See how it works</a>
       </div>
-
-      <aside class="hero-panel hero-dashboard-panel" aria-label="PayDay Tradie dashboard preview">
-        <div class="hero-visual-window">
-          <div class="hero-visual-toolbar">
-            <div class="hero-visual-dots" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="hero-visual-meta">
-              <span class="hero-visual-label">PayDay Tradie dashboard</span>
-              <span class="live-pill">GST visible</span>
-            </div>
-          </div>
-
-          <div class="hero-panel-header">
-            <div>
-              <p class="panel-label">Dashboard summary</p>
-              <strong>Monday 7:42 am</strong>
-            </div>
-            <span class="hero-panel-caption">Built for working tradies</span>
-          </div>
-
-          <div class="hero-panel-kpis">
-            <article>
-              <span>Cash in</span>
-              <strong>$18,420</strong>
-            </article>
-            <article>
-              <span>Unpaid invoices</span>
-              <strong>$4,609</strong>
-            </article>
-            <article>
-              <span>GST reserved</span>
-              <strong>$1,842</strong>
-            </article>
-          </div>
-
-          <div class="hero-panel-alert">
-            <div>
-              <span class="alert-label">Alert</span>
-              <strong>Invoice INV-2048 overdue 7 days</strong>
-              <p>Southside Build Co | Follow up today</p>
-            </div>
-            <span class="status-badge status-overdue">Overdue</span>
-          </div>
-
-          <div class="hero-panel-activity">
-            <div>
-              <span>Recent activity</span>
-              <strong>Quote approved for Brookvale fit-off</strong>
-            </div>
-            <small>Updated 9:18 am</small>
-          </div>
-        </div>
-      </aside>
     </section>
 
-    <section class="outcomes-section" id="features" aria-label="Core outcomes">
-      <article class="outcome-card">
-        <strong>Quote once, invoice without retyping</strong>
-        <p>Keep the whole job flow connected so admin stays quick and consistent.</p>
-      </article>
-      <article class="outcome-card">
-        <strong>Know what cash is still outstanding</strong>
-        <p>See unpaid and overdue money early so follow-up does not get missed.</p>
-      </article>
-      <article class="outcome-card">
-        <strong>Keep GST visible before BAS lands</strong>
-        <p>Hold tax money aside clearly instead of hoping there is enough later.</p>
-      </article>
-    </section>
-
-    <section class="preview-section" id="preview">
-      <div class="section-heading compact-heading">
+    <section class="premium-showcase" id="features" aria-label="Product preview">
+      <div class="section-heading">
         <div>
           <p class="eyebrow">Product preview</p>
-          <h2>This is what you see when you log in.</h2>
+          <h2>One clean view.</h2>
         </div>
-        <p class="section-lead">No spreadsheets. No digging through menus. Just what matters today.</p>
+        <p class="section-lead">Open the app and see what needs your attention.</p>
       </div>
 
-      <div class="dashboard-preview-shell" id="preview-shell">
-        <div class="dashboard-preview-top">
-          <div>
-            <p class="eyebrow">PayDay Tradie workspace</p>
-          </div>
+      <div class="premium-dashboard-frame">
+        <div class="premium-dashboard-topbar">
+          <span class="trust-label">PayDay Tradie workspace</span>
           <span class="preview-alert-badge">1 invoice overdue</span>
         </div>
-        <div class="dashboard-preview-kpis">
-          <article class="dashboard-kpi">
+
+        <div class="premium-dashboard-overview">
+          <article class="premium-metric">
             <span>Cash in</span>
             <strong>$18,420</strong>
             <small>This month</small>
           </article>
-          <article class="dashboard-kpi">
+          <article class="premium-metric">
             <span>Overdue invoices</span>
             <strong>$4,609</strong>
             <small>2 clients to follow up</small>
           </article>
-          <article class="dashboard-kpi">
+          <article class="premium-metric">
             <span>GST reserved</span>
             <strong>$1,842</strong>
             <small>BAS quarter to date</small>
           </article>
         </div>
-          <div class="dashboard-preview-body">
-            <article class="dashboard-insight-card">
-              <div class="preview-card-head">
-                <div>
-                  <span class="trust-label">Cash flow</span>
-                  <h3>Cash snapshot</h3>
-                </div>
-                <small>Updated 2 mins ago</small>
+
+        <div class="premium-dashboard-main">
+          <article class="premium-panel premium-panel-wide">
+            <div class="premium-panel-head">
+              <div>
+                <span class="trust-label">Cash flow</span>
+                <h3>Cash snapshot</h3>
               </div>
-              <div class="preview-cash-summary" aria-label="Cash flow snapshot">
-                <div class="preview-cash-row">
-                  <span>Available cash</span>
-                  <strong>$11,969</strong>
-                </div>
-                <div class="preview-cash-row">
-                  <span>Waiting on invoices</span>
-                  <strong>$4,609</strong>
-                </div>
-                <div class="preview-cash-row">
-                  <span>Set aside for GST</span>
-                  <strong>$1,842</strong>
-                </div>
-              </div>
-              <p class="preview-copy">See what is clear, what still needs chasing, and what should stay untouched for BAS.</p>
-            </article>
-          <article class="dashboard-activity-card">
-            <div class="preview-card-head">
+              <small>Updated 2 mins ago</small>
+            </div>
+            <div class="premium-cash-row">
+              <span>Available cash</span>
+              <strong>$11,969</strong>
+            </div>
+            <div class="premium-cash-row">
+              <span>Waiting on invoices</span>
+              <strong>$4,609</strong>
+            </div>
+            <div class="premium-cash-row">
+              <span>Set aside for GST</span>
+              <strong>$1,842</strong>
+            </div>
+          </article>
+
+          <article class="premium-panel">
+            <div class="premium-panel-head">
               <div>
                 <span class="trust-label">Recent activity</span>
                 <h3>Today</h3>
               </div>
               <span class="status-badge status-live">Live</span>
             </div>
-            <div class="preview-list">
-              <div>
-                <strong>Invoice INV-2048</strong>
-                <p>Southside Build Co | 7 days overdue</p>
-              </div>
-              <div>
-                <strong>Job scheduled</strong>
-                <p>Brookvale switchboard upgrade | 1:30 pm</p>
-              </div>
+            <div class="premium-activity-item">
+              <strong>Invoice INV-2048</strong>
+              <p>Southside Build Co | 7 days overdue</p>
+            </div>
+            <div class="premium-activity-item">
+              <strong>Job scheduled</strong>
+              <p>Brookvale switchboard upgrade | 1:30 pm</p>
             </div>
           </article>
         </div>
       </div>
+    </section>
 
-      <div class="feature-strip" aria-label="Feature summary">
-        <span>Quotes</span>
-        <span>Jobs</span>
-        <span>Invoices</span>
-        <span>Expenses</span>
-        <span>Payroll</span>
-        <span>Reports</span>
+    <section class="premium-story" aria-label="Key benefits">
+      <div class="premium-story-row">
+        <div class="premium-story-copy">
+          <p class="eyebrow">Quote to invoice</p>
+          <h2>Quote once. Invoice without retyping.</h2>
+          <p>Turn approved work into invoices without entering the same details again.</p>
+        </div>
+        <div class="premium-story-card">
+          <strong>Client, job, quote, invoice.</strong>
+          <span>One connected workflow.</span>
+        </div>
+      </div>
+
+      <div class="premium-story-row premium-story-row-reverse">
+        <div class="premium-story-copy">
+          <p class="eyebrow">Money owed</p>
+          <h2>See money owed before it becomes a problem.</h2>
+          <p>Track unpaid invoices, overdue work, and upcoming payment dates.</p>
+        </div>
+        <div class="premium-story-card">
+          <strong>Overdue early.</strong>
+          <span>Follow up before cash gets tight.</span>
+        </div>
+      </div>
+
+      <div class="premium-story-row">
+        <div class="premium-story-copy">
+          <p class="eyebrow">GST clarity</p>
+          <h2>Keep GST visible before BAS lands.</h2>
+          <p>Know what to set aside as jobs, invoices, expenses, and receipts move.</p>
+        </div>
+        <div class="premium-story-card">
+          <strong>Know what stays yours.</strong>
+          <span>Know what belongs to BAS.</span>
+        </div>
       </div>
     </section>
 
-    <section class="switch-section">
-      <article class="switch-card">
-        <div class="section-heading compact-heading">
-          <div>
-            <p class="eyebrow">Why tradies switch</p>
-            <h2>Why tradies move away from spreadsheets and bookkeeping-heavy software</h2>
-          </div>
-        </div>
-        <div class="pain-grid">
-          <article class="pain-point">
-            <span class="pain-icon">01</span>
-            <p>Quotes in one place, invoices somewhere else</p>
-          </article>
-          <article class="pain-point">
-            <span class="pain-icon">02</span>
-            <p>GST tracked too late</p>
-          </article>
-          <article class="pain-point">
-            <span class="pain-icon">03</span>
-            <p>Money owed gets missed</p>
-          </article>
-        </div>
-        <p class="switch-closing-line">PayDay Tradie keeps the whole job flow connected.</p>
-      </article>
-    </section>
-
-    <section class="how-it-works-section" id="how-it-works" aria-label="How PayDay Tradie works day to day">
-      <div class="section-heading compact-heading">
+    <section class="premium-steps" id="how-it-works">
+      <div class="section-heading section-heading-centered">
         <div>
           <p class="eyebrow">How it works</p>
-          <h2>How PayDay Tradie works day to day</h2>
+          <h2>Simple enough to run between jobs.</h2>
         </div>
-        <p class="section-lead">A simple workflow from quote to invoice to cash and GST visibility.</p>
       </div>
-      <div class="how-it-works-grid">
-        <article class="how-it-works-card">
-          <span class="how-step-number">01</span>
-          <strong>Create job or quote</strong>
-          <p>Add client details and build the quote fast.</p>
-        </article>
-        <article class="how-it-works-card">
-          <span class="how-step-number">02</span>
-          <strong>Convert to invoice</strong>
-          <p>Turn approved work into invoice instantly.</p>
-        </article>
-        <article class="how-it-works-card">
-          <span class="how-step-number">03</span>
-          <strong>Track payment and GST</strong>
-          <p>Watch overdue invoices and reserve BAS money.</p>
-        </article>
-      </div>
+      <ol class="premium-steps-list">
+        <li>
+          <span>1</span>
+          <strong>Add the client</strong>
+        </li>
+        <li>
+          <span>2</span>
+          <strong>Create the job or quote</strong>
+        </li>
+        <li>
+          <span>3</span>
+          <strong>Send the invoice</strong>
+        </li>
+        <li>
+          <span>4</span>
+          <strong>Track money and GST</strong>
+        </li>
+      </ol>
     </section>
 
-    <section class="pricing-section" id="pricing">
-      <div class="section-heading compact-heading pricing-heading">
+    <section class="pricing-section premium-pricing" id="pricing">
+      <div class="section-heading section-heading-centered">
         <div>
           <p class="eyebrow">Pricing</p>
-          <h2>Simple pricing that matches how your business runs</h2>
+          <h2>Clear pricing. Pick the fit.</h2>
         </div>
-        <p class="section-lead">Start free for 30 days. No card needed. Change plans anytime.</p>
       </div>
-      <div class="pricing-billing-bar" aria-label="Billing options">
-        <div>
-          <p class="pricing-billing-copy" id="pricingBillingCopy">Pay yearly and save 15%</p>
-          <p class="pricing-billing-subcopy">Switch between monthly and yearly billing any time.</p>
-        </div>
-        <div class="pricing-billing-toggle" role="tablist" aria-label="Billing frequency">
+
+      <div class="pricing-billing-bar" aria-label="Billing toggle">
+        <p class="pricing-billing-copy" id="pricingBillingCopy">Yearly saves 15%</p>
+        <div class="pricing-billing-toggle" role="group" aria-label="Billing period">
           <button class="pricing-billing-option is-active" type="button" id="pricingMonthlyButton" data-pricing-billing="monthly" aria-pressed="true">Monthly</button>
           <button class="pricing-billing-option" type="button" id="pricingYearlyButton" data-pricing-billing="yearly" aria-pressed="false">Yearly <span class="pricing-billing-badge">Save 15%</span></button>
         </div>
       </div>
-        <div class="pricing-grid">
-          <article class="price-card" data-plan-card="Starter">
-            <p class="plan-name">Starter</p>
-            <h3 data-plan-price="Starter">$19<span>/month</span></h3>
-            <p class="price-billing-note" data-plan-billing-note="Starter">Monthly: $19/month</p>
-            <p class="plan-copy">Best for solo tradies quoting, invoicing, tracking receipts, and keeping GST sorted themselves.</p>
-            <div class="plan-suits">
-              <strong>Who this suits</strong>
-              <p>Sole trader • One-person business</p>
-            </div>
-            <ul>
-              <li>Quote and invoice without accountant-style setup</li>
-              <li>Upload receipts and keep GST visible</li>
-              <li>Reuse client details across jobs and invoices</li>
-              <li>See unpaid money before it gets forgotten</li>
-            </ul>
-            <button class="button button-secondary" type="button" data-plan="Starter">Start free trial</button>
-          </article>
-          <article class="price-card featured" data-plan-card="Crew">
-            <div class="price-card-topline">
-              <p class="plan-name">Crew</p>
-              <span class="pricing-popular-badge">Most popular</span>
-            </div>
-            <h3 data-plan-price="Crew">$29<span>/month</span></h3>
-            <p class="price-billing-note" data-plan-billing-note="Crew">Monthly: $29/month</p>
-            <p class="plan-copy">Best for small teams that need assigned jobs, job profit tracking, and staff visibility.</p>
-            <div class="plan-suits">
-              <strong>Who this suits</strong>
-              <p>2 to 5 workers • Small crew with apprentices</p>
-            </div>
-            <ul>
-              <li>Assign jobs and see who is doing what</li>
-              <li>See which jobs are making money</li>
-              <li>Run weekly wages and labour summaries</li>
-              <li>Send overdue reminders before cash gets tight</li>
-            </ul>
-            <button class="button button-primary" type="button" data-plan="Crew">Start free trial</button>
-          </article>
-          <article class="price-card" data-plan-card="Business">
-            <p class="plan-name">Business</p>
-            <h3 data-plan-price="Business">$49<span>/month</span></h3>
-            <p class="price-billing-note" data-plan-billing-note="Business">Monthly: $49/month</p>
-            <p class="plan-copy">Best for growing trade businesses needing reporting, approvals, payroll, and stronger control.</p>
-            <div class="plan-suits">
-              <strong>Who this suits</strong>
-              <p>Office admin involved • Multiple active jobs</p>
-            </div>
-            <ul>
-              <li>See which jobs make money</li>
-              <li>Approve invoices before sending</li>
-              <li>Keep payroll, jobs, and cash flow connected</li>
-              <li>Give office admin stronger visibility and control</li>
-            </ul>
-            <button class="button button-secondary" type="button" data-plan="Business">Start full access trial</button>
-          </article>
-          <article class="price-card" data-plan-card="Custom">
-            <p class="plan-name">Custom</p>
-            <h3 data-plan-price="Custom">$15<span>/month + add-ons</span></h3>
-            <p class="price-billing-note" data-plan-billing-note="Custom">Custom stays on monthly billing.</p>
-            <p class="plan-copy">Build only what you need on top of the essentials.</p>
-            <ul>
-              <li>Base includes jobs, clients, quotes, invoices, and settings</li>
-              <li>Add expenses + receipts for +$4</li>
-              <li>Add payroll for +$7</li>
-              <li>Add reports + analytics for +$6</li>
-              <li>Add team management for +$5</li>
-              <li>Add advanced invoice controls for +$4</li>
-            </ul>
-            <button class="button button-secondary" type="button" data-plan="Custom">Build custom plan</button>
-          </article>
-        </div>
-        <div class="plan-fit-strip" aria-label="Plan decision help">
-          <p><strong>If you quote and invoice yourself</strong> - Starter</p>
-          <p><strong>If you need visibility across a small crew</strong> - Crew</p>
-          <p><strong>If you manage staff, approvals, and reporting</strong> - Business</p>
-        </div>
-        <section class="plan-compare-card" aria-label="Plan comparison">
-          <div class="plan-compare-head">
-            <div>
-              <p class="plan-name">Quick comparison</p>
-              <h3>See the main differences fast</h3>
-            </div>
-            <p>You currently have full Business access. At trial end, choose the level that fits your business.</p>
-          </div>
-          <div class="plan-compare-grid">
-            <div class="plan-compare-row is-head">
-              <strong>Included</strong>
-              <strong>Starter</strong>
-              <strong>Crew</strong>
-              <strong>Business</strong>
-            </div>
-            <div class="plan-compare-row">
-              <span class="plan-compare-label">Quotes</span>
-              <span>Unlimited</span>
-              <span>Unlimited</span>
-              <span>Unlimited</span>
-            </div>
-            <div class="plan-compare-row">
-              <span class="plan-compare-label">Invoices</span>
-              <span>Unlimited</span>
-              <span>Unlimited + reminders</span>
-              <span>Approvals + reminders</span>
-            </div>
-            <div class="plan-compare-row">
-              <span class="plan-compare-label">Team jobs</span>
-              <span>Solo workflow</span>
-              <span>Assign jobs to crew</span>
-              <span>Multiple jobs + admin view</span>
-            </div>
-            <div class="plan-compare-row">
-              <span class="plan-compare-label">Payroll</span>
-              <span>Not included</span>
-              <span>Weekly wages summaries</span>
-              <span>Payroll + business oversight</span>
-            </div>
-            <div class="plan-compare-row">
-              <span class="plan-compare-label">Reports</span>
-              <span>GST and unpaid basics</span>
-              <span>Job profit visibility</span>
-              <span>Full margin and cash reports</span>
-            </div>
-          </div>
-        </section>
-    </section>
 
-    <section class="workflow-trust-section" aria-label="Tradie workflow trust">
-      <div class="section-heading compact-heading">
-        <div>
-          <p class="eyebrow">Built for tradie workflow</p>
-          <h2>Built for how tradies actually work</h2>
-        </div>
-      </div>
-      <div class="workflow-trust-grid">
-        <article class="workflow-trust-card">
-          <strong>Quote on site</strong>
-          <p>Build quotes fast without going back to the office.</p>
+      <div class="premium-pricing-grid">
+        <article class="price-card" data-plan-card="Starter">
+          <span class="plan-label">Starter</span>
+          <h3 data-plan-price="Starter">$19<span>/month</span></h3>
+          <p class="price-billing-note" data-plan-billing-note="Starter">Monthly: $19/month</p>
+          <p class="plan-copy">Core quoting, invoicing, receipts, and GST for one tradie.</p>
+          <button class="button button-primary" type="button" data-plan="Starter">Start free trial</button>
         </article>
-        <article class="workflow-trust-card">
-          <strong>Invoice without retyping</strong>
-          <p>Turn completed jobs into invoices instantly.</p>
+
+        <article class="price-card featured" data-plan-card="Crew">
+          <span class="plan-label">Crew</span>
+          <h3 data-plan-price="Crew">$29<span>/month</span></h3>
+          <p class="price-billing-note" data-plan-billing-note="Crew">Monthly: $29/month</p>
+          <p class="plan-copy">Jobs, payroll visibility, and better follow-up for a small team.</p>
+          <button class="button button-primary" type="button" data-plan="Crew">Start free trial</button>
         </article>
-        <article class="workflow-trust-card">
-          <strong>Keep BAS money visible</strong>
-          <p>Track GST before it becomes a problem.</p>
+
+        <article class="price-card" data-plan-card="Business">
+          <span class="plan-label">Business</span>
+          <h3 data-plan-price="Business">$49<span>/month</span></h3>
+          <p class="price-billing-note" data-plan-billing-note="Business">Monthly: $49/month</p>
+          <p class="plan-copy">Reporting, control, and approvals for growing trade businesses.</p>
+          <button class="button button-primary" type="button" data-plan="Business">Start free trial</button>
+        </article>
+
+        <article class="price-card" data-plan-card="Custom">
+          <span class="plan-label">Custom</span>
+          <h3 data-plan-price="Custom">$15<span>/month + add-ons</span></h3>
+          <p class="price-billing-note" data-plan-billing-note="Custom">Custom stays on monthly billing.</p>
+          <p class="plan-copy">Start lean, then add payroll, reports, or team tools when you need them.</p>
+          <button class="button button-secondary" type="button" data-plan="Custom">Build my plan</button>
         </article>
       </div>
     </section>
 
-    <section class="trust-section" aria-label="Trust signals">
-      <div class="trust-strip">
-        <p>Built for landscapers, plumbers, electricians and builders across Australia</p>
+    <section class="premium-final-cta">
+      <div class="premium-final-cta-copy">
+        <p class="eyebrow">Start clean</p>
+        <h2>This helps you quote, invoice, track money, and keep GST under control.</h2>
       </div>
-      <div class="trust-badges-grid">
-        <span>GST/BAS ready</span>
-        <span>Built for Australian trade businesses</span>
-        <span>Secure cloud backup</span>
-        <span>Local support</span>
-      </div>
-    </section>
-
-    <section class="faq-section" aria-label="Frequently asked questions">
-      <div class="section-heading compact-heading">
-        <div>
-          <p class="eyebrow">FAQ</p>
-          <h2>Questions tradies ask before they start</h2>
-        </div>
-      </div>
-      <div class="faq-grid">
-        <article>
-          <strong>How long is the free trial?</strong>
-          <p>30 days, no card required.</p>
-        </article>
-        <article>
-          <strong>Can I change plans later?</strong>
-          <p>Yes, anytime.</p>
-        </article>
-        <article>
-          <strong>Does it work for solo tradies?</strong>
-          <p>Yes, Starter is built for solo operators.</p>
-        </article>
-        <article>
-          <strong>Can I use it with a crew?</strong>
-          <p>Yes, Crew supports small teams.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="final-cta-section" aria-label="Final call to action">
-      <article class="final-cta-card">
-        <div>
-          <p class="eyebrow">Start free today</p>
-          <h2>Start free today and set up your first quote in under 5 minutes.</h2>
-        </div>
-        <div class="final-cta-actions">
-          <button class="button button-primary" type="button" data-plan="Starter">Create account</button>
-        </div>
-      </article>
+      <button class="button button-primary" type="button" data-plan="Starter">Start free trial</button>
     </section>
   </main>
 
@@ -535,7 +283,7 @@
       <div class="dashboard-story-copy">
         <p class="eyebrow">PayDay Tradie workspace</p>
         <h1 id="workspaceTitle">Welcome back</h1>
-        <p class="hero-text" id="workspaceSubtitle">Start with cash in the bank, unpaid invoices, jobs running thin, and tax to hold aside. Then jump straight into quotes, invoices, and site costs.</p>
+        <p class="hero-text" id="workspaceSubtitle">See cash, unpaid invoices, active jobs, and GST the moment you open the app.</p>
         <div class="workspace-plan-bar" aria-label="Current subscription status">
           <span class="status-badge status-safe" id="workspacePlanBadge">Starter plan</span>
           <span class="status-badge status-draft" id="workspaceTrialDaysBadge" hidden>14 days remaining</span>
@@ -579,7 +327,7 @@
       <div class="dashboard-urgent-head">
         <div>
           <p class="eyebrow">Needs attention</p>
-          <h3 class="card-title">Money to chase, jobs to watch, and BAS money to keep aside</h3>
+          <h3 class="card-title">What needs attention today</h3>
         </div>
         <span class="status-chip" id="alertCount">0 alerts</span>
       </div>
@@ -609,7 +357,7 @@
           <div>
             <p class="eyebrow">Clients</p>
             <h3 class="card-title">Save client details once and reuse them everywhere</h3>
-            <p class="card-copy">Add the client once, then pull their contact and site details into jobs, quotes, and invoices.</p>
+            <p class="card-copy">Save client details once and reuse them everywhere.</p>
           </div>
           <a class="button button-primary" href="#clientForm">Add new client</a>
         </div>
@@ -645,7 +393,7 @@
           <div>
             <p class="eyebrow">Jobs</p>
             <h3 class="card-title">Run jobs from quote through to final invoice</h3>
-            <p class="card-copy">Search current work, check what stage each job is at, and create new jobs with client details already filled in.</p>
+            <p class="card-copy">Keep every job moving without re-entering the same details.</p>
           </div>
           <a class="button button-primary" href="#jobForm">Create new job</a>
         </div>
