@@ -8040,9 +8040,11 @@ button.button-danger {
 .landing-premium .site-footer {
   width: min(1180px, calc(100% - 48px));
   margin: 64px auto 40px;
-  padding: 32px 0 0;
+  padding: 32px 32px 20px;
   border-top: 1px solid rgba(15, 47, 42, 0.08);
   background: transparent;
+  border-radius: 32px;
+  box-sizing: border-box;
 }
 
 .landing-premium .footer-top {
@@ -8050,7 +8052,7 @@ button.button-danger {
   grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.7fr) minmax(260px, 1fr);
   gap: 28px;
   align-items: start;
-  padding: 0 0 24px;
+  padding: 4px 0 24px;
   border-top: 0;
 }
 
@@ -8134,7 +8136,7 @@ button.button-danger {
   .landing-premium .site-footer {
     width: min(100%, calc(100% - 32px));
     margin: 52px auto 32px;
-    padding-top: 24px;
+    padding: 24px 20px 18px;
   }
 
   .landing-premium .footer-top {
