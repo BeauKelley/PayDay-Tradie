@@ -8146,3 +8146,29 @@ button.button-danger {
     width: 148px;
   }
 }
+
+
+/* Remove landing eyebrow labels */
+.landing-premium .eyebrow,
+.landing-premium .trust-label {
+  display: none !important;
+}
+
+.landing-premium .premium-hero h1,
+.landing-premium .section-heading h2,
+.landing-premium .section-heading-centered h2,
+.landing-premium .premium-story-copy h2,
+.landing-premium .premium-final-cta h2 {
+  margin-top: 0;
+}
+
+.landing-premium .premium-panel-head h3 {
+  margin-top: 0;
+}
+
+.landing-premium .premium-story-row,
+.landing-premium .premium-steps,
+.landing-premium .premium-pricing,
+.landing-premium .premium-showcase {
+  gap: 24px;
+}
