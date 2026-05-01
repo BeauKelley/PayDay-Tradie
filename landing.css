@@ -8034,3 +8034,115 @@ button.button-danger {
     padding: 20px;
   }
 }
+
+
+/* Premium footer refinement */
+.landing-premium .site-footer {
+  width: min(1180px, calc(100% - 48px));
+  margin: 64px auto 40px;
+  padding: 32px 0 0;
+  border-top: 1px solid rgba(15, 47, 42, 0.08);
+  background: transparent;
+}
+
+.landing-premium .footer-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.7fr) minmax(260px, 1fr);
+  gap: 28px;
+  align-items: start;
+  padding: 0 0 24px;
+  border-top: 0;
+}
+
+.landing-premium .footer-column {
+  min-width: 0;
+}
+
+.landing-premium .footer-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 47, 42, 0.08);
+  box-shadow: 0 18px 40px rgba(15, 47, 42, 0.06);
+}
+
+.landing-premium .footer-brand img {
+  width: 160px;
+  display: block;
+}
+
+.landing-premium .footer-brand-block p,
+.landing-premium .footer-contact-block p {
+  margin: 14px 0 0;
+  max-width: 30rem;
+  color: #60766e;
+  line-height: 1.6;
+}
+
+.landing-premium .footer-column strong {
+  display: block;
+  margin: 6px 0 0;
+  color: #0f2f2a;
+  font-size: 0.92rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.landing-premium .footer-column a,
+.landing-premium .footer-links a,
+.landing-premium .footer-links span,
+.landing-premium .site-footer small {
+  color: #60766e;
+}
+
+.landing-premium .footer-badges {
+  justify-content: flex-start;
+  align-content: start;
+  gap: 10px;
+}
+
+.landing-premium .footer-badges span {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: #f4f7f5;
+  border: 1px solid rgba(15, 47, 42, 0.08);
+  color: #35544b;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.landing-premium .footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  padding: 18px 0 0;
+  border-top: 1px solid rgba(15, 47, 42, 0.08);
+  font-size: 0.92rem;
+}
+
+.landing-premium .site-footer small {
+  display: block;
+  margin-top: 14px;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 900px) {
+  .landing-premium .site-footer {
+    width: min(100%, calc(100% - 32px));
+    margin: 52px auto 32px;
+    padding-top: 24px;
+  }
+
+  .landing-premium .footer-top {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .landing-premium .footer-brand img {
+    width: 148px;
+  }
+}
