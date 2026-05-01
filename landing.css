@@ -8172,3 +8172,19 @@ button.button-danger {
 .landing-premium .premium-showcase {
   gap: 24px;
 }
+
+
+/* Sidebar nav contrast fix */
+.workspace-nav a,
+.sidebar-signout {
+  color: #35544b;
+}
+
+.workspace-nav a:hover,
+.workspace-nav a.active {
+  color: #0f2f2a;
+}
+
+.workspace-nav a[data-locked="true"]::after {
+  color: #7b8f88;
+}
