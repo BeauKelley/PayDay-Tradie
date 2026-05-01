@@ -5589,7 +5589,8 @@ body {
 .site-header {
   width: 100%;
   margin-top: 0;
-  padding: 12px 24px;
+  padding-block: 12px;
+  padding-inline: max(24px, calc((100vw - 1160px) / 2 + 32px));
   min-height: 66px;
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 0 0 12px 12px;
@@ -5660,19 +5661,21 @@ body {
 }
 
 #landingApp {
-  width: min(1220px, 100%);
+  width: 100%;
+  max-width: 1160px;
   margin: 0 auto;
   display: grid;
   gap: 26px;
-  padding-inline: 24px;
+  padding-inline: 32px;
   padding-top: 24px;
   padding-bottom: 62px;
 }
 
 .site-footer {
-  width: min(1220px, 100%);
+  width: 100%;
+  max-width: 1160px;
   margin: 0 auto;
-  padding-inline: 24px;
+  padding-inline: 32px;
 }
 
 #features,
@@ -6763,6 +6766,16 @@ h1 {
     width: 100%;
   }
 
+  .site-header {
+    padding-inline: 20px;
+  }
+
+  #landingApp,
+  .site-footer {
+    max-width: none;
+    padding-inline: 20px;
+  }
+
   .hero-section,
   .dashboard-preview-body,
   .workflow-trust-grid,
@@ -7039,6 +7052,15 @@ h1 {
   #landingApp,
   .site-footer {
     width: 100%;
+  }
+
+  .site-header {
+    padding-inline: 16px;
+  }
+
+  #landingApp,
+  .site-footer {
+    padding-inline: 16px;
   }
 
   h1 {
