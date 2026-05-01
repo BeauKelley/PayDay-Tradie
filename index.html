@@ -254,25 +254,40 @@
 
   <main class="workspace-app hidden" id="workspaceApp">
     <aside class="workspace-sidebar">
-      <a class="workspace-logo" href="#workspace-dashboard" data-workspace-link>
+      <a class="workspace-logo workspace-profile" href="#workspace-dashboard" data-workspace-link>
         <img src="assets/pdt-logo.png" alt="PayDay Tradie app logo" id="workspaceBrandLogo">
-        <div>
+        <div class="workspace-profile-copy">
           <strong id="workspaceBrandName">PayDay Tradie</strong>
           <span id="workspaceBrandSubtitle">Tradie control panel</span>
         </div>
       </a>
 
       <nav class="workspace-nav" aria-label="Workspace sections">
-        <a href="#workspace-dashboard" class="active" data-workspace-link><span>Dashboard</span></a>
-        <a href="#workspace-jobs" data-workspace-link><span>Jobs</span></a>
-        <a href="#workspace-clients" data-workspace-link><span>Clients</span></a>
-        <a href="#workspace-quotes" data-workspace-link><span>Quotes</span></a>
-        <a href="#workspace-invoices" data-workspace-link><span>Invoices</span></a>
-        <a href="#workspace-expenses" data-workspace-link><span>Expenses</span></a>
-        <a href="#workspace-payroll" data-workspace-link><span>Payroll</span></a>
-        <a href="#workspace-reports" data-workspace-link><span>Reports</span></a>
-        <a href="#workspace-billing" data-workspace-link><span>Billing</span></a>
-        <a href="#workspace-settings" data-workspace-link><span>Settings</span></a>
+        <section class="workspace-nav-group" aria-label="Main">
+          <p class="workspace-nav-label">Main</p>
+          <a href="#workspace-dashboard" class="active" data-workspace-link><span>Dashboard</span></a>
+          <a href="#workspace-jobs" data-workspace-link><span>Jobs</span></a>
+          <a href="#workspace-clients" data-workspace-link><span>Clients</span></a>
+          <a href="#workspace-quotes" data-workspace-link><span>Quotes</span></a>
+          <a href="#workspace-invoices" data-workspace-link><span>Invoices</span></a>
+        </section>
+
+        <section class="workspace-nav-group" aria-label="Money">
+          <p class="workspace-nav-label">Money</p>
+          <a href="#workspace-expenses" data-workspace-link><span>Expenses</span></a>
+          <a href="#workspace-payroll" data-workspace-link><span>Payroll</span></a>
+        </section>
+
+        <section class="workspace-nav-group" aria-label="Insights">
+          <p class="workspace-nav-label">Insights</p>
+          <a href="#workspace-reports" data-workspace-link><span>Reports</span></a>
+        </section>
+
+        <section class="workspace-nav-group" aria-label="Account">
+          <p class="workspace-nav-label">Account</p>
+          <a href="#workspace-billing" data-workspace-link><span>Billing</span></a>
+          <a href="#workspace-settings" data-workspace-link><span>Settings</span></a>
+        </section>
       </nav>
 
       <button class="sidebar-signout" type="button" id="signOutButton">Sign out</button>
@@ -1762,22 +1777,44 @@
         </div>
         <div class="onboarding-field-block">
           <strong>Invoice and payment defaults</strong>
-          <div class="onboarding-choice-grid onboarding-choice-grid-tight">
-            <button class="onboarding-choice" type="button" data-onboarding-choice="defaultPaymentTerms" data-value="Due on receipt">Due on receipt</button>
-            <button class="onboarding-choice" type="button" data-onboarding-choice="defaultPaymentTerms" data-value="7 days">7 days</button>
-            <button class="onboarding-choice" type="button" data-onboarding-choice="defaultPaymentTerms" data-value="14 days">14 days</button>
-            <button class="onboarding-choice" type="button" data-onboarding-choice="defaultPaymentTerms" data-value="30 days">30 days</button>
-          </div>
-          <div class="onboarding-choice-grid onboarding-choice-grid-tight">
-            <button class="onboarding-choice" type="button" data-onboarding-choice="defaultQuoteExpiryDays" data-value="7">Quote expiry 7 days</button>
-            <button class="onboarding-choice" type="button" data-onboarding-choice="defaultQuoteExpiryDays" data-value="14">Quote expiry 14 days</button>
-            <button class="onboarding-choice" type="button" data-onboarding-choice="defaultQuoteExpiryDays" data-value="30">Quote expiry 30 days</button>
-          </div>
-          <div class="onboarding-choice-grid onboarding-choice-grid-tight">
-            <button class="onboarding-choice" type="button" data-onboarding-choice="paymentMethod" data-value="Bank transfer">Bank transfer</button>
-            <button class="onboarding-choice" type="button" data-onboarding-choice="paymentMethod" data-value="Cash">Cash</button>
-            <button class="onboarding-choice" type="button" data-onboarding-choice="paymentMethod" data-value="Card">Card</button>
-            <button class="onboarding-choice" type="button" data-onboarding-choice="paymentMethod" data-value="Mixed">Mixed</button>
+          <div class="onboarding-settings-groups">
+            <section class="onboarding-choice-section" aria-label="Invoice payment terms">
+              <div class="onboarding-choice-head">
+                <strong class="onboarding-choice-label">Payment terms</strong>
+                <p class="onboarding-choice-helper">How long clients usually have to pay.</p>
+              </div>
+              <div class="onboarding-choice-grid onboarding-choice-grid-tight onboarding-choice-grid-compact">
+                <button class="onboarding-choice" type="button" data-onboarding-choice="defaultPaymentTerms" data-value="Due on receipt">Due on receipt<span>Pay straight away</span></button>
+                <button class="onboarding-choice" type="button" data-onboarding-choice="defaultPaymentTerms" data-value="7 days">7 days<span>Quick turnaround</span></button>
+                <button class="onboarding-choice" type="button" data-onboarding-choice="defaultPaymentTerms" data-value="14 days">14 days<span>Common trade default</span></button>
+                <button class="onboarding-choice" type="button" data-onboarding-choice="defaultPaymentTerms" data-value="30 days">30 days<span>Longer commercial terms</span></button>
+              </div>
+            </section>
+
+            <section class="onboarding-choice-section" aria-label="Quote expiry">
+              <div class="onboarding-choice-head">
+                <strong class="onboarding-choice-label">Quote expiry</strong>
+                <p class="onboarding-choice-helper">How long quotes stay valid before they lapse.</p>
+              </div>
+              <div class="onboarding-choice-grid onboarding-choice-grid-tight onboarding-choice-grid-compact">
+                <button class="onboarding-choice" type="button" data-onboarding-choice="defaultQuoteExpiryDays" data-value="7">7 days<span>Short jobs and call-outs</span></button>
+                <button class="onboarding-choice" type="button" data-onboarding-choice="defaultQuoteExpiryDays" data-value="14">14 days<span>Balanced default</span></button>
+                <button class="onboarding-choice" type="button" data-onboarding-choice="defaultQuoteExpiryDays" data-value="30">30 days<span>More time to approve</span></button>
+              </div>
+            </section>
+
+            <section class="onboarding-choice-section" aria-label="Preferred payment method">
+              <div class="onboarding-choice-head">
+                <strong class="onboarding-choice-label">Preferred payment method</strong>
+                <p class="onboarding-choice-helper">What you want shown first on invoices.</p>
+              </div>
+              <div class="onboarding-choice-grid onboarding-choice-grid-tight onboarding-choice-grid-compact">
+                <button class="onboarding-choice" type="button" data-onboarding-choice="paymentMethod" data-value="Bank transfer">Bank transfer<span>Best for invoices</span></button>
+                <button class="onboarding-choice" type="button" data-onboarding-choice="paymentMethod" data-value="Cash">Cash<span>On-site payment</span></button>
+                <button class="onboarding-choice" type="button" data-onboarding-choice="paymentMethod" data-value="Card">Card<span>Tap or online card payment</span></button>
+                <button class="onboarding-choice" type="button" data-onboarding-choice="paymentMethod" data-value="Mixed">Mixed<span>Use more than one option</span></button>
+              </div>
+            </section>
           </div>
         </div>
       </section>

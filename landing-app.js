@@ -301,7 +301,7 @@ const ONBOARDING_CONTENT = {
   },
   setup: {
     title: "Set your defaults",
-    copy: "GST, tax hold, payment terms, and quote expiry will be saved now so the app stops asking later.",
+    copy: "Pick the defaults you want the app to use from here on.",
   },
   previousSystem: {
     title: "Final reminders and switch-over",
