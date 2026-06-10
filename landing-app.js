@@ -421,6 +421,8 @@ const els = {
   cashPaymentForm: document.getElementById("cashPaymentForm"),
   cashClientName: document.getElementById("cashClientName"),
   cashClientDatalist: document.getElementById("cashClientDatalist"),
+  jobAssigneeSuggestions: document.getElementById("jobAssigneeSuggestions"),
+  payrollRoleSuggestions: document.getElementById("payrollRoleSuggestions"),
   cashAmount: document.getElementById("cashAmount"),
   cashDate: document.getElementById("cashDate"),
   cashJobSelect: document.getElementById("cashJobSelect"),
@@ -5567,6 +5569,7 @@ function renderWorkspace() {
   updateWorkspaceBrand();
   applyPlanAccess();
   syncClientSelect();
+  syncStaffDataLists();
   syncSelectedClientDetails();
   syncJobPreviousSelect();
   syncJobStartUi();
@@ -9234,6 +9237,21 @@ function handlePayrollHistoryAction(event) {
   renderWorkspace();
 }
 
+function syncStaffDataLists() {
+  const employees = currentUser.payrollEmployees || [];
+  if (els.jobAssigneeSuggestions) {
+    els.jobAssigneeSuggestions.innerHTML = employees
+      .map((e) => `<option value="${escapeHtml(e.name)}">`)
+      .join("");
+  }
+  if (els.payrollRoleSuggestions) {
+    const uniqueRoles = [...new Set(employees.map((e) => e.role).filter(Boolean))];
+    els.payrollRoleSuggestions.innerHTML = uniqueRoles
+      .map((r) => `<option value="${escapeHtml(r)}">`)
+      .join("");
+  }
+}
+
 function renderPayroll() {
   if (!guardFeatureRender("payrollPage")) return;
 
@@ -9313,6 +9331,7 @@ function renderPayroll() {
     }).join("") : emptyCard("No payroll runs yet", "Your payroll history will appear here once you save staff and run payroll.");
 
   els.runPayrollButton.textContent = nextRunStatus === "Due soon" ? "Run payroll now" : "Run payroll";
+  syncStaffDataLists();
 }
 
 function renderQuotes() {

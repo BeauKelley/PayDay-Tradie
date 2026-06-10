@@ -665,8 +665,9 @@
             <label>Material cost<input type="number" name="materialCost" min="0" step="0.01" value="3850" required></label>
             <label>Scheduled date/time<input type="datetime-local" name="scheduledAt" required></label>
           </div>
+          <datalist id="jobAssigneeSuggestions"></datalist>
           <div class="field-row">
-            <label>Assigned team member<input type="text" name="assignee" placeholder="Beau / Jake / Crew A" required></label>
+            <label>Assigned team member<input type="text" name="assignee" id="jobAssigneeInput" list="jobAssigneeSuggestions" placeholder="Beau / Jake / Crew A" required autocomplete="off"></label>
             <label>Stage
               <select name="status" id="jobStatusSelect">
                 <option value="Draft">Draft</option>
@@ -1618,9 +1619,10 @@
           <details class="form-collapse-card" open>
             <summary><span>Employee</span><small>Name and pay setup</small></summary>
             <div class="form-collapse-body">
+              <datalist id="payrollRoleSuggestions"></datalist>
               <div class="field-row">
                 <label>Name<input type="text" name="name" placeholder="Employee name"></label>
-                <label>Role<input type="text" name="role" placeholder="Role or trade"></label>
+                <label>Role<input type="text" name="role" list="payrollRoleSuggestions" placeholder="Role or trade" autocomplete="off"></label>
               </div>
               <div class="field-row">
                 <label>Mobile<input type="tel" name="mobile" placeholder="Mobile number"></label>
@@ -2305,7 +2307,7 @@
         </div>
         <div class="field-row">
           <label>Material cost<input type="number" name="materialCost" min="0" step="0.01" value="3850" required></label>
-          <label>Assigned team member<input type="text" name="assignee" placeholder="Beau / Jake / Crew A" required></label>
+          <label>Assigned team member<input type="text" name="assignee" list="jobAssigneeSuggestions" placeholder="Beau / Jake / Crew A" required autocomplete="off"></label>
         </div>
         <div class="field-row">
           <label>Recurring
@@ -2401,7 +2403,7 @@
       <form class="workspace-form compact-overlay-form" id="quickEmployeeForm">
         <div class="field-row">
           <label>Name<input type="text" name="name" placeholder="Jake Thompson" required></label>
-          <label>Role<input type="text" name="role" placeholder="Carpenter / 2nd year apprentice" required></label>
+          <label>Role<input type="text" name="role" list="payrollRoleSuggestions" placeholder="Carpenter / 2nd year apprentice" required autocomplete="off"></label>
         </div>
         <div class="field-row">
           <label>Mobile<input type="tel" name="mobile" placeholder="0400 222 333" required></label>
