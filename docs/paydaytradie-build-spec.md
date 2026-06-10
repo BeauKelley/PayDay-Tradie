@@ -73,15 +73,18 @@
   - "Categories" instead of "chart of accounts".
 
 ### Pricing Requirements
-- Rename plan direction from old placeholders to:
+- Plan tiers:
   - Starter,
-  - Pro,
-  - Enterprise.
-- Checklist pricing direction:
-  - Solo Tradie / Starter: $29 per month,
-  - Growing Tradie / Pro: $59 per month,
-  - Trade Business / Enterprise: $99 per month.
-- Payroll should be positioned in Pro and Enterprise, not Starter.
+  - Crew,
+  - Business,
+  - Custom.
+- Pricing:
+  - Starter: $19 per month — core quoting, invoicing, receipts, and GST for one tradie.
+  - Crew: $29 per month — jobs, payroll visibility, and better follow-up for a small team.
+  - Business: $49 per month — reporting, control, and approvals for growing trade businesses.
+  - Custom: $15 per month + add-ons — start lean, then add payroll, reports, or team tools when needed. Custom stays on monthly billing.
+- Payroll is positioned in Crew and Business; available as an add-on on Custom; not included in Starter.
+- Yearly billing saves 15% (applies to Starter, Crew, and Business).
 - Value message should emphasise being cheaper and clearer than stacking multiple tools.
 
 ### Competitor Insights to Reflect in UX/Copy
@@ -120,7 +123,7 @@ Create a polished marketing website plus a browser-local demo app that proves th
 5. Product preview
    - Money Available, Tax Safety Meter, unpaid invoices, job margin indicators.
 6. Pricing
-   - Starter / Pro / Enterprise with payroll gated to Pro+.
+   - Starter / Crew / Business / Custom with payroll gated to Crew+ (add-on on Custom).
 7. Testimonials
    - Authentic Australian trade business quotes.
 8. FAQ

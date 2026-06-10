@@ -1455,15 +1455,41 @@ h1 {
 .workspace-nav a {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 10px;
 }
 
 .workspace-nav-divider {
-  display: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 2px;
+  padding: 0 12px;
+  pointer-events: none;
+}
+
+.workspace-nav-divider::before,
+.workspace-nav-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.workspace-nav-divider span {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.42);
+  white-space: nowrap;
 }
 
 .nav-icon {
-  display: none;
+  display: block;
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  opacity: 0.65;
 }
 
 .workspace-nav a:hover,
@@ -1505,7 +1531,7 @@ h1 {
 }
 
 .workspace-nav a.active .nav-icon {
-  display: none;
+  opacity: 1;
 }
 
 .sidebar-signout {
@@ -1561,54 +1587,69 @@ h1 {
 
 .workspace-hero-card {
   scroll-margin-top: 16px;
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 26px 28px;
-  border-radius: 28px;
-  border: 1px solid rgba(39, 158, 113, 0.16);
+  padding: 22px 24px;
+  border-radius: 24px;
+  border: 1px solid rgba(21, 71, 52, 0.1);
   background:
-    radial-gradient(circle at top right, rgba(49, 186, 154, 0.16), transparent 32%),
-    linear-gradient(120deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 251, 249, 0.94) 36%, rgba(219, 244, 241, 0.9) 100%);
-  box-shadow: var(--shadow);
+    radial-gradient(circle at top right, rgba(49, 186, 154, 0.12), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 251, 249, 0.94) 100%);
+  box-shadow: 0 18px 42px rgba(9, 41, 34, 0.08);
+}
+
+.dashboard-top-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.dashboard-bottom-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 16px;
+}
+
+.dashboard-command-center {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+  background:
+    radial-gradient(circle at top right, rgba(40, 179, 107, 0.12), transparent 32%),
+    radial-gradient(circle at bottom left, rgba(83, 174, 214, 0.08), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #f7fbfa 100%);
+}
+
+.dashboard-command-head {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+.dashboard-command-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
 }
 
 .dashboard-hero-card h1 {
-  max-width: 700px;
-  margin-top: 12px;
-  font-size: clamp(2.4rem, 5.8vw, 4.2rem);
-  line-height: 0.92;
-  color: #0d2a33;
+  margin: 0;
+  max-width: 100%;
+  font-size: clamp(1.6rem, 2vw, 2.1rem);
+  line-height: 1.05;
+  color: #0f2f2a;
+  letter-spacing: -0.04em;
 }
 
 .dashboard-hero-card .hero-text {
-  margin-top: 14px;
-  max-width: 780px;
-  font-size: 1rem;
-  line-height: 1.6;
+  display: none;
 }
 
-.investor-dashboard-hero {
-  align-items: stretch;
-  gap: 24px;
-  padding: 24px;
-  background:
-    radial-gradient(circle at top right, rgba(40, 179, 107, 0.18), transparent 34%),
-    radial-gradient(circle at bottom left, rgba(83, 174, 214, 0.1), transparent 30%),
-    linear-gradient(135deg, #ffffff 0%, #f8fbfc 48%, #e6f7f3 100%);
-  box-shadow:
-    0 22px 45px rgba(9, 41, 34, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-.dashboard-story-copy {
-  max-width: 560px;
-}
-
+.dashboard-overview-grid,
 .investor-kpi-grid {
-  width: min(620px, 100%);
-  margin-left: auto;
+  width: 100%;
+  margin-left: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
@@ -1617,13 +1658,13 @@ h1 {
 
 .investor-kpi-card {
   position: relative;
-  padding: 18px 20px 17px;
-  border-radius: 24px;
-  border: 1px solid rgba(40, 179, 107, 0.2);
+  padding: 16px 16px 15px;
+  border-radius: 18px;
+  border: 1px solid rgba(21, 71, 52, 0.1);
   background:
-    linear-gradient(135deg, #ecfbf8 0%, #ffffff 54%, #eef8f8 100%);
+    linear-gradient(135deg, #f6fcfa 0%, #ffffff 54%, #f3faf8 100%);
   box-shadow:
-    0 18px 38px rgba(9, 41, 34, 0.12),
+    0 10px 24px rgba(9, 41, 34, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.85);
   overflow: hidden;
   min-width: 0;
@@ -1647,6 +1688,61 @@ h1 {
   border-color: rgba(46, 163, 120, 0.22);
   background:
     linear-gradient(135deg, #eefaf5 0%, #ffffff 55%, #effaf7 100%);
+}
+
+/* KPI category accents — give each card its own visual identity */
+.investor-kpi-card.kpi-cash::before {
+  background: linear-gradient(90deg, #1f7a4c, #2cb074);
+}
+
+.investor-kpi-card.kpi-cash strong {
+  color: #1f7a4c;
+}
+
+.investor-kpi-card.kpi-owed:not(.is-warning)::before {
+  background: linear-gradient(90deg, #b45309, rgba(180, 83, 9, 0.18));
+}
+
+.investor-kpi-card.kpi-owed:not(.is-warning) {
+  border-color: rgba(180, 83, 9, 0.16);
+  background: linear-gradient(135deg, #fff8eb 0%, #ffffff 56%, #fff5e1 100%);
+}
+
+.investor-kpi-card.kpi-owed strong {
+  color: #92400e;
+}
+
+.investor-kpi-card.kpi-owed.is-warning strong {
+  color: #b45309;
+}
+
+.investor-kpi-card.kpi-margin:not(.is-info)::before {
+  background: linear-gradient(90deg, #4f8edc, rgba(79, 142, 220, 0.18));
+}
+
+.investor-kpi-card.kpi-margin:not(.is-info) {
+  border-color: rgba(89, 152, 217, 0.18);
+  background: linear-gradient(135deg, #f3f8fe 0%, #ffffff 56%, #eef4fc 100%);
+}
+
+.investor-kpi-card.kpi-margin strong {
+  color: #1d4ed8;
+}
+
+.investor-kpi-card.kpi-tax strong {
+  color: #166534;
+}
+
+/* Subtle hover lift on all KPI cards */
+.investor-kpi-card {
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.investor-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 36px rgba(9, 41, 34, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
 .investor-kpi-card.is-warning {
@@ -1680,22 +1776,22 @@ h1 {
 
 .investor-kpi-card strong {
   display: block;
-  margin-top: 10px;
+  margin-top: 8px;
   color: #0e2732;
   min-width: 0;
   max-width: 100%;
-  font-size: clamp(1.68rem, 2.9vw, 2.68rem);
-  line-height: 0.92;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 0.98;
   letter-spacing: -0.05em;
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 
 .investor-kpi-card p {
-  margin-top: 8px;
+  margin-top: 6px;
   color: var(--muted);
-  font-size: 0.86rem;
-  line-height: 1.42;
+  font-size: 0.83rem;
+  line-height: 1.45;
 }
 
 .kpi-topline {
@@ -1716,7 +1812,7 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 0;
 }
 
 .workspace-plan-bar {
@@ -1897,6 +1993,93 @@ h1 {
   font-size: 0.95rem;
   font-weight: 700;
   line-height: 1.45;
+}
+
+.dashboard-chart-card {
+  display: grid;
+  gap: 18px;
+}
+
+.dashboard-chart-shell {
+  display: grid;
+  gap: 14px;
+}
+
+.dashboard-income-chart {
+  width: 100%;
+  height: 260px;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(245, 250, 248, 0.98) 0%, rgba(255, 255, 255, 1) 100%);
+}
+
+.dashboard-chart-grid-line {
+  stroke: rgba(15, 47, 42, 0.1);
+  stroke-width: 1;
+}
+
+.dashboard-chart-axis-label {
+  fill: #73877f;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.dashboard-chart-line {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dashboard-chart-line-issued {
+  stroke: #97b6ab;
+}
+
+.dashboard-chart-line-paid {
+  stroke: #177a5e;
+}
+
+.dashboard-chart-point {
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.dashboard-chart-point-issued {
+  fill: #97b6ab;
+}
+
+.dashboard-chart-point-paid {
+  fill: #177a5e;
+}
+
+.dashboard-chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: #60766e;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.dashboard-chart-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.chart-swatch-issued {
+  background: #97b6ab;
+}
+
+.chart-swatch-paid {
+  background: #177a5e;
 }
 
 .workspace-board,
@@ -4494,6 +4677,85 @@ h1 {
   overflow: hidden;
 }
 
+.dashboard-jobs-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.dashboard-jobs-overview-two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboard-empty-state {
+  display: grid;
+  gap: 4px;
+  padding: 4px 2px;
+}
+
+.dashboard-empty-state strong {
+  color: #24463e;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.dashboard-empty-state p {
+  color: #6f837b;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.dashboard-job-group {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.dashboard-job-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dashboard-job-group-head h4 {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--green-900);
+}
+
+.dashboard-job-list {
+  display: grid;
+  gap: 8px;
+}
+
+.dashboard-job-row {
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.dashboard-job-row .record-right {
+  align-items: end;
+}
+
+.dashboard-overdue-row {
+  background: linear-gradient(180deg, #fff9f3 0%, #ffffff 100%);
+  border-color: rgba(245, 158, 11, 0.16);
+}
+
+@media (max-width: 980px) {
+  .dashboard-jobs-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-bottom-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
 .onboarding-choice span {
   color: var(--muted);
   font-size: 0.82rem;
@@ -4972,6 +5234,66 @@ h1 {
   font: inherit;
   font-weight: 800;
   cursor: pointer;
+}
+
+.auth-error {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  background: linear-gradient(180deg, #fff5f5, #ffecec);
+  color: #b91c1c;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.45;
+  animation: auth-error-rise 180ms ease;
+}
+
+@keyframes auth-error-rise {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-password-wrap {
+  position: relative;
+  display: block;
+}
+
+.auth-password-wrap input {
+  padding-right: 64px;
+}
+
+.auth-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: var(--green-700);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.auth-password-toggle:hover,
+.auth-password-toggle:focus-visible {
+  background: rgba(40, 179, 107, 0.1);
+  color: var(--green-800);
+  outline: none;
+}
+
+.auth-forgot-help {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .toast-notice {
@@ -7317,6 +7639,358 @@ h1 {
   margin-top: 30px;
 }
 
+.landing-premium .premium-hero-pricing-tag {
+  margin: 16px auto 0;
+  color: #60766e;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+.landing-premium .premium-hero-pricing-tag strong {
+  color: #1f7a4c;
+  font-weight: 700;
+}
+
+/* Testimonials */
+.landing-premium .premium-testimonials {
+  max-width: 1180px;
+  margin: 80px auto 0;
+  padding: 0 24px;
+}
+
+.landing-premium .testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 36px;
+}
+
+.landing-premium .testimonial-card {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 28px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(17, 50, 46, 0.08);
+  box-shadow: 0 18px 40px rgba(13, 47, 35, 0.04);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.landing-premium .testimonial-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 50px rgba(13, 47, 35, 0.08);
+}
+
+.landing-premium .testimonial-quote {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #1a3d35;
+}
+
+.landing-premium .testimonial-attribution {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: auto;
+}
+
+.landing-premium .testimonial-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1f7a4c, #2cb074);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.landing-premium .testimonial-attribution strong {
+  display: block;
+  color: #0f2f2a;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.landing-premium .testimonial-attribution > div span {
+  display: block;
+  color: #60766e;
+  font-size: 0.82rem;
+  margin-top: 2px;
+}
+
+@media (max-width: 720px) {
+  .landing-premium .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* FAQ */
+.landing-premium .premium-faq {
+  max-width: 860px;
+  margin: 80px auto 0;
+  padding: 0 24px;
+}
+
+.landing-premium .faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.landing-premium .faq-item {
+  border-radius: 18px;
+  border: 1px solid rgba(17, 50, 46, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+  overflow: hidden;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.landing-premium .faq-item[open] {
+  border-color: rgba(40, 179, 107, 0.32);
+  box-shadow: 0 14px 32px rgba(13, 47, 35, 0.05);
+}
+
+.landing-premium .faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  list-style: none;
+  cursor: pointer;
+  color: #0f2f2a;
+  font-size: 1.02rem;
+  font-weight: 700;
+  user-select: none;
+}
+
+.landing-premium .faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.landing-premium .faq-item summary::after {
+  content: "+";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: #eaf5ef;
+  color: #1f7a4c;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: transform 200ms ease, background 200ms ease;
+}
+
+.landing-premium .faq-item[open] summary::after {
+  content: "\2212";
+  background: #1f7a4c;
+  color: #ffffff;
+}
+
+.landing-premium .faq-item p {
+  margin: 0;
+  padding: 0 22px 20px;
+  color: #4a5e57;
+  font-size: 0.97rem;
+  line-height: 1.65;
+}
+
+/* Tax Safety Meter (workspace dashboard) */
+.tax-safety-meter {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tax-safety-meter-track {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    rgba(220, 38, 38, 0.18) 0%,
+    rgba(234, 179, 8, 0.22) 45%,
+    rgba(34, 197, 94, 0.22) 100%);
+  overflow: hidden;
+}
+
+.tax-safety-meter-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  border-radius: 999px;
+  transition: width 360ms ease, background 240ms ease;
+  background: linear-gradient(90deg, #1f7a4c, #2cb074);
+}
+
+.tax-safety-meter[data-status="short"] .tax-safety-meter-fill {
+  background: linear-gradient(90deg, #b91c1c, #ef4444);
+}
+
+.tax-safety-meter[data-status="tight"] .tax-safety-meter-fill {
+  background: linear-gradient(90deg, #b45309, #eab308);
+}
+
+.tax-safety-meter[data-status="setup"] .tax-safety-meter-fill {
+  background: rgba(96, 118, 110, 0.4);
+}
+
+.tax-safety-meter-stops {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a9a93;
+}
+
+.tax-safety-meter-stops span:first-child { color: #b91c1c; }
+.tax-safety-meter-stops span:nth-child(2) { color: #b45309; }
+.tax-safety-meter-stops span:last-child { color: #1f7a4c; }
+
+/* Dashboard 'Needs attention' strip */
+.dashboard-attention-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 18px 0 22px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #fffaf0 0%, #fff5e6 100%);
+  border: 1px solid rgba(234, 179, 8, 0.28);
+  box-shadow: 0 14px 32px rgba(180, 83, 9, 0.06);
+}
+
+.dashboard-attention-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-attention-title {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #92400e;
+}
+
+.dashboard-attention-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #b45309;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.dashboard-attention-list {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.dashboard-attention-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(234, 179, 8, 0.22);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+
+.dashboard-attention-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(13, 47, 35, 0.06);
+  border-color: rgba(234, 179, 8, 0.4);
+}
+
+.dashboard-attention-item[data-tone="danger"] {
+  border-color: rgba(220, 38, 38, 0.25);
+}
+
+.dashboard-attention-item[data-tone="danger"]:hover {
+  border-color: rgba(220, 38, 38, 0.45);
+}
+
+.dashboard-attention-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.95rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.dashboard-attention-item[data-tone="danger"] .dashboard-attention-icon {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.dashboard-attention-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-attention-copy strong {
+  font-size: 0.92rem;
+  color: #1a3d35;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.dashboard-attention-copy span {
+  font-size: 0.8rem;
+  color: #60766e;
+  line-height: 1.4;
+}
+
+.dashboard-attention-arrow {
+  color: #b45309;
+  font-size: 1.4rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: transform 160ms ease;
+}
+
+.dashboard-attention-item:hover .dashboard-attention-arrow {
+  transform: translateX(2px);
+}
+
+.dashboard-attention-item[data-tone="danger"] .dashboard-attention-arrow {
+  color: #b91c1c;
+}
+
 .landing-premium .premium-section-head {
   max-width: 760px;
 }
@@ -7660,7 +8334,34 @@ h1 {
 .landing-premium .price-card.featured {
   transform: none;
   background: linear-gradient(180deg, #f2fbf6 0%, #ffffff 100%);
-  border-color: rgba(40, 179, 107, 0.22);
+  border-color: rgba(40, 179, 107, 0.55);
+  box-shadow: 0 22px 50px rgba(31, 122, 76, 0.12);
+  position: relative;
+}
+
+.landing-premium .price-card.featured .popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1f7a4c;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px rgba(31, 122, 76, 0.28);
+  white-space: nowrap;
+}
+
+.landing-premium .price-card .popular-badge {
+  display: none;
+}
+
+.landing-premium .price-card.featured .popular-badge {
+  display: inline-block;
 }
 
 .landing-premium .price-card h3 {
@@ -7850,7 +8551,7 @@ h1 {
 
 .workspace-sidebar {
   width: 264px;
-  padding: 28px 22px;
+  padding: 24px 18px;
   border-right: 1px solid rgba(15, 47, 42, 0.08);
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(18px);
@@ -7870,9 +8571,10 @@ h1 {
 }
 
 .workspace-nav a.active {
-  background: #eaf5ef;
+  background: rgba(23, 122, 94, 0.08);
   color: #0f2f2a;
   box-shadow: none;
+  border: 1px solid rgba(23, 122, 94, 0.08);
 }
 
 .workspace-nav a.active::before {
@@ -8084,6 +8786,10 @@ button.button-danger {
   .workspace-board {
     padding: 24px;
   }
+
+  .dashboard-top-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 900px) {
@@ -8095,10 +8801,1517 @@ button.button-danger {
     width: 100%;
     padding: 20px;
   }
+
+  .dashboard-overview-grid,
+  .investor-kpi-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 
 /* Premium footer refinement */
+.workspace-app,
+.workspace-app * {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background: #f7f8fa;
+  color: #111827;
+}
+
+.site-header {
+  border-bottom: 1px solid #e5e7eb;
+  background: rgba(249, 250, 251, 0.96);
+  box-shadow: none;
+  backdrop-filter: blur(12px);
+}
+
+.site-nav,
+.nav-link-button {
+  color: #111827;
+}
+
+.nav-cta,
+.button,
+.button.button-primary,
+.button-primary {
+  min-height: 44px;
+  border-radius: 12px;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.nav-cta,
+.button.button-primary,
+.button-primary {
+  background: #15803d;
+  color: #ffffff;
+}
+
+.nav-cta:hover,
+.button.button-primary:hover,
+.button-primary:hover {
+  background: #166534;
+  transform: none;
+}
+
+.button.button-secondary,
+.button-secondary,
+#landingApp .button-secondary,
+.landing-premium .button-secondary {
+  background: transparent;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  box-shadow: none;
+}
+
+.button.button-secondary:hover,
+.button-secondary:hover,
+#landingApp .button-secondary:hover,
+.landing-premium .button-secondary:hover {
+  background: #f9fafb;
+  transform: none;
+}
+
+.workspace-app {
+  background: #f7f8fa;
+  gap: 0;
+}
+
+.workspace-sidebar {
+  background: #f9fafb;
+  border-right: 1px solid #e5e7eb;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 20px 14px;
+  gap: 8px;
+}
+
+.workspace-profile-copy strong,
+.workspace-nav a,
+.sidebar-signout {
+  color: #111827;
+}
+
+.workspace-nav {
+  gap: 2px;
+}
+
+.workspace-nav a {
+  min-height: 36px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border-left: 0;
+  font-weight: 500;
+}
+
+.workspace-nav a:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.workspace-nav a.active {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #111827;
+}
+
+.sidebar-signout {
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.sidebar-signout:hover {
+  color: #111827;
+}
+
+/* Final logged-in app polish */
+.workspace-sidebar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(244, 250, 246, 0.96) 100%);
+  border-right: 1px solid rgba(229, 231, 235, 0.7);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.45);
+  gap: 10px;
+}
+
+.workspace-nav {
+  gap: 4px;
+}
+
+.workspace-nav a {
+  min-height: 38px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  border-left: 0;
+  background: transparent;
+}
+
+.workspace-nav a:hover {
+  background: rgba(243, 253, 246, 0.86);
+  color: #166534;
+}
+
+.workspace-nav a.active {
+  background: linear-gradient(180deg, rgba(243, 253, 246, 0.98) 0%, rgba(236, 249, 241, 0.94) 100%);
+  border: 1px solid rgba(23, 146, 79, 0.14);
+  color: #166534;
+  box-shadow: 0 1px 3px rgba(21, 127, 69, 0.05);
+}
+
+#workspace-dashboard.dashboard-top-layout {
+  padding: 8px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top left, rgba(40, 179, 107, 0.12), transparent 32%),
+    radial-gradient(circle at top right, rgba(83, 174, 214, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(243, 253, 246, 0.92) 0%, rgba(247, 249, 248, 0.96) 100%);
+}
+
+#workspace-dashboard .dashboard-command-center {
+  border-radius: 18px;
+  padding: 26px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.92) 100%);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.05);
+}
+
+#workspace-dashboard .dashboard-command-center:hover,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card:hover,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card:hover {
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.06);
+}
+
+#workspace-dashboard .dashboard-hero-card h1 {
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+#workspace-dashboard .investor-kpi-card,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+  backdrop-filter: blur(10px);
+}
+
+#workspace-dashboard .investor-kpi-card.kpi-cash,
+#workspace-dashboard .investor-kpi-card.kpi-tax {
+  background: linear-gradient(180deg, rgba(243, 253, 246, 0.95) 0%, rgba(255, 255, 255, 0.92) 100%);
+}
+
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card {
+  border-top: 3px solid rgba(23, 146, 79, 0.22);
+  padding-top: 26px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(23, 146, 79, 0.12);
+  box-shadow: 0 12px 22px rgba(15, 23, 42, 0.05);
+}
+
+/* Final logged-in app polish */
+.workspace-sidebar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(244, 250, 246, 0.96) 100%);
+  border-right: 1px solid rgba(229, 231, 235, 0.7);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.45);
+  gap: 10px;
+}
+
+.workspace-nav {
+  gap: 4px;
+}
+
+.workspace-nav a {
+  min-height: 38px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  border-left: 0;
+  background: transparent;
+}
+
+.workspace-nav a:hover {
+  background: rgba(243, 253, 246, 0.86);
+  color: #166534;
+}
+
+.workspace-nav a.active {
+  background: linear-gradient(180deg, rgba(243, 253, 246, 0.98) 0%, rgba(236, 249, 241, 0.94) 100%);
+  border: 1px solid rgba(23, 146, 79, 0.14);
+  color: #166534;
+  box-shadow: 0 1px 3px rgba(21, 127, 69, 0.05);
+}
+
+#workspace-dashboard.dashboard-top-layout {
+  padding: 8px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top left, rgba(40, 179, 107, 0.12), transparent 32%),
+    radial-gradient(circle at top right, rgba(83, 174, 214, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(243, 253, 246, 0.92) 0%, rgba(247, 249, 248, 0.96) 100%);
+}
+
+#workspace-dashboard .dashboard-command-center {
+  border-radius: 18px;
+  padding: 26px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.92) 100%);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.05);
+}
+
+#workspace-dashboard .dashboard-command-center:hover,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card:hover,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card:hover {
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.06);
+}
+
+#workspace-dashboard .dashboard-hero-card h1 {
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+#workspace-dashboard .investor-kpi-card,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+  backdrop-filter: blur(10px);
+}
+
+#workspace-dashboard .investor-kpi-card.kpi-cash,
+#workspace-dashboard .investor-kpi-card.kpi-tax {
+  background: linear-gradient(180deg, rgba(243, 253, 246, 0.95) 0%, rgba(255, 255, 255, 0.92) 100%);
+}
+
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card {
+  border-top: 3px solid rgba(23, 146, 79, 0.22);
+  padding-top: 26px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(23, 146, 79, 0.12);
+  box-shadow: 0 12px 22px rgba(15, 23, 42, 0.05);
+}
+
+/* Logged-in dashboard alignment with landing style */
+.workspace-sidebar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(244, 250, 246, 0.96) 100%);
+  border-right: 1px solid rgba(229, 231, 235, 0.7);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.45);
+  gap: 10px;
+}
+
+.workspace-profile {
+  padding: 4px 4px 10px;
+}
+
+.workspace-profile img {
+  box-shadow: 0 8px 18px rgba(21, 127, 69, 0.08);
+}
+
+.workspace-nav {
+  gap: 4px;
+}
+
+.workspace-nav a {
+  min-height: 38px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.workspace-nav a:hover {
+  background: rgba(243, 253, 246, 0.86);
+  border-color: rgba(23, 146, 79, 0.08);
+}
+
+.workspace-nav a.active {
+  background: linear-gradient(180deg, rgba(243, 253, 246, 0.98) 0%, rgba(236, 249, 241, 0.94) 100%);
+  border: 1px solid rgba(23, 146, 79, 0.14);
+  color: #166534;
+  box-shadow: 0 1px 3px rgba(21, 127, 69, 0.05);
+}
+
+#workspace-dashboard.dashboard-top-layout {
+  padding: 8px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at top left, rgba(40, 179, 107, 0.12), transparent 32%),
+    radial-gradient(circle at top right, rgba(83, 174, 214, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(243, 253, 246, 0.92) 0%, rgba(247, 249, 248, 0.96) 100%);
+}
+
+#workspace-dashboard .dashboard-command-center {
+  border-radius: 18px;
+  padding: 26px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.92) 100%);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.05);
+}
+
+#workspace-dashboard .dashboard-command-center:hover {
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.06);
+}
+
+#workspace-dashboard .dashboard-command-head {
+  gap: 12px;
+}
+
+#workspace-dashboard .dashboard-command-title-row {
+  gap: 16px;
+}
+
+#workspace-dashboard .dashboard-hero-card h1 {
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+#workspaceTrialDaysBadge {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(23, 146, 79, 0.1);
+  color: #4b5563;
+}
+
+#workspace-dashboard .dashboard-overview-grid,
+#workspace-dashboard .investor-kpi-grid {
+  gap: 20px;
+}
+
+#workspace-dashboard .investor-kpi-card,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+  backdrop-filter: blur(10px);
+}
+
+#workspace-dashboard .investor-kpi-card {
+  border-radius: 14px;
+  padding: 22px;
+}
+
+#workspace-dashboard .investor-kpi-card.kpi-cash,
+#workspace-dashboard .investor-kpi-card.kpi-tax {
+  background: linear-gradient(180deg, rgba(243, 253, 246, 0.95) 0%, rgba(255, 255, 255, 0.92) 100%);
+}
+
+#workspace-dashboard .investor-kpi-card.kpi-owed {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(250, 252, 251, 0.92) 100%);
+}
+
+#workspace-dashboard .investor-kpi-card strong {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+#workspace-dashboard .investor-kpi-card p,
+[data-workspace-page="workspace-dashboard"] .card-copy {
+  color: #9ca3af;
+}
+
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card {
+  border-top: 3px solid rgba(23, 146, 79, 0.22);
+  padding: 26px 24px 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(251, 254, 252, 0.94) 100%);
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-chart-shell {
+  gap: 16px;
+}
+
+#dashboardIncomeChart {
+  height: 252px;
+}
+
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] {
+  gap: 20px;
+}
+
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  padding: 24px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-jobs-overview-two-col,
+[data-workspace-page="workspace-dashboard"] .dashboard-job-list {
+  gap: 14px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(229, 231, 235, 0.9);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row:hover {
+  transform: translateY(-2px);
+  border-color: rgba(23, 146, 79, 0.12);
+  box-shadow: 0 12px 22px rgba(15, 23, 42, 0.05);
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-overdue-row {
+  background: linear-gradient(180deg, rgba(255, 250, 245, 0.96) 0%, rgba(255, 255, 255, 0.94) 100%);
+}
+
+/* Friendly practical refinements */
+.workspace-hero-card,
+.workspace-card.records-card,
+.invoice-summary-card:not(.is-overdue),
+.quote-summary-panel,
+.invoice-preview-panel {
+  background: linear-gradient(180deg, #ffffff 0%, #f9fdf9 100%);
+}
+
+.button.button-primary,
+.button-primary,
+.nav-cta {
+  background: #17924f;
+}
+
+.button.button-primary:hover,
+.button-primary:hover,
+.nav-cta:hover {
+  background: #157f45;
+}
+
+.button.button-secondary,
+.button-secondary,
+.mini-action,
+.button-ghost {
+  background: #ffffff;
+  border-color: #dfe3e8;
+  color: #374151;
+}
+
+.button.button-secondary:hover,
+.button-secondary:hover,
+.mini-action:hover,
+.button-ghost:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.filter-chip.active,
+.quick-start-option.active,
+.invoice-start-option.active,
+.invoice-term-pill.active {
+  background: #f3fdf6;
+  border-color: rgba(23, 146, 79, 0.22);
+  color: #166534;
+}
+
+.filter-chip:hover,
+.quick-start-option:hover,
+.invoice-start-option:hover,
+.invoice-term-pill:hover {
+  background: #f8fbf9;
+}
+
+.form-collapse-card summary::after,
+.settings-section-card summary::after {
+  background: #f3fdf6;
+  color: #166534;
+}
+
+#quoteForm.quote-form-grid {
+  gap: 22px;
+}
+
+#quoteForm .form-collapse-card {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+#quoteForm .form-collapse-card[open] summary {
+  border-bottom: 0;
+  background: transparent;
+}
+
+#quoteForm .form-collapse-card summary {
+  padding: 0 0 6px;
+}
+
+#quoteForm .form-collapse-body {
+  padding: 6px 0 0;
+  gap: 14px;
+}
+
+#quoteForm .quick-start-strip,
+#quoteForm .field-row,
+#quoteForm .quick-add-row,
+#quoteForm .quote-items-grid {
+  gap: 10px;
+}
+
+.builder-layout {
+  gap: 22px;
+}
+
+.builder-side-panel {
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #fcfffc;
+  box-shadow: none;
+}
+
+.quote-summary-panel,
+.invoice-preview-panel {
+  border-color: rgba(23, 146, 79, 0.12);
+  background: linear-gradient(180deg, #fcfffd 0%, #f3fdf6 100%);
+}
+
+.quote-summary-stack,
+.invoice-preview-thumb-grid,
+.invoice-preview-panel .invoice-totals-bar {
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.quote-summary-stack div,
+.invoice-preview-thumb-grid div,
+.invoice-preview-panel .invoice-totals-bar div {
+  padding: 14px 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(23, 146, 79, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.quote-summary-stack .is-total,
+.invoice-totals-bar .is-total {
+  background: #f3fdf6;
+  border-color: rgba(23, 146, 79, 0.18);
+}
+
+.quote-summary-stack span,
+.invoice-preview-thumb span,
+.invoice-preview-thumb-grid span,
+.invoice-totals-bar span,
+.quote-context-label,
+.invoice-summary-card span,
+.payroll-quick-grid span,
+.invoice-line-head {
+  color: #6b7280;
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.quote-summary-stack strong,
+.invoice-preview-thumb strong,
+.invoice-preview-thumb-grid strong,
+.invoice-totals-bar strong {
+  margin-top: 10px;
+  color: #111827;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.quote-summary-stack .is-total strong,
+.invoice-totals-bar .is-total strong,
+.record-amount,
+#moneyAvailable,
+#dashboardUrgentTax,
+.invoice-summary-card:not(.is-overdue) strong,
+.payroll-quick-grid strong,
+.expense-upload-tile strong {
+  color: #166534;
+}
+
+.invoice-preview-thumb {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(23, 146, 79, 0.1);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: none;
+}
+
+.quote-client-context-card,
+.invoice-priority-banner,
+.invoice-gst-note,
+.invoice-quote-confirmation {
+  border-color: rgba(23, 146, 79, 0.12);
+  background: #f3fdf6;
+}
+
+.quote-client-context-card strong,
+.invoice-priority-banner strong,
+.invoice-quote-section-head strong,
+.record-details summary,
+.detail-grid b,
+.quote-context-columns p {
+  color: #166534;
+}
+
+.invoice-summary-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f9fdf9 100%);
+}
+
+.quote-preview-actions,
+.invoice-action-bar,
+.form-action-row {
+  gap: 12px;
+}
+
+.workspace-board {
+  padding: 24px;
+  gap: 18px;
+}
+
+.workspace-hero-card,
+.workspace-card,
+.auth-card,
+.client-detail-card,
+.pricing-modal-card,
+.upgrade-modal-card,
+.plan-locked-card,
+.form-collapse-card,
+.settings-section-card,
+.record-row,
+.dashboard-table-row,
+.workspace-quick-create-menu {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.workspace-card::before,
+.investor-kpi-card::before,
+.dashboard-focus-tile::before,
+.dashboard-urgent-card::before {
+  display: none;
+}
+
+.workspace-card,
+.workspace-hero-card,
+.auth-card {
+  padding: 20px;
+}
+
+.workspace-card,
+.workspace-hero-card,
+.auth-card,
+.plan-locked-card,
+.form-collapse-card,
+.settings-section-card {
+  background-image: none;
+}
+
+.jobs-page-head,
+.preview-card-head,
+.records-head,
+.pricing-billing-bar,
+.client-detail-header {
+  gap: 12px;
+}
+
+.dashboard-hero-card h1,
+.card-title,
+.workspace-profile-copy strong,
+.record-row strong,
+.dashboard-table-row strong,
+.investor-kpi-card strong,
+.workspace-metrics strong,
+.invoice-summary-card strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+.dashboard-hero-card h1 {
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  line-height: 1.2;
+}
+
+.card-title {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.workspace-app .eyebrow {
+  color: #6b7280;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.card-copy,
+.hero-text,
+.auth-copy,
+.auth-copy-secondary,
+.workspace-confidence-line,
+.plan-copy,
+.price-billing-note,
+.record-row span,
+.dashboard-table-row span,
+.dashboard-table-row p,
+.investor-kpi-card p,
+.workspace-form label,
+.workspace-form small,
+.search-wrap,
+.quote-start-helper p {
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.jobs-page-head .card-copy,
+.preview-card-head .card-copy,
+.records-head .card-copy {
+  margin-top: 2px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.workspace-form {
+  gap: 16px;
+}
+
+.workspace-form label {
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #111827;
+}
+
+.workspace-form input,
+.workspace-form select,
+.workspace-form textarea,
+.workspace-form input[type="file"],
+.search-wrap input,
+.search-wrap select,
+.auth-form input,
+.auth-form select,
+.auth-form textarea {
+  min-height: 44px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: none;
+}
+
+.workspace-form textarea,
+.auth-form textarea {
+  min-height: 104px;
+}
+
+.workspace-form input:focus,
+.workspace-form select:focus,
+.workspace-form textarea:focus,
+.search-wrap input:focus,
+.search-wrap select:focus,
+.auth-form input:focus,
+.auth-form select:focus,
+.auth-form textarea:focus {
+  border-color: #cbd5e1;
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.18);
+}
+
+.filter-chip,
+.quick-start-option,
+.status-chip,
+.invoice-reminder-chip,
+.live-pill,
+.featured-pill {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  border-radius: 10px;
+  box-shadow: none;
+  font-weight: 500;
+}
+
+.filter-chip:hover,
+.quick-start-option:hover,
+.filter-chip.active,
+.quick-start-option.active {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #111827;
+  transform: none;
+}
+
+.status-badge {
+  border-radius: 999px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: none;
+}
+
+.status-paid,
+.status-profit,
+.status-safe,
+.status-live,
+.status-active {
+  color: #166534;
+}
+
+.record-row,
+.dashboard-table-row {
+  padding: 14px 16px;
+  transition: border-color 140ms ease, background-color 140ms ease;
+}
+
+.record-row:hover,
+.dashboard-table-row:hover {
+  transform: none;
+  border-color: #d1d5db;
+  box-shadow: none;
+}
+
+.record-row strong,
+.dashboard-table-row strong {
+  margin-top: 2px;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.record-row > div:first-child span,
+.dashboard-table-row > div:first-child span {
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #6b7280;
+}
+
+.investor-kpi-card,
+.dashboard-focus-tile,
+.invoice-summary-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.investor-kpi-card span,
+.kpi-topline span,
+.dashboard-focus-tile span,
+.invoice-totals-bar span {
+  color: #6b7280;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.investor-kpi-card strong,
+.dashboard-focus-tile strong,
+.dashboard-kpi strong,
+.premium-metric strong,
+.invoice-summary-card strong {
+  font-weight: 600;
+}
+
+.form-collapse-card,
+.settings-section-card,
+.plan-locked-card,
+.plan-inline-lock {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: none;
+}
+
+.plan-locked-card {
+  gap: 10px;
+}
+
+.workspace-card.is-plan-locked .plan-locked-card {
+  box-shadow: none;
+}
+
+.workspace-card.is-plan-locked [data-plan-lock-surface] {
+  opacity: 0.18;
+  filter: blur(3px) saturate(0.7);
+}
+
+.workspace-quick-create-menu,
+.auth-card,
+.client-detail-card {
+  box-shadow: none;
+}
+
+#dashboardIncomeChart,
+.dashboard-income-chart {
+  background: #ffffff;
+}
+
+.dashboard-chart-grid-line {
+  stroke: #e5e7eb;
+}
+
+.dashboard-chart-line {
+  stroke-width: 2;
+}
+
+.dashboard-chart-line-issued {
+  stroke: #94a3b8;
+}
+
+.dashboard-chart-line-paid {
+  stroke: #15803d;
+}
+
+.dashboard-chart-axis-label,
+.dashboard-chart-legend,
+.dashboard-chart-legend span {
+  color: #6b7280;
+  fill: #9ca3af;
+  font-weight: 400;
+}
+
+.chart-swatch-issued {
+  background: #94a3b8;
+}
+
+.chart-swatch-paid {
+  background: #15803d;
+}
+
+.workspace-app .hero-text:empty,
+.workspace-app .auth-copy:empty,
+.workspace-app .card-copy:empty {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .workspace-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px;
+  }
+
+  .workspace-board {
+    padding: 18px;
+  }
+}
+
+.dashboard-top-layout#workspace-dashboard,
+#workspace-dashboard,
+[data-workspace-page="workspace-dashboard"] {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.workspace-board > #workspace-dashboard,
+.workspace-board > [data-workspace-page="workspace-dashboard"] {
+  background: transparent;
+}
+
+#workspace-dashboard.dashboard-top-layout,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] {
+  gap: 16px;
+  background: #f7f8fa;
+}
+
+#workspace-dashboard .dashboard-command-center,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: none;
+  padding: 20px;
+}
+
+#workspace-dashboard .dashboard-command-center {
+  gap: 16px;
+  background-image: none;
+}
+
+#workspace-dashboard .dashboard-command-head {
+  gap: 8px;
+}
+
+#workspace-dashboard .dashboard-command-title-row {
+  align-items: center;
+  gap: 12px;
+}
+
+#workspace-dashboard .dashboard-hero-card h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+#workspaceTrialDaysBadge {
+  min-height: auto;
+  padding: 6px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+#workspace-dashboard .dashboard-overview-grid,
+#workspace-dashboard .investor-kpi-grid {
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+#workspace-dashboard .investor-kpi-card {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-height: 136px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: none;
+}
+
+#workspace-dashboard .investor-kpi-card::before {
+  display: none;
+}
+
+#workspace-dashboard .investor-kpi-card.kpi-tax,
+#workspace-dashboard .investor-kpi-card.is-warning,
+#workspace-dashboard .investor-kpi-card.is-info {
+  background: #ffffff;
+}
+
+#workspace-dashboard .investor-kpi-card.is-warning {
+  border-color: #f3d3a1;
+}
+
+#workspace-dashboard .investor-kpi-card.is-info {
+  border-color: #d7e6fb;
+}
+
+#workspace-dashboard .investor-kpi-card span,
+#workspace-dashboard .kpi-topline span {
+  color: #6b7280;
+  font-size: 0.83rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+#workspace-dashboard .investor-kpi-card strong {
+  margin-top: 0;
+  color: #111827;
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+#workspace-dashboard #moneyAvailable,
+#workspace-dashboard #dashboardUrgentTax {
+  color: #15803d;
+}
+
+#workspace-dashboard .investor-kpi-card p {
+  margin-top: 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+#workspace-dashboard .kpi-topline {
+  align-items: center;
+  gap: 10px;
+}
+
+#workspace-dashboard .kpi-topline .status-badge {
+  min-height: auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: none;
+}
+
+[data-workspace-page="workspace-dashboard"] .records-head {
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2px;
+}
+
+[data-workspace-page="workspace-dashboard"] .card-title {
+  margin: 0;
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+[data-workspace-page="workspace-dashboard"] .card-copy {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+#dashboardChartRange,
+[data-workspace-page="workspace-dashboard"] .status-chip {
+  padding: 6px 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  min-height: 100%;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-chart-shell {
+  gap: 12px;
+}
+
+#dashboardIncomeChart {
+  height: 240px;
+  border: 0;
+  border-radius: 0;
+  background: #ffffff;
+}
+
+.dashboard-chart-grid-line {
+  stroke: #e5e7eb;
+  stroke-width: 1;
+}
+
+.dashboard-chart-axis-label {
+  fill: #9ca3af;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.dashboard-chart-line {
+  stroke-width: 2;
+}
+
+.dashboard-chart-line-issued {
+  stroke: #94a3b8;
+}
+
+.dashboard-chart-line-paid {
+  stroke: #15803d;
+}
+
+.dashboard-chart-point {
+  stroke: #ffffff;
+  stroke-width: 1.5;
+}
+
+.dashboard-chart-point-issued {
+  fill: #94a3b8;
+}
+
+.dashboard-chart-point-paid {
+  fill: #15803d;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-chart-legend {
+  gap: 16px;
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+[data-workspace-page="workspace-dashboard"] .chart-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-jobs-overview-two-col {
+  gap: 16px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-job-group {
+  gap: 10px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-job-group-head h4 {
+  color: #111827;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-job-group-head a {
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-job-list {
+  gap: 10px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row {
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: none;
+  transition: border-color 140ms ease, background-color 140ms ease;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row:hover {
+  transform: none;
+  border-color: #d1d5db;
+  box-shadow: none;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row > div:first-child span {
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row strong {
+  margin-top: 2px;
+  color: #111827;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row p {
+  margin-top: 3px;
+  color: #6b7280;
+  font-size: 0.84rem;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-overdue-row {
+  border-color: #f3d3a1;
+  background: #fffbf5;
+}
+
+[data-workspace-page="workspace-dashboard"] .status-badge {
+  min-height: auto;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: none;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-empty-state {
+  gap: 2px;
+  padding: 6px 2px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-empty-state strong {
+  color: #111827;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-empty-state p {
+  color: #6b7280;
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+@media (max-width: 1100px) {
+  #workspace-dashboard .dashboard-overview-grid,
+  #workspace-dashboard .investor-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Dashboard soft refinement */
+.workspace-board > #workspace-dashboard,
+.workspace-board > [data-workspace-page="workspace-dashboard"],
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] {
+  background: #f7f9f8;
+}
+
+#workspace-dashboard.dashboard-top-layout,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] {
+  gap: 20px;
+}
+
+#workspace-dashboard .dashboard-command-center,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  padding: 22px;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+#workspace-dashboard .dashboard-command-center {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfefc 100%);
+}
+
+#workspace-dashboard .dashboard-command-center:hover,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card:hover,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
+#workspace-dashboard .dashboard-command-head {
+  gap: 10px;
+}
+
+#workspace-dashboard .dashboard-command-title-row {
+  gap: 14px;
+}
+
+#workspace-dashboard .dashboard-hero-card h1 {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+#workspaceTrialDaysBadge {
+  background: #ffffff;
+  color: #6b7280;
+}
+
+#workspace-dashboard .dashboard-overview-grid,
+#workspace-dashboard .investor-kpi-grid {
+  gap: 18px;
+}
+
+#workspace-dashboard .investor-kpi-card {
+  min-height: 142px;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+#workspace-dashboard .investor-kpi-card.kpi-cash,
+#workspace-dashboard .investor-kpi-card.kpi-tax {
+  background: #f3fdf6;
+}
+
+#workspace-dashboard .investor-kpi-card.is-info {
+  background: #f8fdf9;
+  border-color: rgba(23, 146, 79, 0.14);
+}
+
+#workspace-dashboard .investor-kpi-card span,
+#workspace-dashboard .kpi-topline span,
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row > div:first-child span,
+[data-workspace-page="workspace-dashboard"] .dashboard-job-group-head a,
+[data-workspace-page="workspace-dashboard"] .status-chip {
+  color: #6b7280;
+}
+
+#workspace-dashboard .investor-kpi-card p,
+[data-workspace-page="workspace-dashboard"] .card-copy,
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row p,
+[data-workspace-page="workspace-dashboard"] .dashboard-empty-state p,
+.dashboard-chart-axis-label {
+  color: #9ca3af;
+}
+
+#workspace-dashboard .investor-kpi-card strong,
+[data-workspace-page="workspace-dashboard"] .card-title,
+[data-workspace-page="workspace-dashboard"] .dashboard-job-group-head h4,
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row strong,
+[data-workspace-page="workspace-dashboard"] .dashboard-empty-state strong {
+  color: #111827;
+}
+
+#workspace-dashboard #moneyAvailable,
+#workspace-dashboard #dashboardUrgentTax,
+#workspace-dashboard .investor-kpi-card.kpi-cash strong,
+#workspace-dashboard .investor-kpi-card.kpi-tax strong {
+  color: #166534;
+}
+
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card {
+  border-top: 3px solid rgba(23, 146, 79, 0.18);
+  padding-top: 24px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-chart-shell {
+  gap: 14px;
+}
+
+#dashboardIncomeChart {
+  height: 248px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-chart-legend {
+  color: #9ca3af;
+}
+
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  min-height: 100%;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-jobs-overview-two-col,
+[data-workspace-page="workspace-dashboard"] .dashboard-job-list {
+  gap: 12px;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row {
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.02);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.05);
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-overdue-row {
+  background: linear-gradient(180deg, #fffaf5 0%, #ffffff 100%);
+}
+
 .landing-premium .site-footer {
   width: min(1180px, calc(100% - 48px));
   margin: 64px auto 40px;
@@ -8258,12 +10471,12 @@ button.button-danger {
 .workspace-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 .workspace-profile {
-  display: grid;
-  justify-items: start;
+  display: flex;
+  align-items: center;
   gap: 10px;
   padding: 2px 2px 6px;
 }
@@ -8283,6 +10496,7 @@ button.button-danger {
 .workspace-profile-copy strong {
   font-size: 0.98rem;
   line-height: 1.15;
+  color: #0f2f2a;
 }
 
 .workspace-profile-copy span {
@@ -8292,7 +10506,7 @@ button.button-danger {
 .workspace-nav {
   display: grid;
   gap: 4px;
-  margin-top: 2px;
+  margin-top: 0;
 }
 
 .workspace-nav a {
@@ -8351,5 +10565,4816 @@ button.button-danger {
 
   .workspace-nav {
     gap: 4px;
+  }
+}
+
+/* Final logged-in app polish */
+.workspace-sidebar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(244, 250, 246, 0.96) 100%);
+  border-right: 1px solid rgba(229, 231, 235, 0.7);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.45);
+  gap: 10px;
+}
+
+.workspace-nav {
+  gap: 4px;
+}
+
+.workspace-nav a,
+.sidebar-signout,
+.workspace-profile-copy strong {
+  color: #111827;
+}
+
+.workspace-nav a {
+  min-height: 38px;
+  padding: 9px 12px;
+  border-left: 0;
+  border-radius: 12px;
+  background: transparent;
+  font-weight: 500;
+}
+
+.workspace-nav a:hover {
+  background: rgba(243, 253, 246, 0.86);
+  color: #166534;
+}
+
+.workspace-nav a.active {
+  background: linear-gradient(180deg, rgba(243, 253, 246, 0.98) 0%, rgba(236, 249, 241, 0.94) 100%);
+  border: 1px solid rgba(23, 146, 79, 0.14);
+  color: #166534;
+  box-shadow: 0 1px 3px rgba(21, 127, 69, 0.05);
+}
+
+.sidebar-signout {
+  border-top: 1px solid rgba(229, 231, 235, 0.7);
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.sidebar-signout:hover {
+  color: #166534;
+}
+
+/* ==========================================================================
+   FINAL WORKSPACE DASHBOARD + SIDEBAR OVERRIDES
+   Keep this block last so the logged-in UI renders consistently.
+   ========================================================================== */
+
+body {
+  background: #f7f9f8;
+}
+
+.workspace-app {
+  background: #f7f9f8 !important;
+}
+
+.workspace-sidebar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 250, 246, 0.98) 100%) !important;
+  border-right: 1px solid rgba(229, 231, 235, 0.82) !important;
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(10px) !important;
+  gap: 10px !important;
+}
+
+/* ==========================================================================
+   WORKSPACE PREMIUM POLISH
+   Match landing-page warmth: ambient tinted backdrop, premium card depth,
+   refined sidebar, generous spacing, confident typography.
+   ========================================================================== */
+
+body:has(.workspace-app:not(.hidden)) {
+  background:
+    radial-gradient(circle at top right, rgba(40, 179, 107, 0.10), transparent 32%),
+    radial-gradient(circle at 0% 14%, rgba(206, 233, 219, 0.28), transparent 28%),
+    linear-gradient(180deg, #f7fbf8 0%, #f3f8f4 32%, #fbfdfa 100%) !important;
+}
+
+.workspace-app:not(.hidden) {
+  background: transparent !important;
+  padding-top: 8px;
+  padding-bottom: 140px;
+  gap: 22px;
+}
+
+/* Sidebar — premium glassy panel with green-tinted depth */
+.workspace-app:not(.hidden) .workspace-sidebar {
+  padding: 22px 18px !important;
+  border-radius: 24px !important;
+  border: 1px solid rgba(31, 122, 76, 0.10) !important;
+  background:
+    radial-gradient(circle at top, rgba(40, 179, 107, 0.08), transparent 40%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 250, 246, 0.98) 100%) !important;
+  box-shadow:
+    0 24px 50px rgba(13, 47, 35, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+.workspace-app:not(.hidden) .workspace-logo strong {
+  color: #0f2f2a;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+}
+
+.workspace-app:not(.hidden) .workspace-logo span {
+  color: #60766e;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a {
+  color: #1a3d35;
+  font-weight: 600;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a:hover {
+  background: rgba(40, 179, 107, 0.08);
+  color: #0f2f2a;
+  transform: translateX(2px);
+}
+
+.workspace-app:not(.hidden) .workspace-nav a.active {
+  background: linear-gradient(135deg, rgba(40, 179, 107, 0.14), rgba(31, 122, 76, 0.08));
+  color: #0f2f2a;
+  border: 1px solid rgba(31, 122, 76, 0.18);
+  font-weight: 700;
+}
+
+.workspace-app:not(.hidden) .sidebar-signout {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(220, 38, 38, 0.18);
+  background: transparent;
+  color: #b91c1c;
+  font-weight: 700;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.workspace-app:not(.hidden) .sidebar-signout:hover {
+  background: rgba(220, 38, 38, 0.06);
+  border-color: rgba(220, 38, 38, 0.32);
+  color: #991b1b;
+}
+
+/* Workspace board — more breathing room */
+.workspace-app:not(.hidden) .workspace-board {
+  padding: 4px 8px 32px;
+  gap: 28px;
+}
+
+/* Hero card — bolder typography, deeper depth */
+.workspace-app:not(.hidden) .workspace-hero-card {
+  padding: 32px clamp(28px, 4vw, 44px);
+  border-radius: 28px;
+  border: 1px solid rgba(31, 122, 76, 0.12);
+  background:
+    radial-gradient(circle at top right, rgba(40, 179, 107, 0.12), transparent 32%),
+    radial-gradient(circle at 12% 0%, rgba(206, 233, 219, 0.4), transparent 28%),
+    linear-gradient(180deg, #ffffff 0%, #f7fbf9 100%);
+  box-shadow:
+    0 28px 60px rgba(13, 47, 35, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.workspace-app:not(.hidden) .dashboard-hero-card h1 {
+  font-size: clamp(2.2rem, 4.4vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: #0f2f2a;
+  font-weight: 800;
+}
+
+/* Workspace cards — premium gradient + hover lift */
+.workspace-app:not(.hidden) .workspace-card {
+  padding: clamp(22px, 3vw, 30px);
+  border-radius: 24px;
+  border: 1px solid rgba(17, 50, 46, 0.08);
+  background:
+    radial-gradient(circle at top right, rgba(40, 179, 107, 0.05), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 252, 250, 0.96) 100%);
+  box-shadow: 0 18px 40px rgba(13, 47, 35, 0.05);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.workspace-app:not(.hidden) .workspace-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 26px 54px rgba(13, 47, 35, 0.09);
+  border-color: rgba(31, 122, 76, 0.16);
+}
+
+/* Card titles — confident typography */
+.workspace-app:not(.hidden) .card-title {
+  color: #0f2f2a;
+  font-size: clamp(1.2rem, 2vw, 1.45rem);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.workspace-app:not(.hidden) .card-copy,
+.workspace-app:not(.hidden) .records-head .card-copy {
+  color: #4a5e57;
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
+.workspace-app:not(.hidden) .eyebrow {
+  color: #1f7a4c;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Form inputs — match landing's confident feel */
+.workspace-app:not(.hidden) .workspace-form input,
+.workspace-app:not(.hidden) .workspace-form select,
+.workspace-app:not(.hidden) .workspace-form textarea,
+.workspace-app:not(.hidden) .search-wrap input,
+.workspace-app:not(.hidden) .search-wrap select {
+  border-radius: 14px;
+  border: 1px solid rgba(17, 50, 46, 0.12);
+  padding: 13px 15px;
+  background: #ffffff;
+  font-size: 0.95rem;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.workspace-app:not(.hidden) .workspace-form input:focus,
+.workspace-app:not(.hidden) .workspace-form select:focus,
+.workspace-app:not(.hidden) .workspace-form textarea:focus,
+.workspace-app:not(.hidden) .search-wrap input:focus,
+.workspace-app:not(.hidden) .search-wrap select:focus {
+  border-color: rgba(40, 179, 107, 0.5);
+  box-shadow: 0 0 0 5px rgba(40, 179, 107, 0.12);
+  outline: none;
+}
+
+/* Buttons inside workspace — match landing CTAs */
+.workspace-app:not(.hidden) .button-primary {
+  border-radius: 14px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  box-shadow: 0 12px 26px rgba(31, 122, 76, 0.18);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.workspace-app:not(.hidden) .button-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(31, 122, 76, 0.24);
+}
+
+/* KPI grid — more generous spacing */
+.workspace-app:not(.hidden) .investor-kpi-grid {
+  gap: 16px;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card {
+  padding: 20px 20px 18px;
+  border-radius: 20px;
+}
+
+/* Section gaps inside dashboard */
+.workspace-app:not(.hidden) .dashboard-top-layout {
+  gap: 24px;
+}
+
+.workspace-app:not(.hidden) .dashboard-bottom-layout {
+  gap: 22px;
+}
+
+/* Records cards (job lists, money lists) */
+.workspace-app:not(.hidden) .records-card .records-head {
+  padding-bottom: 6px;
+}
+
+/* Top of dashboard chart card — softer accent */
+.workspace-app:not(.hidden) [data-workspace-page="workspace-dashboard"].dashboard-chart-card {
+  border-top: none;
+  padding-top: clamp(22px, 3vw, 30px);
+}
+
+/* Status chips and badges — softer surfaces */
+.workspace-app:not(.hidden) .status-chip {
+  background: rgba(40, 179, 107, 0.08);
+  border-color: rgba(31, 122, 76, 0.16);
+  color: #0f2f2a;
+}
+
+/* Filter chips inside workspace */
+.workspace-app:not(.hidden) .filter-chip {
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-weight: 600;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.workspace-app:not(.hidden) .filter-chip:hover {
+  background: rgba(40, 179, 107, 0.06);
+  border-color: rgba(31, 122, 76, 0.2);
+}
+
+.workspace-app:not(.hidden) .filter-chip.active {
+  background: linear-gradient(135deg, rgba(40, 179, 107, 0.18), rgba(31, 122, 76, 0.1));
+  border-color: rgba(31, 122, 76, 0.32);
+  color: #0f2f2a;
+}
+
+/* PayDay Tradie logo — transparent PNGs (background stripped at the file
+   level), so we just need to ensure no element paints a surface behind them. */
+.brand img,
+.workspace-logo img,
+#workspaceBrandLogo {
+  background: transparent !important;
+}
+
+/* Keep the user's uploaded business logo (when present) on a contained surface
+   so a transparent or photo logo still reads cleanly. */
+.workspace-logo img.has-business-logo {
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+/* Success flash — gentle green pulse on a record row when something good
+   happens (invoice marked paid, job marked complete). */
+.row-just-updated {
+  animation: row-flash 1.4s ease-out;
+}
+
+@keyframes row-flash {
+  0% {
+    background-color: rgba(40, 179, 107, 0.3);
+    box-shadow: 0 0 0 4px rgba(40, 179, 107, 0.18), 0 12px 28px rgba(31, 122, 76, 0.18);
+  }
+  40% {
+    background-color: rgba(40, 179, 107, 0.16);
+    box-shadow: 0 0 0 2px rgba(40, 179, 107, 0.1), 0 8px 20px rgba(31, 122, 76, 0.1);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.workspace-profile {
+  padding: 4px 4px 10px !important;
+}
+
+.workspace-profile img {
+  box-shadow: 0 10px 24px rgba(21, 127, 69, 0.08) !important;
+}
+
+.workspace-profile-copy strong {
+  color: #111827 !important;
+}
+
+/* ==========================================================================
+   WORKSPACE BOLD POLISH
+   Typographic spine, line icons, signature accent, real card contrast.
+   Goal: feel like Linear / Notion / Stripe — quiet but confident, not sleepy.
+   ========================================================================== */
+
+/* Sidebar nav — icon + label + real active state */
+.workspace-app:not(.hidden) .workspace-nav a {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px !important;
+  border-radius: 10px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: #4a5e57 !important;
+  font-weight: 600 !important;
+  font-size: 0.94rem !important;
+  letter-spacing: -0.005em;
+  position: relative;
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a .nav-icon {
+  flex-shrink: 0;
+  color: #6b7d75;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a:hover {
+  background: rgba(40, 179, 107, 0.06) !important;
+  color: #0f2f2a !important;
+  transform: none;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a:hover .nav-icon {
+  color: #1f7a4c;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a.active {
+  background: linear-gradient(135deg, rgba(40, 179, 107, 0.16), rgba(31, 122, 76, 0.06)) !important;
+  border-color: rgba(31, 122, 76, 0.18) !important;
+  color: #0f2f2a !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 6px 16px rgba(31, 122, 76, 0.08);
+}
+
+.workspace-app:not(.hidden) .workspace-nav a.active::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 22px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #2cb074, #1f7a4c);
+  display: block !important;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a.active .nav-icon {
+  color: #1f7a4c;
+}
+
+/* KPI cards — real category colour, signature icon, anchored hierarchy */
+.workspace-app:not(.hidden) .investor-kpi-card {
+  position: relative;
+  padding: 22px 22px 20px !important;
+  background: #ffffff !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(15, 47, 42, 0.08) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 8px 22px rgba(13, 47, 35, 0.04);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card::before {
+  height: 3px;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card .kpi-icon {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  padding: 7px;
+  border-radius: 10px;
+  background: rgba(40, 179, 107, 0.08);
+  color: #1f7a4c;
+  z-index: 2;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-owed .kpi-icon {
+  background: rgba(180, 83, 9, 0.1);
+  color: #b45309;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-margin .kpi-icon {
+  background: rgba(29, 78, 216, 0.08);
+  color: #1d4ed8;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax .kpi-icon {
+  display: none;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax .kpi-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax .kpi-topline span {
+  margin-right: 0;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card span {
+  display: block;
+  margin-right: 48px;
+  color: #4a5e57;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card strong {
+  display: block;
+  margin-top: 12px;
+  font-size: clamp(2rem, 3.2vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  color: #0f2f2a;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-cash strong { color: #1f7a4c; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-owed strong { color: #b45309; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-owed.is-warning strong { color: #b45309; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-margin strong { color: #1d4ed8; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax strong { color: #166534; }
+
+.workspace-app:not(.hidden) .investor-kpi-card p {
+  margin-top: 10px;
+  color: #5a6e66;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+/* Hero card — tighter, more confident */
+.workspace-app:not(.hidden) .dashboard-hero-card h1 {
+  font-size: clamp(2.1rem, 4vw, 2.85rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.035em !important;
+  line-height: 1.05 !important;
+  color: #0f2f2a !important;
+}
+
+.workspace-app:not(.hidden) .dashboard-hero-card .eyebrow {
+  margin: 0 0 4px;
+  color: #1f7a4c;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.workspace-app:not(.hidden) .dashboard-hero-card .hero-text {
+  margin-top: 10px;
+  color: #4a5e57;
+  font-size: clamp(1rem, 1.6vw, 1.12rem);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Trial badge — confident green pill */
+.workspace-app:not(.hidden) #workspaceTrialDaysBadge {
+  background: linear-gradient(135deg, #1f7a4c, #2cb074) !important;
+  border: 0 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  padding: 7px 14px !important;
+  border-radius: 999px !important;
+  font-size: 0.78rem !important;
+  box-shadow: 0 8px 18px rgba(31, 122, 76, 0.25) !important;
+  text-transform: none !important;
+}
+
+/* Card title hierarchy — confident, not whispered */
+.workspace-app:not(.hidden) .card-title {
+  font-size: clamp(1.25rem, 2vw, 1.5rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.2 !important;
+  color: #0f2f2a !important;
+}
+
+.workspace-app:not(.hidden) .card-copy {
+  color: #4a5e57 !important;
+  font-size: 0.96rem !important;
+  line-height: 1.55 !important;
+}
+
+/* Stronger workspace background contrast — cards now actually pop */
+body:has(.workspace-app:not(.hidden)) {
+  background:
+    radial-gradient(circle at top right, rgba(40, 179, 107, 0.13), transparent 36%),
+    radial-gradient(circle at 0% 16%, rgba(206, 233, 219, 0.4), transparent 32%),
+    linear-gradient(180deg, #eff5f0 0%, #e9f1ec 32%, #f5faf6 100%) !important;
+}
+
+/* Workspace cards need a brighter face against the new bg */
+.workspace-app:not(.hidden) .workspace-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 47, 42, 0.08) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 12px 28px rgba(13, 47, 35, 0.05) !important;
+}
+
+.workspace-app:not(.hidden) .workspace-card:hover {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 18px 40px rgba(13, 47, 35, 0.07) !important;
+  border-color: rgba(31, 122, 76, 0.18) !important;
+}
+
+/* Hero card — slightly elevated relative to other cards */
+.workspace-app:not(.hidden) .workspace-hero-card {
+  background:
+    radial-gradient(circle at top right, rgba(40, 179, 107, 0.1), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, #f8fcf9 100%) !important;
+  border: 1px solid rgba(31, 122, 76, 0.14) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85) inset,
+    0 24px 48px rgba(13, 47, 35, 0.07) !important;
+}
+
+/* Tabular numerals everywhere money is shown */
+.workspace-app:not(.hidden) strong,
+.workspace-app:not(.hidden) .record-row strong,
+.workspace-app:not(.hidden) .dashboard-table-row strong,
+.workspace-app:not(.hidden) .price-card h3 {
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* Status chip / trial badge for "Setting up" state */
+.workspace-app:not(.hidden) .status-badge.status-draft {
+  background: rgba(15, 47, 42, 0.06) !important;
+  color: #4a5e57 !important;
+  border: 1px solid rgba(15, 47, 42, 0.1) !important;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/* Records cards — section hierarchy */
+.workspace-app:not(.hidden) .records-card .records-head h3 {
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+  font-weight: 800;
+  color: #0f2f2a;
+  letter-spacing: -0.015em;
+}
+
+.workspace-app:not(.hidden) .records-card .records-head .card-copy {
+  color: #4a5e57;
+}
+
+/* Sign out — softer until hovered */
+.workspace-app:not(.hidden) .sidebar-signout {
+  margin-top: 12px;
+  padding: 10px 12px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(15, 47, 42, 0.1) !important;
+  background: transparent !important;
+  color: #4a5e57 !important;
+  font-weight: 600 !important;
+  font-size: 0.92rem !important;
+  text-align: left;
+}
+
+.workspace-app:not(.hidden) .sidebar-signout:hover {
+  background: rgba(220, 38, 38, 0.06) !important;
+  border-color: rgba(220, 38, 38, 0.2) !important;
+  color: #b91c1c !important;
+}
+
+/* Workspace profile — sidebar logo + name + status */
+.workspace-app:not(.hidden) .workspace-profile {
+  padding: 6px 8px 16px !important;
+  border-bottom: 1px solid rgba(15, 47, 42, 0.06);
+  margin-bottom: 6px;
+}
+
+.workspace-app:not(.hidden) .workspace-profile-copy strong {
+  font-size: 0.96rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em;
+  color: #0f2f2a !important;
+}
+
+.workspace-app:not(.hidden) .workspace-profile-copy span {
+  color: #6b7d75 !important;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   DARK SIDEBAR + DISPLAY HEADLINES (final cascade override)
+   Restores the brand's dark teal sidebar character and gives headlines a
+   confident display-style typeface for personality.
+   ========================================================================== */
+
+/* Pull a more characterful headline font from Google Fonts.
+   Plus Jakarta Sans = modern geometric sans with a friendlier 'ear' to letters
+   like a, g, e — feels premium without going corporate. */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap");
+
+.workspace-app:not(.hidden) h1,
+.workspace-app:not(.hidden) h2,
+.workspace-app:not(.hidden) h3,
+.workspace-app:not(.hidden) .card-title,
+.workspace-app:not(.hidden) .dashboard-hero-card h1 {
+  font-family: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: -0.025em !important;
+}
+
+.workspace-app:not(.hidden) .dashboard-hero-card h1 {
+  font-weight: 800 !important;
+  letter-spacing: -0.04em !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card strong {
+  font-family: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800 !important;
+}
+
+/* DARK SIDEBAR — kill all the light overrides I introduced */
+.workspace-app:not(.hidden) .workspace-sidebar {
+  padding: 18px 14px !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(255, 255, 255, 0.04) !important;
+  background:
+    radial-gradient(circle at top left, rgba(40, 179, 107, 0.16), transparent 38%),
+    linear-gradient(180deg, #0a3c46 0%, #0d3a48 38%, #0f3e4a 100%) !important;
+  box-shadow:
+    0 28px 60px rgba(4, 27, 33, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: none !important;
+}
+
+/* Sidebar profile (logo + name) on dark */
+.workspace-app:not(.hidden) .workspace-profile {
+  padding: 6px 6px 14px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  margin-bottom: 8px;
+}
+
+.workspace-app:not(.hidden) .workspace-profile img {
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25) !important;
+  border-radius: 12px !important;
+}
+
+.workspace-app:not(.hidden) .workspace-profile-copy strong {
+  color: #ffffff !important;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em !important;
+  font-size: 0.95rem !important;
+}
+
+.workspace-app:not(.hidden) .workspace-profile-copy span {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-size: 0.74rem !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* Nav items on dark */
+.workspace-app:not(.hidden) .workspace-nav a {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 10px !important;
+  border-radius: 10px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.74) !important;
+  font-weight: 600 !important;
+  font-size: 0.94rem !important;
+  letter-spacing: -0.005em;
+  position: relative;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a > span:not(.nav-monogram) {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #ffffff !important;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a.active {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(40, 179, 107, 0.45) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 6px 16px rgba(0, 0, 0, 0.18) !important;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a.active::before {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 22px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #2cb074, #1f7a4c);
+  display: block !important;
+}
+
+/* Sidebar nav icons — line-art SVGs */
+.workspace-app:not(.hidden) .workspace-nav a .nav-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: rgba(255, 255, 255, 0.65);
+  transition: color 160ms ease;
+}
+
+.workspace-app:not(.hidden) .workspace-nav a:hover .nav-icon {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.workspace-app:not(.hidden) .workspace-nav a.active .nav-icon {
+  color: #2cb074;
+}
+
+/* Sign out button on dark */
+.workspace-app:not(.hidden) .sidebar-signout {
+  margin-top: 14px !important;
+  padding: 10px 12px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: rgba(220, 38, 38, 0.08) !important;
+  color: rgba(248, 113, 113, 0.9) !important;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+  letter-spacing: 0.01em !important;
+  text-align: center !important;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.workspace-app:not(.hidden) .sidebar-signout:hover {
+  background: rgba(220, 38, 38, 0.18) !important;
+  color: #ffffff !important;
+  border-color: rgba(220, 38, 38, 0.35) !important;
+}
+
+/* ==========================================================================
+   DASHBOARD EXPANSION
+   Today's run · Quick Actions · Outstanding Quotes · Upcoming Payroll ·
+   Aged Receivables · Money out KPI
+   ========================================================================== */
+
+/* New 'Money out' KPI card colour */
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-spend::before {
+  background: linear-gradient(90deg, #6d28d9, rgba(109, 40, 217, 0.18)) !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-spend {
+  border-color: rgba(109, 40, 217, 0.16) !important;
+  background: linear-gradient(135deg, #f5f0fc 0%, #ffffff 56%, #f3edfb 100%) !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-spend strong {
+  color: #6d28d9 !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-spend .kpi-icon {
+  background: rgba(109, 40, 217, 0.1);
+  color: #6d28d9;
+}
+
+/* Today's run strip */
+.dashboard-today-strip {
+  margin-top: 22px;
+  padding: 22px 24px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbf9 100%);
+  border-radius: 22px;
+  border: 1px solid rgba(45, 106, 79, 0.12);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 14px 32px rgba(13, 47, 35, 0.05);
+}
+
+.dashboard-today-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.dashboard-today-head .eyebrow {
+  margin: 0;
+  color: #2D6A4F;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.dashboard-today-head h3 {
+  margin: 4px 0 0;
+  color: #0f2f2a;
+  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+}
+
+.dashboard-today-date {
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(45, 106, 79, 0.1);
+  color: #2D6A4F;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.dashboard-today-list {
+  display: grid;
+  gap: 10px;
+}
+
+.dashboard-today-item {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 47, 42, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.dashboard-today-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(45, 106, 79, 0.32);
+  box-shadow: 0 12px 26px rgba(13, 47, 35, 0.06);
+}
+
+.dashboard-today-time {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #2D6A4F;
+  font-feature-settings: "tnum" 1;
+}
+
+.dashboard-today-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dashboard-today-body strong {
+  color: #0f2f2a;
+  font-size: 0.96rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-today-body span {
+  color: #5a6e66;
+  font-size: 0.84rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-today-go {
+  color: #2D6A4F;
+  font-size: 1.4rem;
+  font-weight: 700;
+  transition: transform 160ms ease;
+}
+
+.dashboard-today-item:hover .dashboard-today-go {
+  transform: translateX(3px);
+}
+
+.dashboard-today-empty {
+  padding: 20px 18px;
+  text-align: center;
+  border-radius: 14px;
+  background: rgba(45, 106, 79, 0.05);
+  border: 1px dashed rgba(45, 106, 79, 0.22);
+}
+
+.dashboard-today-empty strong {
+  display: block;
+  color: #0f2f2a;
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.dashboard-today-empty p {
+  margin: 0;
+  color: #4a5e57;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* Quick Actions row */
+.dashboard-quick-create-row {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 760px) {
+  .dashboard-quick-create-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.dashboard-create-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(45, 106, 79, 0.22);
+  background: #ffffff;
+  color: #0f2f2a;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 6px 16px rgba(13, 47, 35, 0.04);
+}
+
+.dashboard-create-button:hover {
+  transform: translateY(-1px);
+  border-color: #2D6A4F;
+  background: #f6fbf8;
+  box-shadow: 0 12px 24px rgba(45, 106, 79, 0.1);
+}
+
+.dashboard-create-button:active {
+  transform: translateY(0);
+}
+
+.dashboard-create-plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2cb074, #2D6A4F);
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.dashboard-create-label {
+  white-space: nowrap;
+}
+
+/* Compact info row — Outstanding Quotes + Upcoming Payroll */
+.dashboard-compact-row {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.dashboard-compact-card {
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 47, 42, 0.08);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 10px 22px rgba(13, 47, 35, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.dashboard-compact-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(45, 106, 79, 0.22);
+  box-shadow: 0 16px 32px rgba(13, 47, 35, 0.07);
+}
+
+.dashboard-compact-card.dashboard-quotes-card {
+  background: linear-gradient(135deg, #f0f7f3 0%, #ffffff 60%);
+  border-color: rgba(45, 106, 79, 0.18);
+}
+
+.dashboard-compact-card.dashboard-payroll-card {
+  background: linear-gradient(135deg, #fff7eb 0%, #ffffff 60%);
+  border-color: rgba(180, 83, 9, 0.18);
+}
+
+.dashboard-compact-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dashboard-compact-eyebrow {
+  color: #4a5e57;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dashboard-compact-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2cb074, #2D6A4F);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-feature-settings: "tnum" 1;
+}
+
+.dashboard-compact-pill.dashboard-pill-amber {
+  background: linear-gradient(135deg, #d97706, #b45309);
+}
+
+.dashboard-compact-amount {
+  margin-top: 4px;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: clamp(1.7rem, 2.6vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #0f2f2a;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.dashboard-quotes-card .dashboard-compact-amount { color: #2D6A4F; }
+.dashboard-payroll-card .dashboard-compact-amount { color: #b45309; }
+
+.dashboard-compact-copy {
+  margin: 0;
+  color: #5a6e66;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+/* Aged Receivables breakdown — slots inside Money card */
+.dashboard-aged-receivables {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 4px 0 18px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(45, 106, 79, 0.04);
+  border: 1px solid rgba(45, 106, 79, 0.1);
+}
+
+@media (max-width: 600px) {
+  .dashboard-aged-receivables {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard-aged-bucket {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(15, 47, 42, 0.06);
+}
+
+.dashboard-aged-bucket span {
+  color: #4a5e57;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dashboard-aged-bucket strong {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #0f2f2a;
+  font-feature-settings: "tnum" 1;
+}
+
+.dashboard-aged-current strong { color: #2D6A4F; }
+.dashboard-aged-30 strong { color: #b45309; }
+.dashboard-aged-60 strong { color: #b91c1c; }
+
+.dashboard-aged-30 {
+  background: linear-gradient(135deg, #fff8eb 0%, #ffffff 100%);
+  border-color: rgba(180, 83, 9, 0.16);
+}
+
+.dashboard-aged-60 {
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+  border-color: rgba(185, 28, 28, 0.18);
+}
+
+/* ==========================================================================
+   LOOM-STYLE DASHBOARD REDESIGN
+   Inspired by the Loom UI kit: massive numbers, tiny labels, clean cards,
+   horizontal bar-rows for money lists, generous padding, no heavy borders.
+   Identity stays PayDay Tradie: dark green sidebar, soft mint accent.
+   ========================================================================== */
+
+/* Loom-style KPI cards — flip the hierarchy: number first, label tiny below.
+   Strip the descriptive paragraph (visual noise on a tradie dashboard). */
+.workspace-app:not(.hidden) .investor-kpi-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 24px 24px 22px !important;
+  background: #ffffff !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(15, 47, 42, 0.06) !important;
+  box-shadow: 0 1px 3px rgba(13, 47, 35, 0.04), 0 8px 24px rgba(13, 47, 35, 0.04) !important;
+  overflow: visible;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card::before {
+  display: none;
+}
+
+/* Big bold number — the visual hero */
+.workspace-app:not(.hidden) .investor-kpi-card strong {
+  display: block;
+  margin: 0 0 6px !important;
+  order: 1;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif !important;
+  font-size: clamp(2.2rem, 3.6vw, 2.9rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.045em !important;
+  line-height: 1 !important;
+  color: #0f2f2a !important;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* Small label below */
+.workspace-app:not(.hidden) .investor-kpi-card span {
+  display: block;
+  order: 2;
+  margin: 0 !important;
+  color: #6b7d75 !important;
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* Hide the verbose descriptive paragraphs */
+.workspace-app:not(.hidden) .investor-kpi-card p {
+  display: none !important;
+}
+
+/* Subtle icon — top right, muted, just there for category recognition */
+.workspace-app:not(.hidden) .investor-kpi-card .kpi-icon {
+  position: absolute !important;
+  top: 20px !important;
+  right: 20px !important;
+  width: 22px !important;
+  height: 22px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  opacity: 0.4;
+  z-index: 2;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-cash .kpi-icon { color: #2D6A4F; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-spend .kpi-icon { color: #6d28d9; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-owed .kpi-icon { color: #b45309; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-margin .kpi-icon { color: #1d4ed8; }
+
+/* Tax card has its own structure — keep the topline label + status badge */
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax {
+  position: relative;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax .kpi-topline {
+  order: 2;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  margin: 0 !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax .kpi-topline span {
+  margin: 0 !important;
+  color: #6b7d75 !important;
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax .tax-safety-meter {
+  order: 3;
+  margin-top: 14px !important;
+}
+
+/* Number colour by category — keep brand */
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-cash strong { color: #2D6A4F !important; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-spend strong { color: #6d28d9 !important; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-owed strong { color: #b45309 !important; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-margin strong { color: #1d4ed8 !important; }
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax strong { color: #2D6A4F !important; }
+
+/* Hover lift, kept subtle */
+.workspace-app:not(.hidden) .investor-kpi-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 1px 3px rgba(13, 47, 35, 0.05), 0 16px 36px rgba(13, 47, 35, 0.08) !important;
+}
+
+/* Hero card — flatter, more whitespace */
+.workspace-app:not(.hidden) .workspace-hero-card {
+  padding: 36px clamp(28px, 4vw, 40px) !important;
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(15, 47, 42, 0.06) !important;
+  box-shadow: 0 1px 3px rgba(13, 47, 35, 0.04), 0 12px 32px rgba(13, 47, 35, 0.05) !important;
+}
+
+.workspace-app:not(.hidden) .workspace-hero-card.dashboard-hero-card::after {
+  display: none;
+}
+
+/* Section headers — bold title + grey one-line description, no heavy borders */
+.workspace-app:not(.hidden) .records-card .records-head,
+.workspace-app:not(.hidden) .jobs-page-head {
+  margin-bottom: 22px;
+  padding-bottom: 0;
+  border: none !important;
+}
+
+.workspace-app:not(.hidden) .records-card .records-head h3,
+.workspace-app:not(.hidden) .jobs-page-head .card-title {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif !important;
+  font-size: 1.35rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.2 !important;
+  color: #0f2f2a !important;
+  margin: 0 0 4px !important;
+}
+
+.workspace-app:not(.hidden) .records-card .records-head .card-copy,
+.workspace-app:not(.hidden) .jobs-page-head .card-copy {
+  margin: 0 !important;
+  color: #6b7d75 !important;
+  font-size: 0.92rem !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+}
+
+/* Workspace cards — flatter, generous padding, soft shadows */
+.workspace-app:not(.hidden) .workspace-card {
+  padding: 28px clamp(24px, 3vw, 32px) !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(15, 47, 42, 0.06) !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(13, 47, 35, 0.04), 0 8px 24px rgba(13, 47, 35, 0.04) !important;
+}
+
+.workspace-app:not(.hidden) .workspace-card:hover {
+  box-shadow: 0 1px 3px rgba(13, 47, 35, 0.05), 0 16px 36px rgba(13, 47, 35, 0.07) !important;
+}
+
+/* Bar-row layout — for invoice/money lists (Merchants style) */
+.dashboard-bar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(120px, 2fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 4px;
+  border-bottom: 1px solid rgba(15, 47, 42, 0.06);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.dashboard-bar-row:last-child {
+  border-bottom: none;
+}
+
+.dashboard-bar-row:hover {
+  background: rgba(45, 106, 79, 0.03);
+}
+
+.dashboard-bar-row-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dashboard-bar-row-label strong {
+  color: #0f2f2a;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-bar-row-label span {
+  color: #8a9a93;
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-bar-row-track {
+  position: relative;
+  height: 8px;
+  background: rgba(45, 106, 79, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dashboard-bar-row-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2D6A4F, #2cb074);
+  transition: width 360ms ease;
+}
+
+.dashboard-bar-row[data-tone="overdue"] .dashboard-bar-row-fill {
+  background: linear-gradient(90deg, #b91c1c, #ef4444);
+}
+
+.dashboard-bar-row[data-tone="warn"] .dashboard-bar-row-fill {
+  background: linear-gradient(90deg, #b45309, #f59e0b);
+}
+
+.dashboard-bar-row-amount {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f2f2a;
+  text-align: right;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  white-space: nowrap;
+}
+
+.dashboard-bar-row[data-tone="overdue"] .dashboard-bar-row-amount {
+  color: #b91c1c;
+}
+
+.dashboard-bar-row[data-tone="warn"] .dashboard-bar-row-amount {
+  color: #b45309;
+}
+
+/* Aged receivables — single horizontal bar visualisation */
+.workspace-app:not(.hidden) .dashboard-aged-receivables {
+  display: block;
+  padding: 18px 18px 16px;
+  margin: 0 0 22px;
+  background: rgba(45, 106, 79, 0.04);
+  border: 1px solid rgba(45, 106, 79, 0.1);
+  border-radius: 12px;
+}
+
+.dashboard-aged-bar {
+  display: flex;
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(15, 47, 42, 0.06);
+  margin: 12px 0 14px;
+}
+
+.dashboard-aged-bar-segment {
+  height: 100%;
+  transition: width 360ms ease;
+  min-width: 0;
+}
+
+.dashboard-aged-bar-segment[data-bucket="current"] {
+  background: linear-gradient(90deg, #2D6A4F, #2cb074);
+}
+
+.dashboard-aged-bar-segment[data-bucket="30"] {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.dashboard-aged-bar-segment[data-bucket="60"] {
+  background: linear-gradient(90deg, #ef4444, #b91c1c);
+}
+
+.dashboard-aged-legend {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.dashboard-aged-legend-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dashboard-aged-legend-item-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #6b7d75;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.dashboard-aged-legend-item-label::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.dashboard-aged-legend-item[data-bucket="current"] .dashboard-aged-legend-item-label::before {
+  background: linear-gradient(90deg, #2D6A4F, #2cb074);
+}
+
+.dashboard-aged-legend-item[data-bucket="30"] .dashboard-aged-legend-item-label::before {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+}
+
+.dashboard-aged-legend-item[data-bucket="60"] .dashboard-aged-legend-item-label::before {
+  background: linear-gradient(90deg, #ef4444, #b91c1c);
+}
+
+.dashboard-aged-legend-item-amount {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f2f2a;
+  font-feature-settings: "tnum" 1;
+}
+
+.dashboard-aged-legend-item[data-bucket="30"] .dashboard-aged-legend-item-amount { color: #b45309; }
+.dashboard-aged-legend-item[data-bucket="60"] .dashboard-aged-legend-item-amount { color: #b91c1c; }
+
+.dashboard-aged-receivables-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+}
+
+.dashboard-aged-receivables-title strong {
+  color: #0f2f2a;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+.dashboard-aged-receivables-title span {
+  color: #6b7d75;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+/* Workspace board — generous padding */
+.workspace-app:not(.hidden) .workspace-board {
+  padding: 28px 32px 48px !important;
+  gap: 22px !important;
+}
+
+@media (max-width: 880px) {
+  .workspace-app:not(.hidden) .workspace-board {
+    padding: 20px 18px 40px !important;
+  }
+}
+
+/* ==========================================================================
+   FINAL REFINEMENTS (Stripe/Loom direction)
+   1. Pure white content background
+   2. Fix stat grid — top 4 in row, GST full-width feature below
+   3. Tertiary context line under stat labels
+   4. Remove decorative trend icons
+   5. Quick action buttons restyled (white/green-bordered pills)
+   6. Today empty state — solid card + CTA button
+   ========================================================================== */
+
+/* 1. Pure white content background — strip ambient tint */
+body:has(.workspace-app:not(.hidden)) {
+  background: #ffffff !important;
+}
+
+/* 2. Stat card grid — exactly 4 in a row, GST as full-width feature card */
+.workspace-app:not(.hidden) .investor-kpi-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1100px) {
+  .workspace-app:not(.hidden) .investor-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 540px) {
+  .workspace-app:not(.hidden) .investor-kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* 3. Tertiary context line — re-show the <p>, restyle as small grey subtext */
+.workspace-app:not(.hidden) .investor-kpi-card p {
+  display: block !important;
+  margin: 6px 0 0 !important;
+  color: #9CA3AF !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  letter-spacing: 0 !important;
+  line-height: 1.4 !important;
+  text-transform: none !important;
+}
+
+/* Tone variants for change indicators */
+.workspace-app:not(.hidden) .investor-kpi-card p.is-up {
+  color: #16a34a !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card p.is-down {
+  color: #dc2626 !important;
+}
+
+/* 4. Remove decorative trend icons */
+.workspace-app:not(.hidden) .investor-kpi-card .kpi-icon {
+  display: none !important;
+}
+
+/* GST card — internal layout when full-width */
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 360px);
+  align-items: center;
+  gap: 24px;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax > strong,
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax > .kpi-topline,
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax > p {
+  grid-column: 1;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax .tax-safety-meter {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  align-self: center;
+  margin: 0 !important;
+}
+
+@media (max-width: 720px) {
+  .workspace-app:not(.hidden) .investor-kpi-card.kpi-tax {
+    grid-template-columns: 1fr;
+  }
+  .workspace-app:not(.hidden) .investor-kpi-card.kpi-tax .tax-safety-meter {
+    grid-column: 1;
+    grid-row: auto;
+    margin-top: 14px !important;
+  }
+}
+
+/* 5. Quick action buttons — Stripe-style pills, white bg, green border */
+.workspace-app:not(.hidden) .dashboard-quick-create-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+@media (max-width: 720px) {
+  .workspace-app:not(.hidden) .dashboard-quick-create-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.workspace-app:not(.hidden) .dashboard-create-button {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 13px 18px !important;
+  border-radius: 999px !important;
+  border: 1.5px solid #2D6A4F !important;
+  background: #ffffff !important;
+  color: #2D6A4F !important;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.005em !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.workspace-app:not(.hidden) .dashboard-create-button:hover {
+  background: rgba(45, 106, 79, 0.08) !important;
+  color: #1f4d36 !important;
+  transform: translateY(-1px);
+  border-color: #1f4d36 !important;
+  box-shadow: none !important;
+}
+
+.workspace-app:not(.hidden) .dashboard-create-button:active {
+  transform: translateY(0);
+}
+
+.workspace-app:not(.hidden) .dashboard-create-plus {
+  display: none !important;
+}
+
+.workspace-app:not(.hidden) .dashboard-create-label {
+  white-space: nowrap;
+}
+
+/* 6. Today's jobs empty state — solid card + CTA button (no dashed border) */
+.dashboard-today-empty {
+  background: #ffffff !important;
+  border: 1px solid rgba(15, 47, 42, 0.06) !important;
+  box-shadow: 0 1px 3px rgba(13, 47, 35, 0.04), 0 8px 20px rgba(13, 47, 35, 0.05) !important;
+  border-radius: 14px !important;
+  padding: 28px 24px !important;
+  text-align: center;
+}
+
+.dashboard-today-empty strong {
+  display: block;
+  margin: 0 0 6px;
+  color: #0f2f2a;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.dashboard-today-empty p {
+  margin: 0 0 16px;
+  color: #6b7d75;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.dashboard-today-empty-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2cb074, #2D6A4F);
+  color: #ffffff;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 14px rgba(45, 106, 79, 0.22);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.dashboard-today-empty-cta:hover {
+  box-shadow: 0 10px 22px rgba(45, 106, 79, 0.3);
+  background: linear-gradient(135deg, #1f7a4c, #2D6A4F);
+}
+
+/* ==========================================================================
+   DASHBOARD STATUS ROW (Active / Upcoming / Awaiting Payment)
+   Three columns visible above the fold.
+   ========================================================================== */
+.dashboard-status-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+@media (max-width: 880px) {
+  .dashboard-status-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard-status-col {
+  background: #ffffff;
+  border: 1px solid rgba(15, 47, 42, 0.06);
+  border-radius: 14px;
+  padding: 18px 18px 12px;
+  box-shadow: 0 1px 3px rgba(13, 47, 35, 0.04), 0 8px 20px rgba(13, 47, 35, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-status-col[data-status-tone="active"] {
+  border-top: 3px solid #2D6A4F;
+}
+
+.dashboard-status-col[data-status-tone="upcoming"] {
+  border-top: 3px solid #1d4ed8;
+}
+
+.dashboard-status-col[data-status-tone="awaiting"] {
+  border-top: 3px solid #b45309;
+}
+
+.dashboard-status-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dashboard-status-head h3 {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: #0f2f2a;
+}
+
+.dashboard-status-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(15, 47, 42, 0.06);
+  color: #4a5e57;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-feature-settings: "tnum" 1;
+}
+
+.dashboard-status-col[data-status-tone="active"] .dashboard-status-count {
+  background: rgba(45, 106, 79, 0.1);
+  color: #2D6A4F;
+}
+
+.dashboard-status-col[data-status-tone="awaiting"] .dashboard-status-count {
+  background: rgba(180, 83, 9, 0.1);
+  color: #b45309;
+}
+
+.dashboard-status-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 96px;
+}
+
+.dashboard-status-item {
+  border-radius: 10px;
+  transition: background 160ms ease;
+}
+
+.dashboard-status-item:hover {
+  background: rgba(45, 106, 79, 0.05);
+}
+
+.dashboard-status-item a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 10px;
+}
+
+.dashboard-status-item a strong {
+  color: #0f2f2a;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-status-item a span {
+  color: #6b7d75;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-status-empty {
+  padding: 20px 12px;
+  text-align: center;
+  color: #9CA3AF;
+  font-size: 0.84rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   HOVER STATE CLEANUP — remove transforms on buttons, keep shape stable.
+   Hover should change shading/color only, not size or position.
+   ========================================================================== */
+
+/* Strip translateY from button hovers globally */
+.button-primary:hover,
+.button-secondary:hover,
+.dashboard-create-button:hover,
+.dashboard-quick-action:hover,
+.dashboard-attention-item:hover,
+.dashboard-bar-row:hover,
+.dashboard-status-item:hover,
+.dashboard-status-item a:hover,
+.dashboard-today-item:hover,
+.dashboard-today-empty-cta:hover,
+.investor-kpi-card:hover,
+.workspace-card:hover,
+.testimonial-card:hover,
+.dashboard-compact-card:hover,
+.dashboard-attention-strip a:hover,
+.faq-item:hover summary {
+  transform: none !important;
+}
+
+/* Keep border-radius consistent on hover (no rounding/squaring changes) */
+.button-primary,
+.button-secondary,
+.dashboard-create-button {
+  border-radius: 999px;
+}
+
+.button-primary:hover {
+  background: #1f7a4c;
+  box-shadow: 0 8px 18px rgba(31, 122, 76, 0.22);
+}
+
+.button-secondary:hover {
+  background: rgba(45, 106, 79, 0.08);
+  border-color: #2D6A4F;
+  color: #1f4d36;
+}
+
+/* Workspace cards — soft shadow lift only, no movement */
+.workspace-app:not(.hidden) .workspace-card:hover,
+.workspace-app:not(.hidden) .investor-kpi-card:hover {
+  transform: none !important;
+  box-shadow: 0 1px 3px rgba(13, 47, 35, 0.05), 0 18px 36px rgba(13, 47, 35, 0.07) !important;
+}
+
+.dashboard-status-item:hover {
+  transform: none;
+}
+
+/* ==========================================================================
+   GLOBAL HOVER STABILITY RULE
+   No interactive element should change shape, position, or size on hover.
+   Hover should ONLY communicate via shading, color, border, or shadow.
+   This is the final cascade rule — wins over earlier transform: translateY().
+   ========================================================================== */
+.button:hover,
+.button-primary:hover,
+.button-secondary:hover,
+.nav-cta:hover,
+.nav-link-button:hover,
+.workspace-card:hover,
+.investor-kpi-card:hover,
+.workspace-metrics article:hover,
+.dashboard-table-row:hover,
+.dashboard-bar-row:hover,
+.dashboard-quick-action:hover,
+.dashboard-attention-item:hover,
+.dashboard-create-button:hover,
+.dashboard-today-item:hover,
+.dashboard-today-empty-cta:hover,
+.dashboard-status-item:hover,
+.dashboard-status-item a:hover,
+.dashboard-compact-card:hover,
+.testimonial-card:hover,
+.faq-item:hover,
+.workspace-nav a:hover,
+.sidebar-signout:hover,
+.price-card:hover,
+.popular-badge:hover,
+.filter-chip:hover,
+.quick-start-option:hover,
+.invoice-start-option:hover,
+.pricing-billing-option:hover,
+.auth-close:hover,
+.auth-switch:hover,
+.auth-password-toggle:hover,
+.button-tertiary:hover,
+.brand:hover,
+.nav-toggle:hover {
+  transform: none !important;
+}
+
+/* Buttons keep their shape — never change border-radius, padding, or border-width on hover */
+button:hover,
+.button:hover,
+a.button:hover,
+.dashboard-create-button:hover,
+.dashboard-today-empty-cta:hover {
+  border-radius: inherit;
+}
+
+/* ==========================================================================
+   STRIPE-STYLE LIST ROWS
+   For the populated states of Active / Upcoming / Unpaid / Overdue lists
+   inside the Jobs and Money cards on the dashboard.
+   Clean rows, status pills on the right, hover light-grey, 60+ tinted red.
+   ========================================================================== */
+.dashboard-list-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 60px;
+  padding: 12px 12px;
+  border-bottom: 1px solid #F3F4F6;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 140ms ease;
+  border-radius: 8px;
+}
+
+.dashboard-list-row:last-child {
+  border-bottom: none;
+}
+
+.dashboard-list-row:hover {
+  background: #F9FAFB;
+}
+
+.dashboard-list-row.is-urgent {
+  background: #FEF2F2;
+  border-color: rgba(220, 38, 38, 0.12);
+}
+
+.dashboard-list-row.is-urgent:hover {
+  background: #FEE2E2;
+}
+
+.dashboard-list-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.dashboard-list-row-main strong {
+  color: #111827;
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+}
+
+.dashboard-list-row-main span {
+  color: #6B7280;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-list-row-trail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.dashboard-list-amount {
+  color: #111827;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.dashboard-list-meta {
+  color: #6B7280;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.dashboard-list-meta-overdue {
+  color: #DC2626;
+  font-weight: 700;
+}
+
+/* Status pills on the right side */
+.dashboard-list-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.dashboard-list-pill-active {
+  background: #2D6A4F;
+  color: #ffffff;
+}
+
+.dashboard-list-pill-date {
+  background: #F3F4F6;
+  color: #374151;
+  font-feature-settings: "tnum" 1;
+}
+
+.dashboard-list-pill-overdue {
+  background: #DC2626;
+  color: #ffffff;
+}
+
+/* "View all" link at the bottom of each list section */
+.workspace-app:not(.hidden) .dashboard-job-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.workspace-app:not(.hidden) .dashboard-job-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 4px;
+}
+
+.workspace-app:not(.hidden) .dashboard-job-group-head h4 {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+.workspace-app:not(.hidden) .dashboard-job-list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+}
+
+/* "View all" link styled and positioned at the bottom */
+.workspace-app:not(.hidden) .dashboard-job-group-head a[id*="JobsLink"],
+.workspace-app:not(.hidden) .dashboard-job-group-head a[id*="JobsLink"]:not(.hidden),
+.workspace-app:not(.hidden) .dashboard-job-group-head a[id*="InvoicesLink"]:not(.hidden) {
+  align-self: flex-end;
+  margin-top: 8px;
+  color: #2D6A4F !important;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: -0.005em;
+  transition: color 140ms ease;
+}
+
+.workspace-app:not(.hidden) .dashboard-job-group-head a:hover {
+  color: #1f4d36 !important;
+}
+
+/* ==========================================================================
+   CASH PAYMENT TRACKER
+   Page: Cash. Form, summary bar, list rows, decision banner.
+   Notes-app simplicity for tradies who hate admin.
+   ========================================================================== */
+.cash-page-card .cash-form {
+  margin-top: 8px;
+}
+
+.cash-page-card .cash-form .cash-submit-button {
+  margin-top: 6px;
+  width: 100%;
+}
+
+@media (min-width: 720px) {
+  .cash-page-card .cash-form .cash-submit-button {
+    width: auto;
+    align-self: flex-start;
+    min-width: 220px;
+  }
+}
+
+.cash-form-success {
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(45, 106, 79, 0.08);
+  color: #2D6A4F;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border: 1px solid rgba(45, 106, 79, 0.18);
+}
+
+/* Summary bar */
+.cash-summary-bar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 22px;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #F6FBF8 0%, #FFFFFF 100%);
+  border: 1px solid rgba(45, 106, 79, 0.12);
+}
+
+@media (max-width: 720px) {
+  .cash-summary-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cash-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 4px;
+  border-right: 1px solid rgba(15, 47, 42, 0.08);
+}
+
+.cash-summary-item:last-child {
+  border-right: none;
+}
+
+@media (max-width: 720px) {
+  .cash-summary-item {
+    border-right: none;
+    border-bottom: 1px solid rgba(15, 47, 42, 0.08);
+    padding-bottom: 12px;
+  }
+  .cash-summary-item:last-child {
+    border-bottom: none;
+  }
+}
+
+.cash-summary-item span {
+  color: #6B7280;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cash-summary-item strong {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #2D6A4F;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.cash-summary-item-undeclared strong {
+  color: #B45309;
+}
+
+/* List section */
+.cash-list-section {
+  margin-top: 22px;
+}
+
+.cash-list-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px 10px;
+  border-bottom: 1px solid #F3F4F6;
+  margin-bottom: 4px;
+}
+
+.cash-list-head h4 {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.01em;
+}
+
+.cash-list-count {
+  color: #6B7280;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.cash-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.cash-list-row {
+  display: grid;
+  grid-template-columns: 110px 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 12px;
+  border-bottom: 1px solid #F3F4F6;
+  border-radius: 8px;
+  transition: background 140ms ease;
+}
+
+.cash-list-row:last-child {
+  border-bottom: none;
+}
+
+.cash-list-row:hover {
+  background: #F9FAFB;
+}
+
+@media (max-width: 720px) {
+  .cash-list-row {
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+  .cash-list-row-date {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+  .cash-list-row-amount {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .cash-list-row-delete {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+.cash-list-row-date {
+  color: #6B7280;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-feature-settings: "tnum" 1;
+}
+
+.cash-list-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cash-list-row-main strong {
+  color: #111827;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cash-list-row-job {
+  color: #6B7280;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cash-list-row-note {
+  color: #6B7280;
+  font-size: 0.8rem;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cash-list-row-amount {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #2D6A4F;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cash-list-row-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #9CA3AF;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.cash-list-row-delete:hover {
+  background: rgba(220, 38, 38, 0.08);
+  color: #DC2626;
+  border-color: rgba(220, 38, 38, 0.18);
+}
+
+.cash-list-empty {
+  padding: 28px 18px;
+  text-align: center;
+  border-radius: 12px;
+  background: #FAFAFA;
+  border: 1px dashed #E5E7EB;
+  margin-top: 6px;
+}
+
+.cash-list-empty strong {
+  display: block;
+  color: #111827;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.98rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.cash-list-empty p {
+  margin: 0;
+  color: #6B7280;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* Decision banner */
+.cash-decision-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 28px;
+  padding: 20px 24px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #F0F7F3 0%, #FFFFFF 100%);
+  border: 1px solid rgba(45, 106, 79, 0.22);
+  box-shadow: 0 1px 3px rgba(13, 47, 35, 0.04), 0 8px 22px rgba(13, 47, 35, 0.04);
+}
+
+@media (max-width: 720px) {
+  .cash-decision-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .cash-decision-banner-cta {
+    width: 100%;
+  }
+}
+
+.cash-decision-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.cash-decision-banner-text strong {
+  color: #0F2F2A;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.cash-decision-banner-text span {
+  color: #4A5E57;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   DECLARATION DECISION TOOL — slide-over modal
+   ========================================================================== */
+.cash-decision-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(13, 47, 35, 0.4);
+  backdrop-filter: blur(4px);
+  animation: cash-overlay-fade-in 200ms ease;
+}
+
+@keyframes cash-overlay-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cash-decision-panel {
+  width: min(620px, 100%);
+  height: 100%;
+  background: #FFFFFF;
+  border-left: 1px solid rgba(15, 47, 42, 0.08);
+  box-shadow: -16px 0 48px rgba(13, 47, 35, 0.16);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  animation: cash-panel-slide-in 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (max-width: 720px) {
+  .cash-decision-panel {
+    width: 100%;
+    border-left: none;
+  }
+  .cash-decision-overlay {
+    background: #FFFFFF;
+  }
+}
+
+@keyframes cash-panel-slide-in {
+  from { transform: translateX(40px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.cash-decision-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 28px 28px 16px;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.cash-decision-head .eyebrow {
+  margin: 0 0 4px;
+  color: #2D6A4F;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cash-decision-head h2 {
+  margin: 0 0 6px;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #0F2F2A;
+}
+
+.cash-decision-subhead {
+  margin: 0;
+  color: #6B7280;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.cash-decision-close {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(15, 47, 42, 0.1);
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: #4A5E57;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.cash-decision-close:hover {
+  background: #F3F4F6;
+  color: #111827;
+  border-color: rgba(15, 47, 42, 0.2);
+}
+
+/* Step indicator */
+.cash-decision-steps {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 16px 28px;
+  list-style: none;
+  border-bottom: 1px solid #F3F4F6;
+  background: #FAFAFA;
+}
+
+.cash-decision-steps li {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: #9CA3AF;
+  background: #FFFFFF;
+  border: 1px solid #F3F4F6;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.cash-decision-steps li.is-active {
+  background: linear-gradient(135deg, #2D6A4F, #2cb074);
+  color: #FFFFFF;
+  border-color: #2D6A4F;
+}
+
+.cash-decision-steps li.is-done {
+  background: rgba(45, 106, 79, 0.1);
+  color: #2D6A4F;
+  border-color: rgba(45, 106, 79, 0.2);
+}
+
+/* Form steps */
+.cash-decision-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px 28px 28px;
+}
+
+.cash-decision-step {
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.cash-decision-step.is-active {
+  display: flex;
+}
+
+.cash-decision-step legend {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: #0F2F2A;
+  margin-bottom: 4px;
+  padding: 0;
+}
+
+.cash-decision-step label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #374151;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.cash-decision-step input[type="text"],
+.cash-decision-step input[type="number"] {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #111827;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.cash-decision-step input:focus {
+  outline: none;
+  border-color: #2D6A4F;
+  box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.12);
+}
+
+.cash-decision-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 0;
+  border: none;
+}
+
+.cash-decision-radio-group legend {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.cash-decision-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #E5E7EB;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.92rem;
+}
+
+.cash-decision-radio:has(input:checked) {
+  background: rgba(45, 106, 79, 0.06);
+  border-color: #2D6A4F;
+}
+
+.cash-decision-percent {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 10px;
+}
+
+.cash-decision-percent input {
+  flex: 1;
+}
+
+.cash-decision-help {
+  margin: 0;
+  color: #6B7280;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* Result */
+.cash-decision-result {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cash-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 540px) {
+  .cash-result-grid { grid-template-columns: 1fr; }
+}
+
+.cash-result-card {
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #E5E7EB;
+  background: #FFFFFF;
+}
+
+.cash-result-card-a {
+  background: #FAFAFA;
+}
+
+.cash-result-card-b {
+  background: linear-gradient(180deg, #F0F7F3 0%, #FFFFFF 100%);
+  border-color: rgba(45, 106, 79, 0.32);
+}
+
+.cash-result-card header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 12px;
+}
+
+.cash-result-eyebrow {
+  color: #6B7280;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cash-result-card h3 {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: #0F2F2A;
+}
+
+.cash-result-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cash-result-card li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.86rem;
+}
+
+.cash-result-card li span {
+  color: #4A5E57;
+}
+
+.cash-result-card li strong {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #111827;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.cash-result-card li.is-good strong { color: #2D6A4F; }
+.cash-result-card li.is-bad strong { color: #DC2626; }
+.cash-result-card li.is-risk strong { color: #B45309; }
+
+/* Recommendation */
+.cash-result-recommendation {
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid #E5E7EB;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cash-result-recommendation-good {
+  background: linear-gradient(135deg, #ECFDF5 0%, #FFFFFF 100%);
+  border-color: rgba(45, 106, 79, 0.32);
+}
+
+.cash-result-recommendation-bad {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FFFFFF 100%);
+  border-color: rgba(220, 38, 38, 0.28);
+}
+
+.cash-result-recommendation-neutral {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FFFFFF 100%);
+  border-color: rgba(180, 83, 9, 0.24);
+}
+
+.cash-result-recommendation strong {
+  color: #2D6A4F;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cash-result-recommendation p {
+  margin: 0;
+  color: #111827;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}
+
+.cash-result-gst-note,
+.cash-result-depreciation {
+  font-size: 0.82rem !important;
+  color: #6B7280 !important;
+  font-weight: 500 !important;
+  font-style: italic;
+}
+
+.cash-decision-disclaimer {
+  margin: 14px 0 0;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #FAFAFA;
+  border: 1px solid #E5E7EB;
+  color: #6B7280;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* Action buttons */
+.cash-decision-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #F3F4F6;
+}
+
+.cash-decision-back {
+  margin-right: auto;
+}
+
+.cash-decision-next,
+.cash-decision-restart {
+  margin-left: auto;
+}
+
+/* Lock body scroll when decision tool is open */
+body.cash-decision-open {
+  overflow: hidden;
+}
+
+/* Simpler Tax Calculator — replaces the old 4-step decision tool */
+.cash-calc-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px 28px 28px;
+}
+
+.cash-calc-input-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #374151;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.cash-calc-input-label input {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0F2F2A;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.cash-calc-input-label input:focus {
+  outline: none;
+  border-color: #2D6A4F;
+  box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.12);
+}
+
+.cash-calc-brackets {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cash-calc-brackets legend {
+  color: #374151;
+  font-size: 0.86rem;
+  font-weight: 700;
+  padding: 0;
+  margin-bottom: 2px;
+}
+
+.cash-calc-bracket-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (min-width: 480px) {
+  .cash-calc-bracket-options {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.cash-calc-bracket-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 14px 8px;
+  border-radius: 12px;
+  border: 1.5px solid #E5E7EB;
+  background: #FFFFFF;
+  color: #374151;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+}
+
+.cash-calc-bracket-option:hover {
+  border-color: #2D6A4F;
+  background: rgba(45, 106, 79, 0.04);
+}
+
+.cash-calc-bracket-option.is-active {
+  border-color: #2D6A4F;
+  background: rgba(45, 106, 79, 0.08);
+  color: #0F2F2A;
+}
+
+.cash-calc-bracket-option strong {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.cash-calc-bracket-option span {
+  font-size: 0.72rem;
+  color: #6B7280;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cash-calc-bracket-option.is-active strong {
+  color: #2D6A4F;
+}
+
+.cash-calc-result {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #F0F7F3 0%, #FFFFFF 100%);
+  border: 1px solid rgba(45, 106, 79, 0.22);
+}
+
+@media (max-width: 480px) {
+  .cash-calc-result {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cash-calc-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cash-calc-result-row span {
+  color: #6B7280;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cash-calc-result-row strong {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.cash-calc-tax { color: #B45309; }
+.cash-calc-keep { color: #2D6A4F; }
+
+/* ==========================================================================
+   PRIMARY GREEN UNIFICATION
+   Make primary buttons feel like family with the dark teal sidebar — a richer,
+   warmer, deeper green than the old bright mint. Still distinctly lighter than
+   the sidebar so it pops on white surfaces. Outline/ghost buttons untouched.
+   ========================================================================== */
+.button-primary,
+.nav-cta,
+.dashboard-today-empty-cta,
+.cash-decision-banner .button-primary,
+.cash-page-card .cash-submit-button,
+.workspace-app:not(.hidden) .button-primary,
+.dashboard-compact-pill {
+  background: linear-gradient(135deg, #1A5739 0%, #2D6A4F 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid transparent !important;
+  box-shadow:
+    0 12px 24px rgba(26, 87, 57, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+}
+
+.button-primary:hover,
+.nav-cta:hover,
+.dashboard-today-empty-cta:hover,
+.cash-decision-banner .button-primary:hover,
+.cash-page-card .cash-submit-button:hover,
+.workspace-app:not(.hidden) .button-primary:hover {
+  background: linear-gradient(135deg, #154731 0%, #245940 100%) !important;
+  box-shadow:
+    0 16px 30px rgba(21, 71, 49, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+  color: #FFFFFF !important;
+}
+
+/* Active pill in nav also uses the same family */
+.workspace-app:not(.hidden) .workspace-nav a.active .nav-monogram {
+  background: linear-gradient(135deg, #1A5739 0%, #2D6A4F 100%) !important;
+}
+
+/* Status pills using green also align */
+.dashboard-list-pill-active {
+  background: linear-gradient(135deg, #1A5739 0%, #2D6A4F 100%) !important;
+}
+
+/* Dashboard quick-create row pills — outline style, leave as is, but ensure they don't go bright */
+.workspace-app:not(.hidden) .dashboard-create-button {
+  background: #FFFFFF !important;
+  color: #2D6A4F !important;
+  border: 1.5px solid #2D6A4F !important;
+  box-shadow: none !important;
+}
+
+.workspace-app:not(.hidden) .dashboard-create-button:hover {
+  background: rgba(45, 106, 79, 0.08) !important;
+  color: #1f4d36 !important;
+  border-color: #1f4d36 !important;
+}
+
+/* ==========================================================================
+   PAYMENT METHOD PILLS (invoice list) + DASHBOARD MONEY BREAKDOWN
+   ========================================================================== */
+
+/* Cash / Bank transfer / Unpaid pill on invoice list */
+.invoice-pay-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.invoice-pay-pill-cash {
+  background: rgba(45, 106, 79, 0.12);
+  color: #1A5739;
+  border: 1px solid rgba(45, 106, 79, 0.28);
+}
+
+.invoice-pay-pill-bank {
+  background: rgba(29, 78, 216, 0.1);
+  color: #1d4ed8;
+  border: 1px solid rgba(29, 78, 216, 0.24);
+}
+
+.invoice-pay-pill-unpaid {
+  background: rgba(15, 47, 42, 0.06);
+  color: #4a5e57;
+  border: 1px solid rgba(15, 47, 42, 0.14);
+}
+
+/* Quick "Log as cash" mini action — emphasize with green tint */
+.mini-action-cash {
+  border-color: rgba(45, 106, 79, 0.5) !important;
+  color: #1A5739 !important;
+  background: rgba(45, 106, 79, 0.06) !important;
+  font-weight: 700 !important;
+}
+
+.mini-action-cash:hover {
+  background: rgba(45, 106, 79, 0.12) !important;
+  color: #1A5739 !important;
+}
+
+/* Dashboard Money KPI breakdown — Cash / Bank split inside the card */
+.workspace-app:not(.hidden) .kpi-money-breakdown .kpi-money-split {
+  margin-top: 10px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid #F3F4F6;
+}
+
+.workspace-app:not(.hidden) .kpi-money-breakdown .kpi-money-split-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.workspace-app:not(.hidden) .kpi-money-breakdown .kpi-money-split-label {
+  color: #6B7280;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.workspace-app:not(.hidden) .kpi-money-breakdown .kpi-money-split-value {
+  font-family: "Plus Jakarta Sans", Inter, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: #0F2F2A;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+.workspace-app:not(.hidden) .kpi-money-breakdown .kpi-money-split-row:first-child .kpi-money-split-value {
+  color: #1A5739;
+}
+
+.workspace-app:not(.hidden) .kpi-money-breakdown .kpi-money-split-row:last-child .kpi-money-split-value {
+  color: #1d4ed8;
+}
+
+/* Explicit order for the Money-in card so the big number is first,
+   then the Cash/Bank breakdown, then the label, then tertiary text. */
+.workspace-app:not(.hidden) .kpi-money-breakdown strong {
+  order: 1 !important;
+}
+
+.workspace-app:not(.hidden) .kpi-money-breakdown .kpi-money-split {
+  order: 2 !important;
+}
+
+.workspace-app:not(.hidden) .kpi-money-breakdown span {
+  order: 3 !important;
+  margin-top: 4px !important;
+}
+
+.workspace-app:not(.hidden) .kpi-money-breakdown p {
+  display: none !important;
+}
+
+/* ==========================================================================
+   FINAL VISUAL UNIFICATION
+   Make the logged-in content area feel like the same product as the landing.
+   Sidebar stays dark. Everything to the right of it = clean white cards on
+   subtle off-white, landing-style typography, generous breathing room.
+   No functional changes — visuals only.
+   ========================================================================== */
+
+/* --- Body background: subtle off-white matching the landing's gradient --- */
+body:has(.workspace-app:not(.hidden)) {
+  background:
+    radial-gradient(circle at top right, rgba(40, 179, 107, 0.05), transparent 30%),
+    linear-gradient(180deg, #FAFBFA 0%, #F7F9F7 40%, #FFFFFF 100%) !important;
+}
+
+/* --- All workspace cards: pure white, no tinted backgrounds, soft shadow --- */
+.workspace-app:not(.hidden) .workspace-card,
+.workspace-app:not(.hidden) .workspace-hero-card,
+.workspace-app:not(.hidden) .records-card,
+.workspace-app:not(.hidden) .dashboard-status-col,
+.workspace-app:not(.hidden) .dashboard-compact-card,
+.workspace-app:not(.hidden) .dashboard-today-strip,
+.workspace-app:not(.hidden) .investor-kpi-card,
+.workspace-app:not(.hidden) .cash-page-card,
+.workspace-app:not(.hidden) .dashboard-aged-receivables {
+  background: #FFFFFF !important;
+  border: 1px solid #EEF2EE !important;
+  box-shadow: 0 1px 2px rgba(13, 47, 35, 0.03), 0 8px 24px rgba(13, 47, 35, 0.04) !important;
+}
+
+/* KPI cards — strip colour tints from body, keep only the slim top accent
+   (3px coloured bar) so each category is still recognisable */
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-cash,
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-spend,
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-owed,
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-owed:not(.is-warning),
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-margin,
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-margin:not(.is-info),
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax {
+  background: #FFFFFF !important;
+  border-color: #EEF2EE !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card::before {
+  display: block !important;
+  height: 3px !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  content: "" !important;
+  border-radius: 14px 14px 0 0 !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-cash::before {
+  background: linear-gradient(90deg, #1A5739, #2D6A4F) !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-spend::before {
+  background: linear-gradient(90deg, #6d28d9, rgba(109, 40, 217, 0.4)) !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-owed::before,
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-owed:not(.is-warning)::before {
+  background: linear-gradient(90deg, #b45309, rgba(180, 83, 9, 0.4)) !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-margin::before,
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-margin:not(.is-info)::before {
+  background: linear-gradient(90deg, #1d4ed8, rgba(29, 78, 216, 0.4)) !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-tax::before {
+  background: linear-gradient(90deg, #166534, #2cb074) !important;
+}
+
+/* Cash decision banner + Cash summary bar — pure white, soft accent border */
+.workspace-app:not(.hidden) .cash-decision-banner,
+.workspace-app:not(.hidden) .cash-summary-bar {
+  background: #FFFFFF !important;
+  border-color: #EEF2EE !important;
+  box-shadow: 0 1px 2px rgba(13, 47, 35, 0.03), 0 8px 20px rgba(13, 47, 35, 0.04) !important;
+}
+
+/* Compact cards (Outstanding quotes / Upcoming payroll) — white */
+.workspace-app:not(.hidden) .dashboard-compact-card.dashboard-quotes-card,
+.workspace-app:not(.hidden) .dashboard-compact-card.dashboard-payroll-card {
+  background: #FFFFFF !important;
+  border-color: #EEF2EE !important;
+}
+
+/* Attention strip — keep its warning identity but soften to white surface */
+.workspace-app:not(.hidden) .dashboard-attention-strip {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(180, 83, 9, 0.22) !important;
+  box-shadow: 0 1px 2px rgba(13, 47, 35, 0.03), 0 8px 20px rgba(13, 47, 35, 0.04) !important;
+}
+
+/* Dashboard 3-section status columns — keep coloured top accent */
+.workspace-app:not(.hidden) .dashboard-status-col[data-status-tone="active"] {
+  border-top: 3px solid #2D6A4F !important;
+}
+.workspace-app:not(.hidden) .dashboard-status-col[data-status-tone="upcoming"] {
+  border-top: 3px solid #1d4ed8 !important;
+}
+.workspace-app:not(.hidden) .dashboard-status-col[data-status-tone="awaiting"] {
+  border-top: 3px solid #b45309 !important;
+}
+
+/* Aged receivables — pure white surface */
+.workspace-app:not(.hidden) .dashboard-aged-receivables {
+  background: #FFFFFF !important;
+  border-color: #EEF2EE !important;
+}
+
+/* --- Typography: align to landing's hierarchy --- */
+.workspace-app:not(.hidden) h1,
+.workspace-app:not(.hidden) h2,
+.workspace-app:not(.hidden) h3,
+.workspace-app:not(.hidden) h4,
+.workspace-app:not(.hidden) .card-title,
+.workspace-app:not(.hidden) .dashboard-hero-card h1 {
+  font-family: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+/* Body / paragraph text — landing's warm grey */
+.workspace-app:not(.hidden) p,
+.workspace-app:not(.hidden) .card-copy {
+  color: #4A5E57 !important;
+}
+
+/* Eyebrows match landing */
+.workspace-app:not(.hidden) .eyebrow {
+  color: #1A5739 !important;
+  font-size: 0.74rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  margin: 0 0 6px !important;
+}
+
+/* Tiny text bumped up so nothing reads as cramped */
+.workspace-app:not(.hidden) small,
+.workspace-app:not(.hidden) .form-note,
+.workspace-app:not(.hidden) .cash-list-row-date,
+.workspace-app:not(.hidden) .dashboard-list-meta {
+  font-size: 0.82rem !important;
+}
+
+/* --- Generous breathing room in the content area --- */
+.workspace-app:not(.hidden) .workspace-board {
+  padding: 32px clamp(20px, 4vw, 44px) 56px !important;
+  gap: 24px !important;
+}
+
+@media (max-width: 880px) {
+  .workspace-app:not(.hidden) .workspace-board {
+    padding: 24px 20px 48px !important;
+    gap: 20px !important;
+  }
+}
+
+.workspace-app:not(.hidden) .workspace-card {
+  padding: clamp(26px, 3vw, 36px) clamp(24px, 3vw, 36px) !important;
+}
+
+.workspace-app:not(.hidden) .workspace-hero-card {
+  padding: clamp(32px, 4vw, 44px) clamp(28px, 4vw, 44px) !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card {
+  padding: 26px 24px 22px !important;
+}
+
+/* --- Buttons: same primary green as landing, consistent outline style --- */
+.workspace-app:not(.hidden) .button,
+.workspace-app:not(.hidden) .button-primary,
+.workspace-app:not(.hidden) .button-secondary {
+  border-radius: 999px !important;
+  padding: 12px 22px !important;
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.005em !important;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif !important;
+  min-height: 44px;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease !important;
+}
+
+/* Outline / secondary buttons — green outline matching landing */
+.workspace-app:not(.hidden) .button-secondary {
+  background: #FFFFFF !important;
+  color: #2D6A4F !important;
+  border: 1.5px solid #2D6A4F !important;
+  box-shadow: none !important;
+}
+
+.workspace-app:not(.hidden) .button-secondary:hover {
+  background: rgba(45, 106, 79, 0.06) !important;
+  color: #1A5739 !important;
+  border-color: #1A5739 !important;
+}
+
+/* Mini actions — outline pill style, consistent across the app */
+.workspace-app:not(.hidden) .mini-action {
+  padding: 7px 14px !important;
+  border-radius: 999px !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif !important;
+  border: 1px solid #E5E7EB !important;
+  background: #FFFFFF !important;
+  color: #374151 !important;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease !important;
+}
+
+.workspace-app:not(.hidden) .mini-action:hover {
+  background: #F9FAFB !important;
+  border-color: #D1D5DB !important;
+  color: #111827 !important;
+}
+
+/* Chip/pill consistency — match landing's restrained palette */
+.workspace-app:not(.hidden) .filter-chip,
+.workspace-app:not(.hidden) .quick-start-option,
+.workspace-app:not(.hidden) .invoice-start-option {
+  border-radius: 999px !important;
+  padding: 8px 16px !important;
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
+  font-family: "Plus Jakarta Sans", Inter, sans-serif !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E5E7EB !important;
+  color: #4A5E57 !important;
+}
+
+.workspace-app:not(.hidden) .filter-chip:hover,
+.workspace-app:not(.hidden) .quick-start-option:hover,
+.workspace-app:not(.hidden) .invoice-start-option:hover {
+  background: rgba(45, 106, 79, 0.04) !important;
+  border-color: rgba(45, 106, 79, 0.32) !important;
+  color: #1A5739 !important;
+}
+
+.workspace-app:not(.hidden) .filter-chip.active,
+.workspace-app:not(.hidden) .quick-start-option.active,
+.workspace-app:not(.hidden) .invoice-start-option.active {
+  background: rgba(45, 106, 79, 0.1) !important;
+  border-color: #2D6A4F !important;
+  color: #1A5739 !important;
+}
+
+/* Form inputs — match landing's clean style */
+.workspace-app:not(.hidden) .workspace-form input,
+.workspace-app:not(.hidden) .workspace-form select,
+.workspace-app:not(.hidden) .workspace-form textarea,
+.workspace-app:not(.hidden) .search-wrap input {
+  border: 1px solid #E5E7EB !important;
+  background: #FFFFFF !important;
+  border-radius: 12px !important;
+  padding: 13px 15px !important;
+  font-size: 0.94rem !important;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
+  color: #111827 !important;
+}
+
+.workspace-app:not(.hidden) .workspace-form input:focus,
+.workspace-app:not(.hidden) .workspace-form select:focus,
+.workspace-app:not(.hidden) .workspace-form textarea:focus,
+.workspace-app:not(.hidden) .search-wrap input:focus {
+  border-color: #2D6A4F !important;
+  box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.12) !important;
+}
+
+/* Field labels match landing tone */
+.workspace-app:not(.hidden) .workspace-form label,
+.workspace-app:not(.hidden) .auth-form label {
+  color: #374151 !important;
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Status badges — restrained, landing-style */
+.workspace-app:not(.hidden) .status-badge {
+  border-radius: 999px !important;
+  padding: 4px 12px !important;
+  font-size: 0.74rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+}
+
+/* Tabs / nav-like surfaces inside the content area */
+.workspace-app:not(.hidden) .pricing-billing-toggle,
+.workspace-app:not(.hidden) .pricing-billing-bar {
+  background: #FFFFFF !important;
+  border-color: #EEF2EE !important;
+}
+
+/* Tax safety meter sits cleanly on the new white surface */
+.workspace-app:not(.hidden) .tax-safety-meter-track {
+  background: #F3F4F6 !important;
+}
+
+/* Settings cards / detail surfaces — keep pure white */
+.workspace-app:not(.hidden) .settings-section-card,
+.workspace-app:not(.hidden) .form-collapse-card {
+  background: #FFFFFF !important;
+  border-color: #EEF2EE !important;
+}
+
+/* Dashboard list rows — clean white, restrained borders */
+.workspace-app:not(.hidden) .dashboard-list-row {
+  border-bottom: 1px solid #F3F4F6 !important;
+}
+
+/* Inside-card section dividers stay subtle */
+.workspace-app:not(.hidden) .records-head {
+  border-bottom: 1px solid #F3F4F6;
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+/* ==========================================================================
+   EXACT LANDING PALETTE — EXTRACTED + APPLIED TO LOGGED-IN APP
+   These are the literal hex values used on the landing page, applied without
+   approximation. Sidebar is intentionally not changed.
+   ----
+   --landing-bg-tint-1   #f8fbf8   (top of body gradient)
+   --landing-bg-tint-2   #f6faf7   (mid)
+   --landing-bg-white    #ffffff   (bottom)
+   --landing-heading     #0f2f2a   (deep forest — h1/h2/h3)
+   --landing-body        #11322e   (body copy)
+   --landing-muted       #4a5e57   (secondary body)
+   --landing-muted-2     #5f766e   (tertiary captions)
+   --landing-eyebrow     #1A5739   (eyebrow green, also primary button start)
+   --landing-button-end  #2D6A4F   (primary button end + accent)
+   ========================================================================== */
+
+/* Page background — identical gradient to landing-premium */
+body:has(.workspace-app:not(.hidden)) {
+  background:
+    radial-gradient(circle at top right, rgba(40, 179, 107, 0.09), transparent 22%),
+    radial-gradient(circle at 0% 18%, rgba(206, 233, 219, 0.3), transparent 26%),
+    linear-gradient(180deg, #f8fbf8 0%, #f6faf7 34%, #ffffff 100%) !important;
+  color: #11322e !important;
+}
+
+/* Default body text colour matches landing */
+.workspace-app:not(.hidden) {
+  color: #11322e !important;
+}
+
+/* All headings use landing's deep forest #0f2f2a */
+.workspace-app:not(.hidden) h1,
+.workspace-app:not(.hidden) h2,
+.workspace-app:not(.hidden) h3,
+.workspace-app:not(.hidden) h4,
+.workspace-app:not(.hidden) .card-title,
+.workspace-app:not(.hidden) .dashboard-hero-card h1,
+.workspace-app:not(.hidden) .records-card .records-head h3,
+.workspace-app:not(.hidden) .investor-kpi-card strong,
+.workspace-app:not(.hidden) .dashboard-status-head h3,
+.workspace-app:not(.hidden) .dashboard-list-row-main strong,
+.workspace-app:not(.hidden) .cash-list-row-main strong,
+.workspace-app:not(.hidden) .cash-decision-banner-text strong,
+.workspace-app:not(.hidden) .dashboard-today-empty strong,
+.workspace-app:not(.hidden) .dashboard-attention-copy strong {
+  color: #0f2f2a !important;
+}
+
+/* Default paragraph / body text uses landing's #11322e */
+.workspace-app:not(.hidden) p,
+.workspace-app:not(.hidden) li,
+.workspace-app:not(.hidden) .workspace-form input,
+.workspace-app:not(.hidden) .workspace-form textarea,
+.workspace-app:not(.hidden) .workspace-form select,
+.workspace-app:not(.hidden) .auth-form input,
+.workspace-app:not(.hidden) .cash-list-row-amount,
+.workspace-app:not(.hidden) .dashboard-list-amount {
+  color: #11322e !important;
+}
+
+/* Secondary copy + descriptions use landing's softer muted */
+.workspace-app:not(.hidden) .card-copy,
+.workspace-app:not(.hidden) .dashboard-status-empty,
+.workspace-app:not(.hidden) .dashboard-list-row-main span,
+.workspace-app:not(.hidden) .cash-list-row-job,
+.workspace-app:not(.hidden) .cash-list-row-note,
+.workspace-app:not(.hidden) .dashboard-today-body span,
+.workspace-app:not(.hidden) .dashboard-attention-copy span,
+.workspace-app:not(.hidden) .dashboard-list-meta,
+.workspace-app:not(.hidden) .cash-decision-banner-text span,
+.workspace-app:not(.hidden) .dashboard-today-empty p {
+  color: #4a5e57 !important;
+}
+
+/* Tertiary captions (KPI subtext, dates, etc.) */
+.workspace-app:not(.hidden) .investor-kpi-card span,
+.workspace-app:not(.hidden) .investor-kpi-card p,
+.workspace-app:not(.hidden) .kpi-money-split-label,
+.workspace-app:not(.hidden) .cash-summary-item span,
+.workspace-app:not(.hidden) .cash-list-row-date {
+  color: #5f766e !important;
+}
+
+/* Eyebrow uses landing's exact eyebrow green */
+.workspace-app:not(.hidden) .eyebrow {
+  color: #1A5739 !important;
+}
+
+/* Primary button — extracted from landing's "Start free trial" */
+.workspace-app:not(.hidden) .button-primary,
+.workspace-app:not(.hidden) .nav-cta,
+.workspace-app:not(.hidden) .dashboard-today-empty-cta,
+.cash-decision-banner .button-primary,
+.workspace-app:not(.hidden) .cash-submit-button {
+  background: linear-gradient(135deg, #1A5739 0%, #2D6A4F 100%) !important;
+  color: #ffffff !important;
+}
+
+/* Card surfaces stay pure white on the new tinted page background */
+.workspace-app:not(.hidden) .workspace-card,
+.workspace-app:not(.hidden) .workspace-hero-card,
+.workspace-app:not(.hidden) .records-card,
+.workspace-app:not(.hidden) .dashboard-status-col,
+.workspace-app:not(.hidden) .dashboard-compact-card,
+.workspace-app:not(.hidden) .dashboard-today-strip,
+.workspace-app:not(.hidden) .investor-kpi-card,
+.workspace-app:not(.hidden) .cash-page-card,
+.workspace-app:not(.hidden) .dashboard-aged-receivables,
+.workspace-app:not(.hidden) .cash-decision-banner,
+.workspace-app:not(.hidden) .cash-summary-bar,
+.workspace-app:not(.hidden) .dashboard-attention-strip,
+.workspace-app:not(.hidden) .form-collapse-card,
+.workspace-app:not(.hidden) .settings-section-card {
+  background: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   FINAL VISUAL ALIGNMENT — match the landing page's airy, warm-minimal feel
+   inside the logged-in app. Sidebar stays dark; everything to its right
+   adopts the landing page's typography, palette, radii, and breathing room.
+   ========================================================================== */
+
+/* 1. Warm off-white page background (same gradient family as landing) */
+body:has(.workspace-app:not(.hidden)) {
+  background:
+    radial-gradient(circle at top right, rgba(40, 179, 107, 0.06), transparent 28%),
+    radial-gradient(circle at 0% 16%, rgba(206, 233, 219, 0.22), transparent 32%),
+    linear-gradient(180deg, #FAFCFB 0%, #F7FAF8 40%, #FFFFFF 100%) !important;
+}
+
+/* 2. Card border-radius bumped to landing's airier 18px on workspace cards.
+   Status row + decision banner + small chips keep their existing radii. */
+.workspace-app:not(.hidden) .workspace-card,
+.workspace-app:not(.hidden) .workspace-hero-card,
+.workspace-app:not(.hidden) .investor-kpi-card,
+.workspace-app:not(.hidden) .dashboard-status-col,
+.workspace-app:not(.hidden) .dashboard-compact-card,
+.workspace-app:not(.hidden) .dashboard-today-strip,
+.workspace-app:not(.hidden) .dashboard-aged-receivables,
+.workspace-app:not(.hidden) .cash-summary-bar,
+.workspace-app:not(.hidden) .dashboard-attention-strip {
+  border-radius: 18px !important;
+}
+
+/* 3. Recolor Money out (kpi-spend) — drop the purple, use a calm slate-green
+   that lives in the landing palette family. */
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-spend strong {
+  color: #475569 !important;
+}
+
+.workspace-app:not(.hidden) .investor-kpi-card.kpi-spend {
+  background: #FFFFFF !important;
+  border-color: rgba(15, 47, 42, 0.06) !important;
+}
+
+/* Cash this month line — keep brand green */
+.workspace-app:not(.hidden) .kpi-money-breakdown .kpi-money-split-row:first-child .kpi-money-split-value {
+  color: #2D6A4F;
+}
+
+/* Bank transfers line — use a calmer slate tone (no bright blue) */
+.workspace-app:not(.hidden) .kpi-money-breakdown .kpi-money-split-row:last-child .kpi-money-split-value {
+  color: #475569;
+}
+
+/* 4. More generous padding on workspace cards — match landing's breathing room */
+.workspace-app:not(.hidden) .workspace-card {
+  padding: clamp(24px, 3vw, 36px) !important;
+}
+
+.workspace-app:not(.hidden) .workspace-hero-card {
+  padding: clamp(28px, 3.5vw, 44px) !important;
+}
+
+/* 5. Typography polish — heading sizes match landing's confident hierarchy.
+   The card title should feel like a landing section H2 — strong and confident. */
+.workspace-app:not(.hidden) .records-card .records-head h3,
+.workspace-app:not(.hidden) .jobs-page-head .card-title {
+  font-size: clamp(1.3rem, 2.2vw, 1.6rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.15 !important;
+  color: #0F2F2A !important;
+}
+
+.workspace-app:not(.hidden) .records-card .records-head .card-copy,
+.workspace-app:not(.hidden) .jobs-page-head .card-copy {
+  font-size: 0.98rem !important;
+  line-height: 1.55 !important;
+  color: #4A5E57 !important;
+}
+
+/* 6. Sidebar stays dark — but soften the dashboard hero's edge so it sits
+   on the warm background like a landing hero panel. */
+.workspace-app:not(.hidden) .dashboard-hero-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(15, 47, 42, 0.06) !important;
+  box-shadow:
+    0 1px 3px rgba(13, 47, 35, 0.03),
+    0 16px 36px rgba(13, 47, 35, 0.05) !important;
+}
+
+/* 7. Status row cards use white surfaces; the coloured top borders stay
+   as the only colour cue (matches landing's subtle accents). */
+.dashboard-status-col {
+  background: #FFFFFF !important;
+}
+
+/* 8. Form inputs across the app — match landing inputs' calm style */
+.workspace-app:not(.hidden) .workspace-form input,
+.workspace-app:not(.hidden) .workspace-form select,
+.workspace-app:not(.hidden) .workspace-form textarea {
+  border-radius: 12px !important;
+  border-color: #E5E7EB !important;
+  background: #FFFFFF !important;
+}
+
+.workspace-app:not(.hidden) .workspace-form input:focus,
+.workspace-app:not(.hidden) .workspace-form select:focus,
+.workspace-app:not(.hidden) .workspace-form textarea:focus {
+  border-color: #2D6A4F !important;
+  box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.1) !important;
+}
+
+/* 9. Outline/ghost buttons (mini-actions, secondary) — consistent stroke + radius */
+.workspace-app:not(.hidden) .mini-action,
+.workspace-app:not(.hidden) .button-secondary {
+  border-radius: 12px !important;
+  border-width: 1.5px !important;
+}
+
+/* 10. Status pills inside the workspace — soften to landing's quieter palette */
+.workspace-app:not(.hidden) .status-chip {
+  background: rgba(45, 106, 79, 0.08);
+  border-color: rgba(45, 106, 79, 0.18);
+  color: #2D6A4F;
+}
+
+/* Quick Actions strip — visual punch + clear next step */
+.dashboard-quick-actions {
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px dashed rgba(31, 122, 76, 0.18);
+}
+
+.dashboard-quick-actions-title {
+  margin: 0 0 14px;
+  color: #1f7a4c;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.dashboard-quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.dashboard-quick-action {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  gap: 4px 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 47, 42, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  overflow: hidden;
+}
+
+.dashboard-quick-action::after {
+  content: "→";
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  color: rgba(31, 122, 76, 0.35);
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: transform 180ms ease, color 180ms ease;
+}
+
+.dashboard-quick-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(13, 47, 35, 0.08);
+  border-color: rgba(31, 122, 76, 0.32);
+}
+
+.dashboard-quick-action:hover::after {
+  transform: translateX(2px);
+  color: #1f7a4c;
+}
+
+.dashboard-quick-action-icon {
+  grid-row: span 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: rgba(40, 179, 107, 0.1);
+  color: #1f7a4c;
+  align-self: center;
+}
+
+.dashboard-quick-action-icon-clients { background: rgba(180, 83, 9, 0.1); color: #b45309; }
+.dashboard-quick-action-icon-jobs { background: rgba(29, 78, 216, 0.1); color: #1d4ed8; }
+.dashboard-quick-action-icon-quotes { background: rgba(124, 58, 237, 0.1); color: #6d28d9; }
+.dashboard-quick-action-icon-invoices { background: rgba(40, 179, 107, 0.12); color: #1f7a4c; }
+.dashboard-quick-action-icon-expenses { background: rgba(220, 38, 38, 0.08); color: #b91c1c; }
+
+.dashboard-quick-action strong {
+  align-self: end;
+  color: #0f2f2a;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  padding-right: 24px;
+}
+
+.dashboard-quick-action small {
+  align-self: start;
+  color: #5a6e66;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+/* Decorative accents on hero card — soft glows in the corners */
+.workspace-app:not(.hidden) .workspace-hero-card.dashboard-hero-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.workspace-app:not(.hidden) .workspace-hero-card.dashboard-hero-card::after {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  right: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(40, 179, 107, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.workspace-app:not(.hidden) .workspace-hero-card.dashboard-hero-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Income overview — better empty state visual */
+.workspace-app:not(.hidden) .dashboard-income-chart:empty {
+  display: block;
+  min-height: 220px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 36px,
+      rgba(15, 47, 42, 0.04) 36px,
+      rgba(15, 47, 42, 0.04) 37px
+    );
+  border-radius: 12px;
+  position: relative;
+}
+
+.workspace-app:not(.hidden) .dashboard-income-chart:empty::before {
+  content: "Once invoicing kicks off, the trend lands here.";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #6b7d75;
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(31, 122, 76, 0.18);
+  box-shadow: 0 8px 20px rgba(13, 47, 35, 0.06);
+}
+
+/* Tax safety meter — better label spacing */
+.workspace-app:not(.hidden) .tax-safety-meter {
+  margin-top: 14px;
+}
+
+.workspace-app:not(.hidden) .tax-safety-meter-stops {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+}
+
+/* Empty state cards inside dashboard — nicer surface */
+.workspace-app:not(.hidden) .dashboard-empty-state {
+  padding: 22px 18px;
+  text-align: center;
+  border-radius: 14px;
+  background: rgba(40, 179, 107, 0.05);
+  border: 1px dashed rgba(31, 122, 76, 0.2);
+}
+
+.workspace-app:not(.hidden) .dashboard-empty-state strong {
+  display: block;
+  color: #0f2f2a;
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.workspace-app:not(.hidden) .dashboard-empty-state p {
+  margin: 0;
+  color: #4a5e57;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.workspace-nav {
+  gap: 4px !important;
+}
+
+.workspace-nav a {
+  min-height: 38px !important;
+  padding: 9px 12px !important;
+  border-radius: 12px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: #111827 !important;
+  font-weight: 500 !important;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease !important;
+}
+
+.workspace-nav a:hover {
+  background: rgba(243, 253, 246, 0.92) !important;
+  border-color: rgba(23, 146, 79, 0.08) !important;
+  color: #166534 !important;
+  transform: none !important;
+}
+
+.workspace-nav a.active {
+  background: linear-gradient(180deg, rgba(243, 253, 246, 0.98) 0%, rgba(236, 249, 241, 0.94) 100%) !important;
+  border: 1px solid rgba(23, 146, 79, 0.14) !important;
+  color: #166534 !important;
+  box-shadow: 0 1px 3px rgba(21, 127, 69, 0.05) !important;
+}
+
+.sidebar-signout {
+  border-top: 1px solid rgba(229, 231, 235, 0.82) !important;
+  color: #6b7280 !important;
+  font-weight: 500 !important;
+}
+
+.sidebar-signout:hover {
+  color: #166534 !important;
+  background: transparent !important;
+}
+
+.workspace-board {
+  padding: 28px !important;
+  gap: 24px !important;
+  background: #f7f9f8 !important;
+}
+
+#workspace-dashboard.dashboard-top-layout {
+  padding: 8px !important;
+  gap: 20px !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(circle at top left, rgba(40, 179, 107, 0.12), transparent 32%),
+    radial-gradient(circle at top right, rgba(83, 174, 214, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(243, 253, 246, 0.94) 0%, rgba(247, 249, 248, 0.98) 100%) !important;
+}
+
+#workspace-dashboard .dashboard-command-center {
+  padding: 26px !important;
+  gap: 18px !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(229, 231, 235, 0.88) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.92) 100%) !important;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.05) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+#workspace-dashboard .dashboard-command-center:hover,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card:hover,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.06) !important;
+}
+
+#workspace-dashboard .dashboard-command-head {
+  gap: 12px !important;
+}
+
+#workspace-dashboard .dashboard-command-title-row {
+  gap: 16px !important;
+}
+
+#workspace-dashboard .dashboard-hero-card h1 {
+  margin: 0 !important;
+  color: #111827 !important;
+  font-size: clamp(1.95rem, 3.5vw, 2.7rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.04em !important;
+}
+
+#workspaceTrialDaysBadge {
+  background: rgba(255, 255, 255, 0.74) !important;
+  border: 1px solid rgba(23, 146, 79, 0.1) !important;
+  color: #6b7280 !important;
+}
+
+#workspace-dashboard .dashboard-overview-grid,
+#workspace-dashboard .investor-kpi-grid {
+  gap: 20px !important;
+}
+
+#workspace-dashboard .investor-kpi-card,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(229, 231, 235, 0.9) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+#workspace-dashboard .investor-kpi-card {
+  min-height: 142px !important;
+  padding: 22px !important;
+}
+
+#workspace-dashboard .investor-kpi-card.kpi-cash,
+#workspace-dashboard .investor-kpi-card.kpi-tax {
+  background: linear-gradient(180deg, rgba(243, 253, 246, 0.96) 0%, rgba(255, 255, 255, 0.92) 100%) !important;
+}
+
+#workspace-dashboard .investor-kpi-card.kpi-owed {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(250, 252, 251, 0.92) 100%) !important;
+}
+
+#workspace-dashboard .investor-kpi-card span,
+#workspace-dashboard .kpi-topline span {
+  color: #6b7280 !important;
+  font-weight: 500 !important;
+}
+
+#workspace-dashboard .investor-kpi-card p,
+[data-workspace-page="workspace-dashboard"] .card-copy,
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row p,
+[data-workspace-page="workspace-dashboard"] .dashboard-empty-state p,
+[data-workspace-page="workspace-dashboard"] .dashboard-chart-legend {
+  color: #9ca3af !important;
+}
+
+#workspace-dashboard .investor-kpi-card strong,
+[data-workspace-page="workspace-dashboard"] .card-title,
+[data-workspace-page="workspace-dashboard"] .dashboard-job-group-head h4,
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row strong,
+[data-workspace-page="workspace-dashboard"] .dashboard-empty-state strong {
+  color: #111827 !important;
+}
+
+#workspace-dashboard .investor-kpi-card strong {
+  font-size: 2rem !important;
+  line-height: 1 !important;
+}
+
+#workspace-dashboard #moneyAvailable,
+#workspace-dashboard #dashboardUrgentTax,
+#workspace-dashboard .investor-kpi-card.kpi-cash strong,
+#workspace-dashboard .investor-kpi-card.kpi-tax strong {
+  color: #166534 !important;
+}
+
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card {
+  padding: 26px 24px 24px !important;
+  border-top: 3px solid rgba(23, 146, 79, 0.22) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(251, 254, 252, 0.96) 100%) !important;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-chart-shell {
+  gap: 16px !important;
+}
+
+#dashboardIncomeChart {
+  height: 252px !important;
+  background: transparent !important;
+}
+
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] {
+  gap: 20px !important;
+}
+
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  padding: 24px !important;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-jobs-overview-two-col,
+[data-workspace-page="workspace-dashboard"] .dashboard-job-list {
+  gap: 14px !important;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row {
+  padding: 16px !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  border-color: rgba(229, 231, 235, 0.9) !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03) !important;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-table-row:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(23, 146, 79, 0.12) !important;
+  box-shadow: 0 12px 22px rgba(15, 23, 42, 0.05) !important;
+}
+
+[data-workspace-page="workspace-dashboard"] .dashboard-overdue-row {
+  background: linear-gradient(180deg, rgba(255, 250, 245, 0.96) 0%, rgba(255, 255, 255, 0.94) 100%) !important;
+}
+
+/* ==========================================================================
+   FINAL PAYDAY TRADIE WORKSPACE BRAND OVERRIDES
+   Keep this block last so the logged-in workspace keeps the branded warmth.
+   ========================================================================== */
+
+body,
+.workspace-app,
+.workspace-board {
+  background: linear-gradient(180deg, #f5fbf7 0%, #f7faf8 42%, #fbfcfb 100%) !important;
+}
+
+.workspace-sidebar {
+  background: linear-gradient(180deg, rgba(247, 253, 249, 0.96) 0%, rgba(240, 249, 244, 0.98) 100%) !important;
+  border-right: 1px solid rgba(209, 229, 217, 0.72) !important;
+  box-shadow:
+    inset -1px 0 0 rgba(255, 255, 255, 0.55),
+    0 10px 28px rgba(18, 68, 44, 0.04) !important;
+}
+
+.workspace-profile {
+  padding: 6px 6px 12px !important;
+}
+
+.workspace-profile img {
+  border-radius: 20px !important;
+  box-shadow: 0 12px 28px rgba(23, 146, 79, 0.1) !important;
+}
+
+.workspace-profile-copy strong {
+  color: #12372a !important;
+}
+
+.workspace-nav a {
+  border-radius: 14px !important;
+  color: #163a2d !important;
+}
+
+.workspace-nav a:hover {
+  background: rgba(232, 248, 238, 0.96) !important;
+  border-color: rgba(23, 146, 79, 0.1) !important;
+  color: #166534 !important;
+}
+
+.workspace-nav a.active {
+  background: linear-gradient(180deg, rgba(232, 248, 238, 0.98) 0%, rgba(220, 244, 229, 0.96) 100%) !important;
+  border: 1px solid rgba(23, 146, 79, 0.16) !important;
+  color: #166534 !important;
+  box-shadow: 0 4px 14px rgba(23, 146, 79, 0.08) !important;
+}
+
+.sidebar-signout {
+  color: #5f746a !important;
+}
+
+.sidebar-signout:hover {
+  color: #166534 !important;
+}
+
+.workspace-board {
+  gap: 26px !important;
+  padding: 30px !important;
+}
+
+.workspace-card,
+.workspace-hero-card,
+.auth-card,
+.client-detail-card,
+.plan-locked-card,
+.form-collapse-card,
+.settings-section-card,
+.invoice-summary-card,
+.record-row,
+.dashboard-table-row {
+  border-radius: 16px !important;
+  border: 1px solid rgba(220, 230, 224, 0.92) !important;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.035) !important;
+}
+
+.workspace-card,
+.workspace-hero-card,
+.auth-card,
+.client-detail-card,
+.form-collapse-card,
+.settings-section-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(252, 255, 253, 0.98) 100%) !important;
+}
+
+.workspace-card.records-card,
+.invoice-summary-card:not(.is-overdue),
+.builder-side-panel,
+.quote-summary-panel,
+.invoice-preview-panel {
+  background: linear-gradient(180deg, rgba(248, 253, 250, 0.96) 0%, rgba(255, 255, 255, 0.96) 100%) !important;
+}
+
+.jobs-page-head,
+.records-head,
+.builder-layout,
+.workspace-form,
+.client-tools,
+.jobs-toolbar {
+  gap: 16px !important;
+}
+
+.card-title,
+.jobs-page-head .card-title,
+.records-head .card-title,
+.workspace-hero-card h1 {
+  color: #143528 !important;
+}
+
+.card-copy,
+.record-row span,
+.dashboard-table-row p,
+.workspace-form small,
+.search-wrap {
+  color: #667b72 !important;
+}
+
+.workspace-app .eyebrow,
+.quote-context-label,
+.invoice-summary-card span,
+.invoice-totals-bar span,
+.quote-summary-stack span {
+  color: #5f746a !important;
+}
+
+.button.button-primary,
+.button-primary,
+.nav-cta {
+  background: linear-gradient(180deg, #1f9b56 0%, #188449 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(24, 132, 73, 0.24) !important;
+  box-shadow: 0 10px 22px rgba(24, 132, 73, 0.18) !important;
+}
+
+.button.button-primary:hover,
+.button-primary:hover,
+.nav-cta:hover {
+  background: linear-gradient(180deg, #1a8d4e 0%, #157540 100%) !important;
+  box-shadow: 0 14px 26px rgba(24, 132, 73, 0.22) !important;
+}
+
+.button.button-secondary,
+.button-secondary,
+.mini-action,
+.button-ghost {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 251, 248, 0.98) 100%) !important;
+  border: 1px solid rgba(214, 224, 219, 0.95) !important;
+  color: #355347 !important;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.02) !important;
+}
+
+.button.button-secondary:hover,
+.button-secondary:hover,
+.mini-action:hover,
+.button-ghost:hover {
+  background: #f3fdf6 !important;
+  border-color: rgba(23, 146, 79, 0.14) !important;
+  color: #166534 !important;
+}
+
+.filter-chip,
+.quick-start-option,
+.invoice-start-option,
+.invoice-term-pill,
+.status-chip {
+  border-radius: 12px !important;
+}
+
+.filter-chip.active,
+.quick-start-option.active,
+.invoice-start-option.active,
+.invoice-term-pill.active {
+  background: linear-gradient(180deg, #f3fdf6 0%, #ebf9f0 100%) !important;
+  border-color: rgba(23, 146, 79, 0.2) !important;
+  color: #166534 !important;
+  box-shadow: 0 4px 12px rgba(23, 146, 79, 0.06) !important;
+}
+
+.record-row:hover,
+.dashboard-table-row:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(23, 146, 79, 0.12) !important;
+  box-shadow: 0 14px 24px rgba(15, 23, 42, 0.05) !important;
+}
+
+.record-row strong,
+.dashboard-table-row strong,
+.investor-kpi-card strong,
+.invoice-summary-card strong,
+.record-amount {
+  color: #15392b !important;
+}
+
+.record-amount,
+#moneyAvailable,
+#dashboardUrgentTax,
+.invoice-summary-card:not(.is-overdue) strong,
+.quote-summary-stack .is-total strong,
+.invoice-totals-bar .is-total strong {
+  color: #166534 !important;
+}
+
+#workspace-dashboard.dashboard-top-layout {
+  background:
+    radial-gradient(circle at top left, rgba(40, 179, 107, 0.14), transparent 34%),
+    radial-gradient(circle at top right, rgba(153, 225, 186, 0.16), transparent 28%),
+    linear-gradient(180deg, rgba(241, 252, 245, 0.96) 0%, rgba(247, 250, 248, 0.98) 100%) !important;
+}
+
+#workspace-dashboard .dashboard-command-center,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(252, 255, 253, 0.95) 100%) !important;
+}
+
+#workspace-dashboard .investor-kpi-card.kpi-cash,
+#workspace-dashboard .investor-kpi-card.kpi-tax,
+.quote-summary-panel,
+.invoice-preview-panel {
+  background: linear-gradient(180deg, rgba(242, 252, 246, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+}
+
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card {
+  border-top: 3px solid rgba(23, 146, 79, 0.18) !important;
+}
+
+.quote-builder-layout {
+  padding: 10px !important;
+  border-radius: 22px !important;
+  background:
+    radial-gradient(circle at top left, rgba(40, 179, 107, 0.1), transparent 28%),
+    linear-gradient(180deg, rgba(241, 252, 245, 0.9) 0%, rgba(248, 251, 249, 0.94) 100%) !important;
+}
+
+#quoteForm .form-collapse-card {
+  border-radius: 18px !important;
+}
+
+#quoteForm .form-collapse-card[open] summary {
+  background: transparent !important;
+}
+
+#quoteForm .form-collapse-card summary {
+  color: #143528 !important;
+}
+
+#quoteForm .form-collapse-card summary::after {
+  background: #e9f8ef !important;
+  color: #166534 !important;
+}
+
+.quote-summary-panel .card-title,
+.quote-summary-panel strong,
+.invoice-preview-panel .card-title {
+  color: #143528 !important;
+}
+
+.quote-summary-stack .is-total,
+.invoice-totals-bar .is-total,
+.invoice-preview-thumb,
+.quote-client-context-card,
+.invoice-priority-banner,
+.invoice-gst-note,
+.invoice-quote-confirmation {
+  background: linear-gradient(180deg, #f3fdf6 0%, rgba(255, 255, 255, 0.96) 100%) !important;
+  border-color: rgba(23, 146, 79, 0.14) !important;
+}
+
+.quote-summary-stack div,
+.invoice-preview-thumb-grid div,
+.invoice-preview-panel .invoice-totals-bar div {
+  background: rgba(255, 255, 255, 0.92) !important;
+}
+
+@media (max-width: 900px) {
+  .workspace-board {
+    padding: 20px !important;
+  }
+
+  .quote-builder-layout,
+  #workspace-dashboard.dashboard-top-layout {
+    padding: 6px !important;
+  }
+}
+
+/* ==========================================================================
+   FINAL LIGHTWEIGHT WORKSPACE SIMPLIFICATION
+   Keep this block last. It intentionally reduces visual weight.
+   ========================================================================== */
+
+body,
+.workspace-app,
+.workspace-board {
+  background: #f4faf6 !important;
+}
+
+.workspace-app {
+  gap: 0 !important;
+}
+
+.workspace-sidebar {
+  background: linear-gradient(180deg, #f2fbf6 0%, #edf8f2 100%) !important;
+  border-right: 1px solid rgba(201, 221, 209, 0.72) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  gap: 6px !important;
+  padding: 18px 14px !important;
+}
+
+.workspace-profile {
+  padding: 4px 4px 8px !important;
+}
+
+.workspace-profile img {
+  box-shadow: none !important;
+}
+
+.workspace-nav {
+  gap: 2px !important;
+}
+
+.workspace-nav a {
+  min-height: 36px !important;
+  padding: 8px 12px !important;
+  border-radius: 10px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: #18352a !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+}
+
+.workspace-nav a:hover {
+  background: rgba(233, 247, 238, 0.9) !important;
+  border-color: transparent !important;
+  color: #166534 !important;
+}
+
+.workspace-nav a.active {
+  background: rgba(225, 245, 233, 0.96) !important;
+  border: 1px solid rgba(23, 146, 79, 0.1) !important;
+  color: #166534 !important;
+  box-shadow: none !important;
+}
+
+.sidebar-signout {
+  border-top: 1px solid rgba(201, 221, 209, 0.72) !important;
+  color: #62766d !important;
+}
+
+.sidebar-signout:hover {
+  color: #166534 !important;
+}
+
+.workspace-board {
+  padding: 24px !important;
+  gap: 20px !important;
+}
+
+.workspace-card,
+.workspace-hero-card,
+.auth-card,
+.client-detail-card,
+.form-collapse-card,
+.settings-section-card,
+.invoice-summary-card,
+.record-row,
+.dashboard-table-row,
+.builder-side-panel {
+  border: 1px solid rgba(220, 230, 224, 0.9) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.025) !important;
+}
+
+.workspace-card,
+.workspace-hero-card,
+.auth-card,
+.client-detail-card,
+.form-collapse-card,
+.settings-section-card,
+.builder-side-panel {
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+.workspace-card::before,
+.investor-kpi-card::before,
+.dashboard-urgent-card::before,
+.dashboard-focus-tile::before {
+  display: none !important;
+}
+
+.jobs-page-head,
+.records-head,
+.jobs-toolbar,
+.workspace-form,
+.builder-layout {
+  gap: 14px !important;
+}
+
+.workspace-form {
+  gap: 14px !important;
+}
+
+.workspace-form label {
+  color: #17372b !important;
+  font-weight: 500 !important;
+}
+
+.card-title,
+.jobs-page-head .card-title,
+.records-head .card-title,
+.workspace-hero-card h1 {
+  color: #112b21 !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.workspace-hero-card h1 {
+  font-size: clamp(1.75rem, 3vw, 2.3rem) !important;
+  line-height: 1.12 !important;
+}
+
+.card-copy,
+.record-row span,
+.dashboard-table-row p,
+.workspace-form small,
+.search-wrap {
+  color: #6a7d74 !important;
+}
+
+.button.button-primary,
+.button-primary,
+.nav-cta {
+  background: #1c934f !important;
+  border: 1px solid rgba(28, 147, 79, 0.2) !important;
+  box-shadow: 0 6px 14px rgba(28, 147, 79, 0.14) !important;
+}
+
+.button.button-primary:hover,
+.button-primary:hover,
+.nav-cta:hover {
+  background: #177c43 !important;
+  box-shadow: 0 8px 18px rgba(28, 147, 79, 0.16) !important;
+}
+
+.button.button-secondary,
+.button-secondary,
+.mini-action,
+.button-ghost {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(214, 224, 219, 0.9) !important;
+  color: #355347 !important;
+  box-shadow: none !important;
+}
+
+.button.button-secondary:hover,
+.button-secondary:hover,
+.mini-action:hover,
+.button-ghost:hover {
+  background: #f3fbf6 !important;
+  border-color: rgba(23, 146, 79, 0.12) !important;
+  color: #166534 !important;
+}
+
+.filter-chip,
+.quick-start-option,
+.invoice-start-option,
+.invoice-term-pill,
+.status-chip {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(214, 224, 219, 0.9) !important;
+  box-shadow: none !important;
+}
+
+.filter-chip.active,
+.quick-start-option.active,
+.invoice-start-option.active,
+.invoice-term-pill.active {
+  background: #edf8f1 !important;
+  border-color: rgba(23, 146, 79, 0.16) !important;
+  color: #166534 !important;
+  box-shadow: none !important;
+}
+
+#workspace-dashboard.dashboard-top-layout {
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  gap: 18px !important;
+}
+
+#workspace-dashboard .dashboard-command-center {
+  padding: 20px !important;
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, rgba(247, 253, 249, 0.96) 0%, rgba(255, 255, 255, 0.96) 100%) !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
+  backdrop-filter: none !important;
+}
+
+#workspace-dashboard .dashboard-command-center:hover,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card:hover,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card:hover {
+  transform: none !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
+}
+
+#workspace-dashboard .dashboard-overview-grid,
+#workspace-dashboard .investor-kpi-grid,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] {
+  gap: 16px !important;
+}
+
+#workspace-dashboard .investor-kpi-card,
+[data-workspace-page="workspace-dashboard"].dashboard-chart-card,
+.dashboard-bottom-layout[data-workspace-page="workspace-dashboard"] .workspace-card {
+  background: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03) !important;
+  backdrop-filter: none !important;
+}
+
+#workspace-dashboard .investor-kpi-card.kpi-cash,
+#workspace-dashboard .investor-kpi-card.kpi-tax,
+.quote-summary-panel,
+.invoice-preview-panel,
+.quote-builder-layout {
+  background: linear-gradient(180deg, rgba(241, 252, 245, 0.88) 0%, rgba(255, 255, 255, 0.96) 100%) !important;
+}
+
+.quote-builder-layout {
+  padding: 8px !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+
+#quoteForm .form-collapse-card {
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.quote-summary-stack .is-total,
+.invoice-totals-bar .is-total,
+.invoice-preview-thumb,
+.quote-client-context-card,
+.invoice-priority-banner,
+.invoice-gst-note,
+.invoice-quote-confirmation {
+  background: linear-gradient(180deg, rgba(243, 253, 246, 0.92) 0%, rgba(255, 255, 255, 0.98) 100%) !important;
+  border-color: rgba(23, 146, 79, 0.12) !important;
+}
+
+.record-row:hover,
+.dashboard-table-row:hover {
+  transform: none !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Nav icon + divider colours for the light sidebar */
+.workspace-nav a .nav-icon {
+  opacity: 0.55;
+  color: #18352a;
+}
+
+.workspace-nav a:hover .nav-icon,
+.workspace-nav a.active .nav-icon {
+  opacity: 1 !important;
+  color: #166534;
+}
+
+.workspace-nav-divider::before,
+.workspace-nav-divider::after {
+  background: rgba(21, 71, 52, 0.14) !important;
+}
+
+.workspace-nav-divider span {
+  color: #7a9a88 !important;
+}
+
+/* FAB toggle — make sure it inherits the right transition */
+.workspace-quick-create-toggle {
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.workspace-quick-create-toggle[aria-expanded="true"] {
+  transform: rotate(45deg);
+}
+
+@media (max-width: 900px) {
+  .workspace-board {
+    padding: 18px !important;
+  }
+
+  .workspace-sidebar {
+    padding: 16px !important;
+  }
+
+  .quote-builder-layout {
+    padding: 4px !important;
   }
 }

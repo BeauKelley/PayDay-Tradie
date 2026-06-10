@@ -27,8 +27,10 @@
     <nav class="site-nav" id="siteNav" aria-label="Primary navigation">
       <div class="site-nav-links">
         <a href="#features">Features</a>
-        <a href="#pricing">Pricing</a>
         <a href="#how-it-works">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#faq">FAQ</a>
       </div>
       <div class="site-nav-actions">
         <button class="nav-link-button" type="button" id="signInButton">Login</button>
@@ -48,6 +50,7 @@
         <button class="button button-primary" type="button" data-plan="Starter">Start free trial</button>
         <a class="button button-secondary" href="#how-it-works">See how it works</a>
       </div>
+      <p class="premium-hero-pricing-tag">Plans from <strong>$15/mo</strong> &middot; No credit card required</p>
     </section>
 
     <section class="premium-showcase" id="features" aria-label="Product preview">
@@ -218,6 +221,7 @@
         </article>
 
         <article class="price-card featured" data-plan-card="Crew">
+          <span class="popular-badge">Most popular</span>
           <span class="plan-label">Crew</span>
           <h3 data-plan-price="Crew">$29<span>/month</span></h3>
           <p class="price-billing-note" data-plan-billing-note="Crew">Monthly: $29/month</p>
@@ -238,8 +242,102 @@
           <h3 data-plan-price="Custom">$15<span>/month + add-ons</span></h3>
           <p class="price-billing-note" data-plan-billing-note="Custom">Custom stays on monthly billing.</p>
           <p class="plan-copy">Start lean, then add payroll, reports, or team tools when you need them.</p>
-          <button class="button button-secondary" type="button" data-plan="Custom">Build my plan</button>
+          <button class="button button-primary" type="button" data-plan="Custom">Build my plan</button>
         </article>
+      </div>
+    </section>
+
+    <!--
+      TESTIMONIALS — placeholder content.
+      Replace these quotes with real, verified customer testimonials before going to production.
+      Keeping them realistic so the design holds up while you collect real ones.
+    -->
+    <section class="premium-testimonials" id="reviews" aria-label="What tradies say">
+      <div class="section-heading section-heading-centered">
+        <div>
+          <p class="eyebrow">From the tools down</p>
+          <h2>Tradies running tighter books, faster.</h2>
+        </div>
+      </div>
+      <div class="testimonial-grid">
+        <article class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;Used to chase invoices on a Sunday. Now the unpaid list is right there when I open the app. Got paid faster on three jobs last month without the awkward follow-up call.&rdquo;</p>
+          <div class="testimonial-attribution">
+            <span class="testimonial-avatar" aria-hidden="true">MT</span>
+            <div>
+              <strong>Mick T.</strong>
+              <span>Sparky &middot; Brookvale NSW</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;BAS used to be a panic at the end of every quarter. With GST set aside as I go, I actually know what&rsquo;s mine to spend. First time I haven&rsquo;t dreaded BAS lodgment.&rdquo;</p>
+          <div class="testimonial-attribution">
+            <span class="testimonial-avatar" aria-hidden="true">ED</span>
+            <div>
+              <strong>Em D.</strong>
+              <span>Plumber &middot; Geelong VIC</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;Quote turns into invoice in two clicks. Wife stopped reminding me to bill people. Money&rsquo;s coming in faster, the books are tidy, and I&rsquo;m not on the laptop until 10pm.&rdquo;</p>
+          <div class="testimonial-attribution">
+            <span class="testimonial-avatar" aria-hidden="true">JB</span>
+            <div>
+              <strong>Jonno B.</strong>
+              <span>Carpenter &middot; Sunshine Coast QLD</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="testimonial-card">
+          <p class="testimonial-quote">&ldquo;Switched from a spreadsheet and a folder of receipts. Now I take a photo at the supplier and it&rsquo;s logged against the job. Profit per job is right there at the top of the page.&rdquo;</p>
+          <div class="testimonial-attribution">
+            <span class="testimonial-avatar" aria-hidden="true">SK</span>
+            <div>
+              <strong>Sarah K.</strong>
+              <span>Painter &middot; Adelaide SA</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="premium-faq" id="faq" aria-label="Frequently asked questions">
+      <div class="section-heading section-heading-centered">
+        <div>
+          <p class="eyebrow">Common questions</p>
+          <h2>Everything tradies usually ask before signing up.</h2>
+        </div>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>How is this different from Xero?</summary>
+          <p>Xero is built for accountants. PayDay Tradie is built for tradies who quote, invoice, and chase payments between jobs &mdash; without an accountant translating it. We focus on the daily realities (job costing, GST set aside, late payment chasing) rather than full general ledger accounting.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does it handle BAS and GST?</summary>
+          <p>Yes. GST is automatically set aside as you invoice, so by the time BAS lands you already know what to pay. Quarterly BAS summaries are built in &mdash; in plain English, not accountant jargon.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use it on site?</summary>
+          <p>Yes. It works on phone, ute laptop, or office desktop. Snap a photo of a receipt at the supplier, send an invoice from a job site, mark a job complete on the way home.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What about my accountant?</summary>
+          <p>Keep them. PayDay Tradie keeps your records organised so they spend less time cleaning up and more on tax planning. You can export reports anytime your accountant needs them.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Where is my data stored?</summary>
+          <p>Right now your data lives only in your browser on this device &mdash; nothing is sent off your machine. When full sync launches, you&rsquo;ll be able to opt in to back up across devices and crew.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is there a free trial?</summary>
+          <p>Yes. 30 days of full Business-tier access &mdash; payroll, reports, approvals, the lot &mdash; with no credit card required. After 30 days you choose Starter, Crew, Business, or Custom.</p>
+        </details>
       </div>
     </section>
 
@@ -263,101 +361,215 @@
       </a>
 
       <nav class="workspace-nav" aria-label="Workspace sections">
-        <a href="#workspace-dashboard" class="active" data-workspace-link><span>Dashboard</span></a>
-        <a href="#workspace-jobs" data-workspace-link><span>Jobs</span></a>
-        <a href="#workspace-clients" data-workspace-link><span>Clients</span></a>
-        <a href="#workspace-quotes" data-workspace-link><span>Quotes</span></a>
-        <a href="#workspace-invoices" data-workspace-link><span>Invoices</span></a>
-        <a href="#workspace-expenses" data-workspace-link><span>Expenses</span></a>
-        <a href="#workspace-payroll" data-workspace-link><span>Payroll</span></a>
-        <a href="#workspace-reports" data-workspace-link><span>Reports</span></a>
-        <a href="#workspace-billing" data-workspace-link><span>Billing</span></a>
-        <a href="#workspace-settings" data-workspace-link><span>Settings</span></a>
+        <a href="#workspace-dashboard" class="active" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#workspace-jobs" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/></svg>
+          <span>Jobs</span>
+        </a>
+        <a href="#workspace-clients" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Clients</span>
+        </a>
+        <a href="#workspace-quotes" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+          <span>Quotes</span>
+        </a>
+        <a href="#workspace-invoices" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 2v20l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V2z"/><path d="M9 8h6"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+          <span>Invoices</span>
+        </a>
+        <a href="#workspace-expenses" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12V8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/><path d="M16 14h6v-4h-6a2 2 0 0 0 0 4z"/></svg>
+          <span>Expenses</span>
+        </a>
+        <div class="workspace-nav-divider" role="separator" aria-hidden="true"><span>Manage</span></div>
+        <a href="#workspace-cash" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M5 9v.01"/><path d="M19 15v.01"/></svg>
+          <span>Cash</span>
+        </a>
+        <a href="#workspace-payroll" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Payroll</span>
+        </a>
+        <a href="#workspace-reports" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="20" x2="21" y2="20"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="8"/><line x1="18" y1="20" x2="18" y2="11"/></svg>
+          <span>Reports</span>
+        </a>
+        <a href="#workspace-billing" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+          <span>Billing</span>
+        </a>
+        <a href="#workspace-settings" data-workspace-link>
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Settings</span>
+        </a>
       </nav>
 
       <button class="sidebar-signout" type="button" id="signOutButton">Sign out</button>
     </aside>
 
     <section class="workspace-board">
-    <section class="workspace-hero-card dashboard-hero-card investor-dashboard-hero" id="workspace-dashboard" data-workspace-page="workspace-dashboard">
-      <div class="dashboard-story-copy">
-        <p class="eyebrow">PayDay Tradie workspace</p>
-        <h1 id="workspaceTitle">Welcome back</h1>
-        <p class="hero-text" id="workspaceSubtitle">See cash, unpaid invoices, active jobs, and GST the moment you open the app.</p>
-        <div class="workspace-plan-bar" aria-label="Current subscription status">
-          <span class="status-badge status-safe" id="workspacePlanBadge">Starter plan</span>
-          <span class="status-badge status-draft" id="workspaceTrialDaysBadge" hidden>14 days remaining</span>
-          <p id="workspacePlanCopy">Solo tradie essentials active in this workspace.</p>
-        </div>
-        <p class="workspace-confidence-line" id="dashboardConfidenceLine">Cash available after GST reserve: $0</p>
-        <div class="workspace-hero-actions">
-          <a class="button button-primary" href="#workspace-jobs" data-workspace-link>New job</a>
-          <a class="button button-secondary" href="#workspace-invoices" data-workspace-link>Create invoice</a>
-        </div>
-      </div>
-      <div class="investor-kpi-grid" aria-label="Business snapshot">
-        <article class="investor-kpi-card kpi-cash" id="dashboardCashCard">
-          <span id="dashboardHeroCard1Label">Cash available</span>
-          <strong id="moneyAvailable">$0</strong>
-          <p id="dashboardHeroCard1Copy">Usable cash after spend and tax vault.</p>
-        </article>
-        <article class="investor-kpi-card kpi-owed" id="dashboardOwedCard">
-          <span id="dashboardHeroCard2Label">Money owed</span>
-          <strong id="invoiceTotal">$0</strong>
-          <p id="dashboardHeroCard2Copy">Open and overdue invoices to collect.</p>
-        </article>
-        <article class="investor-kpi-card kpi-margin" id="dashboardMarginCard">
-          <span id="dashboardHeroCard3Label">Jobs losing profit</span>
-          <strong id="dashboardUrgentMargin">0</strong>
-          <p id="dashboardUrgentMarginCopy">Current job pricing is holding margin.</p>
-        </article>
-        <article class="investor-kpi-card kpi-tax" id="dashboardTaxCard">
-          <div class="kpi-topline">
-            <span id="dashboardHeroCard4Label">Tax obligations</span>
-            <em id="taxSafetyLabel">Safe</em>
+    <section class="dashboard-top-layout" id="workspace-dashboard" data-workspace-page="workspace-dashboard">
+      <section class="workspace-hero-card dashboard-hero-card dashboard-command-center">
+        <div class="dashboard-command-head">
+          <p class="eyebrow" id="workspaceGreetingEyebrow">Today</p>
+          <div class="dashboard-command-title-row">
+            <h1 id="workspaceTitle">Welcome back.</h1>
+            <span class="status-badge status-draft" id="workspaceTrialDaysBadge" hidden>14 days remaining</span>
           </div>
-          <strong id="dashboardUrgentTax">$0</strong>
-          <p id="dashboardUrgentTaxCopy">Tax vault looks healthy against open invoices.</p>
-        </article>
-      </div>
-    </section>
-
-    <article class="workspace-card dashboard-urgent-card" id="workspace-urgent" data-workspace-page="workspace-dashboard">
-      <div class="dashboard-priority-strip" id="dashboardPriorityStrip" aria-label="Top priority today"></div>
-      <div class="dashboard-urgent-head">
-        <div>
-          <p class="eyebrow">Needs attention</p>
-          <h3 class="card-title">What needs attention today</h3>
+          <p class="hero-text" id="workspaceSubtitle">Here&rsquo;s what&rsquo;s on the books.</p>
         </div>
-        <span class="status-chip" id="alertCount">0 alerts</span>
-      </div>
-      <div class="dashboard-urgent-grid investor-urgent-grid">
-        <article class="dashboard-focus-tile tone-mint" id="dashboardTaxTile">
-          <span>Tax held for BAS</span>
-          <strong id="taxSaved">$0</strong>
-          <p>Tax vault reserved and ready for BAS.</p>
+        <div class="dashboard-attention-strip hidden" id="dashboardAttentionStrip" aria-label="Things needing attention">
+          <div class="dashboard-attention-head">
+            <span class="dashboard-attention-title">Needs your attention</span>
+            <span class="dashboard-attention-count" id="dashboardAttentionCount">0</span>
+          </div>
+          <div class="dashboard-attention-list" id="dashboardAttentionList"></div>
+        </div>
+        <div class="investor-kpi-grid dashboard-overview-grid" aria-label="Business snapshot">
+          <article class="investor-kpi-card kpi-cash kpi-money-breakdown" id="dashboardCashCard">
+            <span id="dashboardHeroCard1Label">Money in this month</span>
+            <strong id="moneyAvailable">$0</strong>
+            <div class="kpi-money-split" aria-label="Combined breakdown">
+              <div class="kpi-money-split-row">
+                <span class="kpi-money-split-label">Cash</span>
+                <span class="kpi-money-split-value" id="dashboardMoneyCash">$0</span>
+              </div>
+              <div class="kpi-money-split-row">
+                <span class="kpi-money-split-label">Bank transfers</span>
+                <span class="kpi-money-split-value" id="dashboardMoneyBank">$0</span>
+              </div>
+            </div>
+            <p id="dashboardHeroCard1Copy">Same as last month</p>
+          </article>
+          <article class="investor-kpi-card kpi-spend" id="dashboardSpendCard">
+            <svg class="kpi-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+            <span id="dashboardSpendLabel">Money out this month</span>
+            <strong id="dashboardSpendValue">$0</strong>
+            <p id="dashboardSpendCopy">Expenses logged against the business this month.</p>
+          </article>
+          <article class="investor-kpi-card kpi-owed" id="dashboardOwedCard">
+            <svg class="kpi-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span id="dashboardHeroCard2Label">Unpaid invoices</span>
+            <strong id="invoiceTotal">$0</strong>
+            <p id="dashboardHeroCard2Copy">Open and overdue invoices to collect.</p>
+          </article>
+          <article class="investor-kpi-card kpi-margin" id="dashboardMarginCard">
+            <svg class="kpi-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span id="dashboardHeroCard3Label">Upcoming jobs</span>
+            <strong id="dashboardUrgentMargin">0</strong>
+            <p id="dashboardUrgentMarginCopy">Scheduled jobs will appear here once work is booked in.</p>
+          </article>
+          <article class="investor-kpi-card kpi-tax" id="dashboardTaxCard">
+            <svg class="kpi-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            <div class="kpi-topline">
+              <span id="dashboardHeroCard4Label">GST reserved</span>
+              <em id="taxSafetyLabel">Safe</em>
+            </div>
+            <strong id="dashboardUrgentTax">$0</strong>
+            <div class="tax-safety-meter" id="taxSafetyMeter" data-status="safe" aria-label="BAS / tax safety meter">
+              <div class="tax-safety-meter-track">
+                <div class="tax-safety-meter-fill" id="taxSafetyMeterFill"></div>
+              </div>
+              <div class="tax-safety-meter-stops" aria-hidden="true">
+                <span>Short</span>
+                <span>Tight</span>
+                <span>Safe</span>
+              </div>
+            </div>
+            <p id="dashboardUrgentTaxCopy">GST reserve stays visible as invoices are paid.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Today's run strip — what's on today -->
+      <section class="dashboard-today-strip" data-workspace-page="workspace-dashboard" aria-label="Today's jobs">
+        <div class="dashboard-today-head">
+          <div>
+            <p class="eyebrow">Today's run</p>
+            <h3 id="dashboardTodayTitle">What's on today</h3>
+          </div>
+          <span class="dashboard-today-date" id="dashboardTodayDate">Today</span>
+        </div>
+        <div class="dashboard-today-list" id="dashboardTodayList"></div>
+      </section>
+
+      <!-- Quick action buttons — create something now -->
+      <section class="dashboard-quick-create-row" data-workspace-page="workspace-dashboard" aria-label="Quick create">
+        <button class="dashboard-create-button" type="button" data-quick-create="quote">
+          <span class="dashboard-create-plus" aria-hidden="true">+</span>
+          <span class="dashboard-create-label">New quote</span>
+        </button>
+        <button class="dashboard-create-button" type="button" data-quick-create="invoice">
+          <span class="dashboard-create-plus" aria-hidden="true">+</span>
+          <span class="dashboard-create-label">New invoice</span>
+        </button>
+        <button class="dashboard-create-button" type="button" data-quick-create="expense">
+          <span class="dashboard-create-plus" aria-hidden="true">+</span>
+          <span class="dashboard-create-label">Add expense</span>
+        </button>
+        <button class="dashboard-create-button" type="button" data-quick-create="time">
+          <span class="dashboard-create-plus" aria-hidden="true">+</span>
+          <span class="dashboard-create-label">Log time</span>
+        </button>
+      </section>
+
+      <!-- Status row: Active / Upcoming / Awaiting Payment - 3 columns visible at a glance -->
+      <section class="dashboard-status-row" data-workspace-page="workspace-dashboard" aria-label="Job status overview">
+        <article class="dashboard-status-col" data-status-tone="active">
+          <header class="dashboard-status-head">
+            <h3>Active jobs</h3>
+            <span class="dashboard-status-count" id="dashboardStatusActiveCount">0</span>
+          </header>
+          <ul class="dashboard-status-list" id="dashboardStatusActiveList" aria-label="Currently in progress"></ul>
         </article>
-        <article class="dashboard-focus-tile tone-warning" id="dashboardUnpaidTile">
-          <span>Money owed</span>
-          <strong id="dashboardUrgentUnpaid">$0</strong>
-          <p id="dashboardUrgentUnpaidCopy">No invoice chasing needed right now.</p>
+        <article class="dashboard-status-col" data-status-tone="upcoming">
+          <header class="dashboard-status-head">
+            <h3>Upcoming jobs</h3>
+            <span class="dashboard-status-count">Next 7 days</span>
+          </header>
+          <ul class="dashboard-status-list" id="dashboardStatusUpcomingList" aria-label="Scheduled in the next week"></ul>
         </article>
-        <article class="dashboard-focus-tile tone-positive" id="dashboardSpendTile">
-          <span>Tracked job spend</span>
-          <strong id="expenseTotal">$0</strong>
-          <p>Fuel, materials, labour, and site costs logged.</p>
+        <article class="dashboard-status-col" data-status-tone="awaiting">
+          <header class="dashboard-status-head">
+            <h3>Awaiting payment</h3>
+            <span class="dashboard-status-count" id="dashboardStatusAwaitingCount">$0</span>
+          </header>
+          <ul class="dashboard-status-list" id="dashboardStatusAwaitingList" aria-label="Completed jobs without payment"></ul>
         </article>
-      </div>
-      <div class="dashboard-alert-table" id="alertsList"></div>
-    </article>
+      </section>
+
+      <!-- Compact info row: Outstanding Quotes + Upcoming Payroll -->
+      <section class="dashboard-compact-row" data-workspace-page="workspace-dashboard" aria-label="Quote and payroll snapshot">
+        <article class="dashboard-compact-card dashboard-quotes-card">
+          <div class="dashboard-compact-head">
+            <span class="dashboard-compact-eyebrow">Outstanding quotes</span>
+            <span class="dashboard-compact-pill" id="dashboardQuotesCount">0</span>
+          </div>
+          <strong class="dashboard-compact-amount" id="dashboardQuotesValue">$0</strong>
+          <p class="dashboard-compact-copy" id="dashboardQuotesCopy">No quotes waiting on a yes.</p>
+        </article>
+        <article class="dashboard-compact-card dashboard-payroll-card hidden" id="dashboardPayrollCard">
+          <div class="dashboard-compact-head">
+            <span class="dashboard-compact-eyebrow">Next payroll</span>
+            <span class="dashboard-compact-pill dashboard-pill-amber" id="dashboardPayrollDate">—</span>
+          </div>
+          <strong class="dashboard-compact-amount" id="dashboardPayrollAmount">$0</strong>
+          <p class="dashboard-compact-copy" id="dashboardPayrollCopy">Pay the crew on schedule.</p>
+        </article>
+      </section>
+    </section>
 
     <section class="workspace-grid">
       <article class="workspace-card" id="workspace-clients" data-workspace-page="workspace-clients">
         <div class="jobs-page-head">
           <div>
             <p class="eyebrow">Clients</p>
-            <h3 class="card-title">Save client details once and reuse them everywhere</h3>
-            <p class="card-copy">Save client details once and reuse them everywhere.</p>
+            <h3 class="card-title">Save once. Pull up forever.</h3>
+            <p class="card-copy">Add the details that matter, and they auto-fill into every job, quote, and invoice from now on.</p>
           </div>
           <a class="button button-primary" href="#clientForm">Add new client</a>
         </div>
@@ -392,8 +604,8 @@
         <div class="jobs-page-head">
           <div>
             <p class="eyebrow">Jobs</p>
-            <h3 class="card-title">Run jobs from quote through to final invoice</h3>
-            <p class="card-copy">Keep every job moving without re-entering the same details.</p>
+            <h3 class="card-title">Quote it. Run it. Invoice it.</h3>
+            <p class="card-copy">Every job stays connected — quotes flow into jobs, jobs flow into invoices. No retyping.</p>
           </div>
           <a class="button button-primary" href="#jobForm">Create new job</a>
         </div>
@@ -409,7 +621,7 @@
             <button class="filter-chip" type="button" data-job-filter="Upcoming">Upcoming</button>
             <button class="filter-chip" type="button" data-job-filter="Completed">Completed</button>
             <button class="filter-chip" type="button" data-job-filter="Recurring">Recurring</button>
-            <button class="filter-chip" type="button" data-job-filter="Archived">Archived</button>
+            <button class="filter-chip" type="button" data-job-filter="Archived">Job history</button>
           </div>
         </div>
 
@@ -429,6 +641,10 @@
             </select>
           </label>
           <label>Client<select name="clientId" id="jobClientSelect" required></select></label>
+          <div class="field-row">
+            <label>Business / client name<input type="text" id="jobClientBusinessName" placeholder="Filled from saved client" readonly></label>
+            <label>Contact person<input type="text" id="jobClientContactPerson" placeholder="Filled from saved client" readonly></label>
+          </div>
           <div class="field-row">
             <label>Client phone<input type="text" name="clientPhone" id="jobClientPhone"></label>
             <label>Client email<input type="email" name="clientEmail" id="jobClientEmail"></label>
@@ -454,23 +670,39 @@
             <label>Stage
               <select name="status" id="jobStatusSelect">
                 <option value="Draft">Draft</option>
-                <option value="Active">Active</option>
                 <option value="Upcoming">Upcoming</option>
+                <option value="Active">Active</option>
+                <option value="Quoted">Quoted</option>
+                <option value="Invoiced">Invoiced</option>
+                <option value="Awaiting payment">Awaiting payment</option>
+                <option value="Paid">Paid</option>
                 <option value="Completed">Completed</option>
                 <option value="Archived">Archived</option>
               </select>
             </label>
           </div>
           <div class="field-row">
-            <label>Recurring
+            <label>Recurring job
+              <select id="jobRecurringToggle">
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </label>
+            <label class="hidden" id="jobRecurringFrequencyWrap">Repeat
               <select name="recurring" id="jobRecurringSelect">
-                <option value="One-off">One-off</option>
                 <option value="Weekly">Weekly</option>
                 <option value="Fortnightly">Fortnightly</option>
                 <option value="Monthly">Monthly</option>
+                <option value="Quarterly">Quarterly</option>
+                <option value="Custom">Custom</option>
               </select>
             </label>
           </div>
+          <div class="field-row hidden" id="jobRecurrenceDatesWrap">
+            <label>Start date<input type="date" name="recurrenceStartDate" id="jobRecurrenceStartDate"></label>
+            <label>End date (optional)<input type="date" name="recurrenceEndDate" id="jobRecurrenceEndDate"></label>
+          </div>
+          <label class="hidden" id="jobRecurrenceNotesWrap">Recurring notes<input type="text" name="recurrenceNotes" id="jobRecurrenceNotes" placeholder="Every first Monday, seasonal timing, or custom pattern"></label>
           <label>Internal notes<input type="text" name="internalNotes" id="jobInternalNotes" placeholder="Crew notes, access codes, materials to bring"></label>
           <div class="field-row form-action-row">
             <button class="button button-primary" type="submit">Save job</button>
@@ -479,23 +711,52 @@
         </form>
       </article>
 
-      <article class="workspace-card records-card" data-workspace-page="workspace-dashboard">
+      <article class="workspace-card records-card dashboard-chart-card" data-workspace-page="workspace-dashboard">
         <div class="records-head">
           <div>
-            <p class="eyebrow">Recent activity</p>
-            <h3 class="card-title">What changed recently</h3>
+            <h3 class="card-title">Income overview</h3>
+            <p class="card-copy">Invoices issued against cash received over the last six months.</p>
           </div>
-          <span class="status-chip" id="activityCount">0 items</span>
+          <span class="status-chip" id="dashboardChartRange">Last 6 months</span>
         </div>
-        <div class="dashboard-activity-table" id="dashboardActivityList"></div>
+        <div class="dashboard-chart-shell">
+          <svg class="dashboard-income-chart" id="dashboardIncomeChart" viewBox="0 0 720 260" preserveAspectRatio="none" aria-label="Income overview chart"></svg>
+          <div class="dashboard-chart-legend">
+            <span><i class="chart-swatch chart-swatch-issued"></i>Invoices issued</span>
+            <span><i class="chart-swatch chart-swatch-paid"></i>Cash received</span>
+          </div>
+        </div>
       </article>
+
+      <!-- Hidden offscreen stubs so existing JS render targets remain valid -->
+      <div hidden aria-hidden="true">
+        <div id="dashboardActiveJobsList"></div>
+        <div id="dashboardUpcomingJobsList"></div>
+        <div id="dashboardUnpaidJobsList"></div>
+        <div id="dashboardOverdueInvoicesList"></div>
+        <a id="dashboardActiveJobsLink"></a>
+        <a id="dashboardUpcomingJobsLink"></a>
+        <a id="dashboardUnpaidJobsLink"></a>
+        <a id="dashboardOverdueInvoicesLink"></a>
+        <div id="dashboardAgedReceivables">
+          <strong id="dashboardAgedTotal"></strong>
+          <div id="dashboardAgedBar">
+            <div id="dashboardAgedCurrentBar"></div>
+            <div id="dashboardAged30Bar"></div>
+            <div id="dashboardAged60Bar"></div>
+          </div>
+          <span id="dashboardAgedCurrent"></span>
+          <span id="dashboardAged30"></span>
+          <span id="dashboardAged60"></span>
+        </div>
+      </div>
 
       <article class="workspace-card" id="workspace-invoices" data-workspace-page="workspace-invoices">
         <div class="jobs-page-head">
           <div>
             <p class="eyebrow">Invoices</p>
-            <h3 class="card-title">Send invoices from site, the ute, or back at the desk</h3>
-            <p class="card-copy">Start fresh or pull in a completed job, fill client details automatically, and keep unpaid money front and centre.</p>
+            <h3 class="card-title">Bill from site, the ute, or the desk.</h3>
+            <p class="card-copy">Start fresh or roll a completed job straight into a bill — and keep unpaid money front and centre.</p>
           </div>
           <a class="button button-primary" href="#invoiceForm">Create new invoice</a>
         </div>
@@ -503,6 +764,7 @@
   
         <div class="builder-layout invoice-builder-layout">
         <form class="workspace-form" id="invoiceForm">
+          <input type="hidden" name="sourceQuoteId" id="invoiceSourceQuoteInput">
           <details class="form-collapse-card" open>
             <summary><span>1. Who is this for?</span><small>Start from a quote, job, client, or repeat invoice and let the details fill in</small></summary>
             <div class="form-collapse-body">
@@ -699,7 +961,7 @@
           <div class="invoice-preview-thumb" id="invoiceDraftPreview">
             <span>Draft invoice</span>
             <strong id="invoiceDraftNumber">PDT-INV-next</strong>
-            <p id="invoiceDraftClient">Choose a client and job to start the preview.</p>
+            <p id="invoiceDraftClient">Pick a client or job to start the preview.</p>
             <p class="invoice-preview-meta" id="invoiceDraftMeta">Final invoice / GST on / waiting for details</p>
             <div class="invoice-preview-thumb-grid">
               <div><span>Issue date</span><strong id="invoiceDraftIssueDate">Today</strong></div>
@@ -716,8 +978,8 @@
         <div class="jobs-page-head">
           <div>
             <p class="eyebrow">Expenses</p>
-            <h3 class="card-title">Log fuel, tools, materials, and site costs before receipts disappear</h3>
-            <p class="card-copy">Attach a receipt, link the spend to a job, and keep job costs and claimable expenses tidy.</p>
+            <h3 class="card-title">Log it before the receipt hits the bin.</h3>
+            <p class="card-copy">Snap a photo, link the spend to a job, and keep claimable costs tidy without scrambling at BAS time.</p>
           </div>
           <div class="workspace-hero-actions">
             <a class="button button-primary" href="#expenseForm">Add expense</a>
@@ -834,8 +1096,8 @@
         <div class="jobs-page-head">
           <div>
             <p class="eyebrow">Quotes</p>
-            <h3 class="card-title">Quote the job, send it, and turn a yes into scheduled work</h3>
-            <p class="card-copy">Start from scratch or pull in job details, send the quote to the client, and convert accepted work without retyping.</p>
+            <h3 class="card-title">Quote it. Send it. Turn yes into work.</h3>
+            <p class="card-copy">Start fresh or pull in job details, send the quote, and convert accepted work into a job without retyping a thing.</p>
           </div>
           <a class="button button-primary" href="#quoteForm">Create new quote</a>
         </div>
@@ -858,7 +1120,7 @@
         <div class="builder-layout quote-builder-layout">
         <form class="workspace-form quote-form-grid" id="quoteForm">
           <details class="form-collapse-card" open>
-            <summary><span>Quick quote</span><small>Choose the job or client, name the work, and enter the quote total</small></summary>
+            <summary><span>Build a quick quote</span><small>Pick a client or job, add the work, and set the total</small></summary>
             <div class="form-collapse-body">
               <div class="quick-start-strip" aria-label="Quote start options">
                 <button class="quick-start-option active" type="button" data-quote-start="client">Create from existing client</button>
@@ -886,12 +1148,12 @@
                 </select>
               </label>
               <div class="field-row">
-                <label>Pull details from a job
+                <label>Use a saved job
                   <select name="sourceJobId" id="quoteSourceSelect">
                     <option value="">Start from scratch</option>
                   </select>
                 </label>
-                <label>Customer
+                <label>Client
                   <select name="clientId" id="quoteClientSelect" required></select>
                 </label>
               </div>
@@ -900,7 +1162,7 @@
                 <label>Quote total, including GST<input type="number" name="total" id="quoteTotalInput" min="0" step="0.01" value="4620" required></label>
               </div>
               <datalist id="quoteDescriptionSuggestions"></datalist>
-              <label>Work to be done<textarea name="description" id="quoteDescriptionInput" rows="3" placeholder="Scope of work, inclusions, and site details" required></textarea></label>
+              <label>What work needs doing?<textarea name="description" id="quoteDescriptionInput" rows="3" placeholder="Scope of work, what is included, and any site details" required></textarea></label>
               <div class="quick-add-row smart-fill-row" id="quoteDescriptionQuickSuggestions"></div>
             </div>
           </details>
@@ -953,8 +1215,8 @@
         </form>
         <aside class="builder-side-panel sticky-summary-panel quote-summary-panel">
           <p class="eyebrow">Quote summary</p>
-          <h3 class="card-title">Totals while you build</h3>
-          <p class="card-copy">Keep the price clear before you send it.</p>
+          <h3 class="card-title">Keep an eye on the total</h3>
+          <p class="card-copy">Keep the price in view while you put it together.</p>
           <div class="quote-summary-stack">
             <div><span>Labour</span><strong id="quoteSummaryLabour">$0</strong></div>
             <div><span>Materials</span><strong id="quoteSummaryMaterials">$0</strong></div>
@@ -1042,8 +1304,8 @@
       <article class="workspace-card records-card" data-workspace-page="workspace-jobs">
         <div class="records-head">
           <div>
-            <p class="eyebrow">Archive</p>
-            <h3 class="card-title">Finished jobs kept in the archive</h3>
+            <p class="eyebrow">Job History</p>
+            <h3 class="card-title">Archived jobs</h3>
           </div>
           <span class="status-chip" id="archiveCount">0 archived</span>
         </div>
@@ -1131,8 +1393,8 @@
         <div class="jobs-page-head">
           <div>
             <p class="eyebrow">Reports</p>
-            <h3 class="card-title">See which jobs made money, where costs went, and who still owes you</h3>
-            <p class="card-copy">Filter by job, client, spend category, and crew member without turning reports into an accounting lecture.</p>
+            <h3 class="card-title">The numbers, in plain English.</h3>
+            <p class="card-copy">Which jobs made money, where the costs went, and who still owes you — without an accounting lecture.</p>
             <p class="report-premium-note">Business gives full visibility across jobs, invoices, payroll, and margins.</p>
           </div>
           <button class="button button-secondary" type="button" id="exportReportsButton">Export report</button>
@@ -1241,12 +1503,71 @@
         </div>
       </article>
 
+      <article class="workspace-card cash-page-card" id="workspace-cash" data-workspace-page="workspace-cash">
+        <div class="jobs-page-head">
+          <div>
+            <p class="eyebrow">Cash</p>
+            <h3 class="card-title">Log cash. Stay in control.</h3>
+            <p class="card-copy">Track every cash payment as it lands, then decide what to declare without the stress.</p>
+          </div>
+        </div>
+
+        <form class="workspace-form cash-form" id="cashPaymentForm" novalidate>
+          <div class="field-row">
+            <label>Client name<input type="text" name="clientName" id="cashClientName" placeholder="Who paid you?" required></label>
+            <label>Amount (AUD)<input type="number" name="amount" id="cashAmount" min="0" step="0.01" placeholder="0.00" required inputmode="decimal"></label>
+          </div>
+          <div class="field-row">
+            <label>Date<input type="date" name="date" id="cashDate" required></label>
+            <label>Job (optional)
+              <select name="jobId" id="cashJobSelect">
+                <option value="">Not linked to a job</option>
+              </select>
+            </label>
+          </div>
+          <label>Note (optional)<input type="text" name="note" id="cashNote" placeholder="e.g. Paid on site, bathroom reno"></label>
+          <button class="button button-primary cash-submit-button" type="submit">Log cash payment</button>
+          <p class="cash-form-success hidden" id="cashFormSuccess" role="status">Cash payment logged.</p>
+        </form>
+
+        <div class="cash-summary-bar" aria-label="Cash totals">
+          <div class="cash-summary-item">
+            <span>Cash this month</span>
+            <strong id="cashSummaryMonth">$0</strong>
+          </div>
+          <div class="cash-summary-item">
+            <span>Cash this financial year</span>
+            <strong id="cashSummaryYear">$0</strong>
+          </div>
+          <div class="cash-summary-item cash-summary-item-undeclared">
+            <span>Unlogged cash (not yet declared)</span>
+            <strong id="cashSummaryUndeclared">$0</strong>
+          </div>
+        </div>
+
+        <section class="cash-list-section" aria-label="Cash payments">
+          <header class="cash-list-head">
+            <h4>Logged cash payments</h4>
+            <span class="cash-list-count" id="cashListCount">0 entries</span>
+          </header>
+          <div class="cash-list" id="cashPaymentsList"></div>
+        </section>
+
+        <aside class="cash-decision-banner" aria-label="Declaration decision tool">
+          <div class="cash-decision-banner-text">
+            <strong>Thinking about a big purchase?</strong>
+            <span>Find out if declaring your cash puts you ahead.</span>
+          </div>
+          <button class="button button-primary cash-decision-banner-cta" type="button" id="openCashDecisionTool">Run the numbers &rarr;</button>
+        </aside>
+      </article>
+
       <article class="workspace-card records-card double-span" id="workspace-payroll" data-workspace-page="workspace-payroll">
         <div class="jobs-page-head">
           <div>
             <p class="eyebrow">Payroll</p>
-            <h3 class="card-title">Keep wages, apprentices, and contractors organised</h3>
-            <p class="card-copy">Check the next pay run, update staff details, and mark the cycle complete once everyone's paid.</p>
+            <h3 class="card-title">Pay the crew. Move on.</h3>
+            <p class="card-copy">Wages, apprentices, contractors — all in one place. Run the cycle, mark it done, get back on the tools.</p>
           </div>
           <div class="workspace-hero-actions">
             <button class="button button-primary" type="button" id="payrollOpenEmployeeModalButton">Add employee</button>
@@ -1371,8 +1692,8 @@
         <div class="jobs-page-head">
           <div>
             <p class="eyebrow">Billing</p>
-            <h3 class="card-title">Choose the plan that matches how the business actually runs</h3>
-            <p class="card-copy">Fixed plans stay simple, or build a Custom plan if you only want to pay for selected advanced modules.</p>
+            <h3 class="card-title">Pick the plan that fits the work.</h3>
+            <p class="card-copy">Fixed plans keep it simple, or build a Custom plan and only pay for the advanced bits you actually use.</p>
           </div>
           <div class="workspace-hero-actions">
             <button class="button button-primary" type="button" id="billingUpgradeButton">Upgrade plan</button>
@@ -1396,8 +1717,8 @@
         <div class="jobs-page-head">
           <div>
             <p class="eyebrow">Settings</p>
-            <h3 class="card-title">Business details, invoice defaults, team access, and reminders</h3>
-            <p class="card-copy">Grouped so you can change the essentials without digging through a huge settings page.</p>
+            <h3 class="card-title">Set it once. Forget about it.</h3>
+            <p class="card-copy">Business details, invoice defaults, team access, reminders — grouped so you change what matters without digging.</p>
           </div>
           <label class="button button-secondary upload-receipt-button" for="settingsLogoInput">Upload logo</label>
         </div>
@@ -1606,20 +1927,94 @@
     </section>
   </main>
 
+  <!-- Floating quick-create button — always visible in workspace -->
+  <div class="workspace-quick-create" id="quickCreateWrap" aria-label="Quick create">
+    <div class="workspace-quick-create-menu hidden" id="quickCreateMenu">
+      <button class="mini-action" type="button" id="quickCreateQuote">+ New quote</button>
+      <button class="mini-action" type="button" id="quickCreateJob">+ New job</button>
+      <button class="mini-action" type="button" id="quickCreateInvoice">+ New invoice</button>
+      <button class="mini-action" type="button" id="quickCreateExpense">+ Add expense</button>
+    </div>
+    <button class="workspace-quick-create-toggle" type="button" id="quickCreateToggle" aria-expanded="false" aria-controls="quickCreateMenu" aria-label="Quick create">+</button>
+  </div>
+
+  <!-- Cash tax calculator — slide-over panel -->
+  <div class="cash-decision-overlay hidden" id="cashDecisionOverlay" role="dialog" aria-modal="true" aria-labelledby="cashDecisionTitle">
+    <div class="cash-decision-panel">
+      <header class="cash-decision-head">
+        <div>
+          <p class="eyebrow">Quick tax calculator</p>
+          <h2 id="cashDecisionTitle">Run the numbers</h2>
+          <p class="cash-decision-subhead">Get a rough sense of the tax on declaring cash and what you&rsquo;d keep.</p>
+        </div>
+        <button class="cash-decision-close" type="button" id="closeCashDecisionTool" aria-label="Close calculator">&times;</button>
+      </header>
+
+      <div class="cash-calc-body">
+        <label class="cash-calc-input-label">
+          Cash amount to declare (AUD)
+          <input type="number" id="cashCalcAmount" min="0" step="0.01" placeholder="0.00" inputmode="decimal">
+        </label>
+
+        <fieldset class="cash-calc-brackets">
+          <legend>Your estimated tax bracket</legend>
+          <div class="cash-calc-bracket-options" role="radiogroup" aria-label="Tax bracket">
+            <button type="button" class="cash-calc-bracket-option" data-bracket="0.19">
+              <strong>19%</strong>
+              <span>$18,201 – $45,000</span>
+            </button>
+            <button type="button" class="cash-calc-bracket-option is-active" data-bracket="0.325">
+              <strong>32.5%</strong>
+              <span>$45,001 – $120,000</span>
+            </button>
+            <button type="button" class="cash-calc-bracket-option" data-bracket="0.37">
+              <strong>37%</strong>
+              <span>$120,001 – $180,000</span>
+            </button>
+            <button type="button" class="cash-calc-bracket-option" data-bracket="0.45">
+              <strong>45%</strong>
+              <span>$180,001+</span>
+            </button>
+          </div>
+        </fieldset>
+
+        <div class="cash-calc-result" id="cashCalcResult">
+          <div class="cash-calc-result-row">
+            <span>Tax owed</span>
+            <strong class="cash-calc-tax" id="cashCalcTax">$0</strong>
+          </div>
+          <div class="cash-calc-result-row cash-calc-result-keep">
+            <span>You keep</span>
+            <strong class="cash-calc-keep" id="cashCalcKeep">$0</strong>
+          </div>
+        </div>
+
+        <p class="cash-decision-disclaimer">Rough guide only, not tax advice. Talk to your accountant before making a decision. Rates from current Australian individual tax brackets (no Medicare levy).</p>
+      </div>
+    </div>
+  </div>
+
   <div class="auth-overlay hidden" id="authOverlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
     <div class="auth-card">
       <button class="auth-close" type="button" id="closeAuthButton" aria-label="Close sign in dialog">×</button>
       <p class="eyebrow" id="authModeLabel">Create account</p>
-      <h2 id="authTitle">Set up your PayDay Tradie login</h2>
+      <h2 id="authTitle">Create your tradie workspace</h2>
       <span class="auth-trial-badge" id="authTrialBadge">30-day Business trial included</span>
-      <p class="auth-copy" id="authCopy">Create your account in this browser and open a clean PayDay Tradie workspace.</p>
-      <p class="auth-copy auth-copy-secondary" id="authTrialDetail">Full access to payroll, reports, approvals, and team tools during trial. After trial ends, choose Starter, Crew, Business, or Custom.</p>
-      <form class="auth-form" id="authForm">
-        <label id="nameField">Name<input type="text" name="name" placeholder="Your name"></label>
-        <label>Email<input type="email" name="email" placeholder="you@business.com.au" required></label>
-        <label>Password<input type="password" name="password" placeholder="Choose a password" minlength="6" required></label>
-        <button class="button button-primary" type="submit" id="authSubmitButton">Create account</button>
+      <p class="auth-copy" id="authCopy">Get started in this browser. No card required.</p>
+      <p class="auth-copy auth-copy-secondary" id="authTrialDetail">Full access for 30 days. Pick a plan when you're ready.</p>
+      <div class="auth-error hidden" id="authError" role="alert" aria-live="polite"></div>
+      <form class="auth-form" id="authForm" novalidate>
+        <label id="nameField">Name<input type="text" name="name" placeholder="Your name" autocomplete="name"></label>
+        <label>Email<input type="email" name="email" placeholder="you@business.com.au" required autocomplete="email" inputmode="email"></label>
+        <label>Password
+          <div class="auth-password-wrap">
+            <input type="password" name="password" id="authPasswordInput" placeholder="At least 8 characters" minlength="8" required autocomplete="new-password">
+            <button type="button" class="auth-password-toggle" id="authPasswordToggle" aria-label="Show password" aria-pressed="false">Show</button>
+          </div>
+        </label>
+        <button class="button button-primary" type="submit" id="authSubmitButton">Create account &amp; start free trial</button>
       </form>
+      <p class="auth-forgot-help" id="authForgotHelp">Passwords stay in this browser. Forgotten yours? Just create a new account.</p>
       <button class="auth-switch" type="button" id="toggleAuthMode">Already have an account? Sign in</button>
     </div>
   </div>
@@ -1916,18 +2311,29 @@
               <option value="Weekly">Weekly</option>
               <option value="Fortnightly">Fortnightly</option>
               <option value="Monthly">Monthly</option>
+              <option value="Quarterly">Quarterly</option>
+              <option value="Custom">Custom</option>
             </select>
           </label>
           <label>Stage
             <select name="status" id="quickJobStatusSelect">
               <option value="Draft">Draft</option>
-              <option value="Active">Active</option>
               <option value="Upcoming">Upcoming</option>
+              <option value="Active">Active</option>
+              <option value="Quoted">Quoted</option>
+              <option value="Invoiced">Invoiced</option>
+              <option value="Awaiting payment">Awaiting payment</option>
+              <option value="Paid">Paid</option>
               <option value="Completed">Completed</option>
               <option value="Archived">Archived</option>
             </select>
           </label>
         </div>
+        <div class="field-row">
+          <label>Recurring start date<input type="date" name="recurrenceStartDate" id="quickJobRecurrenceStartDate"></label>
+          <label>Recurring end date<input type="date" name="recurrenceEndDate" id="quickJobRecurrenceEndDate"></label>
+        </div>
+        <label>Recurring notes<input type="text" name="recurrenceNotes" id="quickJobRecurrenceNotes" placeholder="Every first Monday, skip public holidays"></label>
         <label>Internal notes<input type="text" name="internalNotes" id="quickJobInternalNotes" placeholder="Crew notes, access codes, materials to bring"></label>
         <div class="quote-preview-actions">
           <button class="button button-secondary" type="button" id="cancelQuickJobOverlayButton">Cancel</button>
@@ -1948,7 +2354,7 @@
           <label>Client
             <select name="clientId" id="quickQuoteClientSelect" required></select>
           </label>
-          <label>Pull details from a job
+          <label>Use a saved job
             <select name="sourceJobId" id="quickQuoteSourceJobSelect">
               <option value="">Start from scratch</option>
             </select>
@@ -1962,7 +2368,7 @@
           <label>Job name<input type="text" name="jobName" id="quickQuoteJobName" placeholder="Warehouse fit-off" required></label>
           <label>Site address<input type="text" name="siteAddress" id="quickQuoteSiteAddress" placeholder="18 Greenway Street, Brookvale NSW" required></label>
         </div>
-        <label>Work to be done<textarea name="description" id="quickQuoteDescription" rows="3" placeholder="Scope of work, inclusions, and site details" required></textarea></label>
+          <label>What work needs doing?<textarea name="description" id="quickQuoteDescription" rows="3" placeholder="Scope of work, what is included, and any site details" required></textarea></label>
         <div class="field-row">
           <label>Labour items<textarea name="labourItems" id="quickQuoteLabourItems" rows="3" placeholder="2 electricians x 2 days, commissioning, safety checks" required></textarea></label>
           <label>Material items<textarea name="materialItems" id="quickQuoteMaterialItems" rows="3" placeholder="Cable, switchboard parts, fixings, consumables" required></textarea></label>
@@ -2046,7 +2452,7 @@
       <p class="eyebrow">Quote preview</p>
       <div id="quotePreviewContent"></div>
       <div class="quote-preview-actions">
-        <button class="button button-secondary" type="button" id="sendQuotePreviewButton">Send quote email</button>
+        <button class="button button-secondary" type="button" id="sendQuotePreviewButton">Send quote</button>
       </div>
     </div>
   </div>
