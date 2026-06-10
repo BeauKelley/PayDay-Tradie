@@ -420,6 +420,7 @@ const els = {
   dashboardAged60: document.getElementById("dashboardAged60"),
   cashPaymentForm: document.getElementById("cashPaymentForm"),
   cashClientName: document.getElementById("cashClientName"),
+  cashClientDatalist: document.getElementById("cashClientDatalist"),
   cashAmount: document.getElementById("cashAmount"),
   cashDate: document.getElementById("cashDate"),
   cashJobSelect: document.getElementById("cashJobSelect"),
@@ -6548,6 +6549,12 @@ function syncClientSelect(preferredSelections = {}) {
   els.jobClientSelect.innerHTML = clientOptions;
   els.invoiceClientSelect.innerHTML = clientOptions;
   els.quoteClientSelect.innerHTML = quoteOptions || clientOptions;
+
+  if (els.cashClientDatalist) {
+    els.cashClientDatalist.innerHTML = currentUser.clients
+      .map((c) => `<option value="${escapeHtml(c.name)}">`)
+      .join("");
+  }
 
   const validClientIds = new Set(currentUser.clients.map((client) => client.id));
   const validQuoteClientIds = new Set((visibleQuoteClients.length ? visibleQuoteClients : currentUser.clients).map((client) => client.id));
